@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>index on Philip&#39;s Website</title>
-    <link>https://example.com/tags/index/</link>
+    <link>https://hermit12.github.io/public/tags/index/</link>
     <description>Recent content in index on Philip&#39;s Website</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>de</language><atom:link href="https://example.com/tags/index/index.xml" rel="self" type="application/rss+xml" />
+    <language>de</language><atom:link href="https://hermit12.github.io/public/tags/index/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Posts</title>
-      <link>https://example.com/post/</link>
+      <link>https://hermit12.github.io/public/post/</link>
       <pubDate>Sun, 15 Aug 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/post/</guid>
+      <guid>https://hermit12.github.io/public/post/</guid>
       
         <description></description>
       
@@ -19,10 +19,10 @@
     
     <item>
       <title>Posts</title>
-      <link>https://example.com/markup/</link>
+      <link>https://hermit12.github.io/public/markup/</link>
       <pubDate>Sun, 20 Jun 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/markup/</guid>
+      <guid>https://hermit12.github.io/public/markup/</guid>
       
         <description></description>
       
@@ -30,10 +30,10 @@
     
     <item>
       <title>Posts</title>
-      <link>https://example.com/latex/</link>
+      <link>https://hermit12.github.io/public/latex/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/latex/</guid>
+      <guid>https://hermit12.github.io/public/latex/</guid>
       
         <description></description>
       
@@ -41,10 +41,10 @@
     
     <item>
       <title>Posts</title>
-      <link>https://example.com/python/</link>
+      <link>https://hermit12.github.io/public/python/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/python/</guid>
+      <guid>https://hermit12.github.io/public/python/</guid>
       
         <description></description>
       
