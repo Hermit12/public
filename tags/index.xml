@@ -6,7 +6,18 @@
     <description>Recent content in Tags on Philip&#39;s Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
-    <lastBuildDate>Wed, 13 Oct 2021 14:06:41 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 13 Oct 2021 21:15:45 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>python</title>
+      <link>https://philip-swoboda.at/tags/python/</link>
+      <pubDate>Wed, 13 Oct 2021 21:15:45 +0200</pubDate>
+      
+      <guid>https://philip-swoboda.at/tags/python/</guid>
+      
+        <description></description>
+      
+    </item>
+    
     <item>
       <title>latex</title>
       <link>https://philip-swoboda.at/tags/latex/</link>
@@ -46,6 +57,17 @@
       <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
       
       <guid>https://philip-swoboda.at/tags/markdown/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>shortcodes</title>
+      <link>https://philip-swoboda.at/tags/shortcodes/</link>
+      <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://philip-swoboda.at/tags/shortcodes/</guid>
       
         <description></description>
       
@@ -112,17 +134,6 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://philip-swoboda.at/tags/index/</guid>
-      
-        <description></description>
-      
-    </item>
-    
-    <item>
-      <title>shortcodes</title>
-      <link>https://philip-swoboda.at/tags/shortcodes/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://philip-swoboda.at/tags/shortcodes/</guid>
       
         <description></description>
       

@@ -3,21 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://philip-swoboda.at/</loc>
-    <lastmod>2021-10-13T14:06:41+02:00</lastmod>
+    <lastmod>2021-10-13T21:15:45+02:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/post/python-grundbefehle/</loc>
+    <lastmod>2021-10-13T21:15:45+02:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/post/</loc>
+    <lastmod>2021-10-13T21:15:45+02:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/tags/python/</loc>
+    <lastmod>2021-10-13T21:15:45+02:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/tags/</loc>
+    <lastmod>2021-10-13T21:15:45+02:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/tags/latex/</loc>
     <lastmod>2021-10-13T14:06:41+02:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/grundbefehle/</loc>
+    <loc>https://philip-swoboda.at/post/latex-grundbefehle/</loc>
     <lastmod>2021-10-13T14:06:41+02:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/</loc>
-    <lastmod>2021-10-13T14:06:41+02:00</lastmod>
-  </url><url>
-    <loc>https://philip-swoboda.at/tags/</loc>
-    <lastmod>2021-10-13T14:06:41+02:00</lastmod>
-  </url><url>
-    <loc>https://philip-swoboda.at/%C3%BCber/</loc>
+    <loc>https://philip-swoboda.at/%C3%BCber-mich/</loc>
     <lastmod>2021-10-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/tags/css/</loc>
@@ -30,6 +36,12 @@
     <lastmod>2021-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/post/markdown-syntax/</loc>
+    <lastmod>2021-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/post/rich-content/</loc>
+    <lastmod>2021-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/tags/shortcodes/</loc>
     <lastmod>2021-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/post/redirect/</loc>
@@ -71,10 +83,7 @@
     <loc>https://philip-swoboda.at/tags/thumbnail/</loc>
     <lastmod>2019-03-04T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/imprint/</loc>
-    <priority>0</priority>
-  </url><url>
-    <loc>https://philip-swoboda.at/readme/</loc>
+    <loc>https://philip-swoboda.at/impressum/</loc>
     <priority>0</priority>
   </url><url>
     <loc>https://philip-swoboda.at/categories/</loc>
@@ -83,10 +92,6 @@
   </url><url>
     <loc>https://philip-swoboda.at/latex/</loc>
   </url><url>
-    <loc>https://philip-swoboda.at/post/rich-content/</loc>
-  </url><url>
     <loc>https://philip-swoboda.at/series/</loc>
-  </url><url>
-    <loc>https://philip-swoboda.at/tags/shortcodes/</loc>
   </url>
 </urlset>

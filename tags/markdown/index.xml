@@ -19,6 +19,18 @@
     </item>
     
     <item>
+      <title>Rich Content</title>
+      <link>https://philip-swoboda.at/post/rich-content/</link>
+      <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://philip-swoboda.at/post/rich-content/</guid>
+      
+        <description>&lt;p&gt;Hugo ships with several &lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#use-hugos-built-in-shortcodes&#34;&gt;Built-in Shortcodes&lt;/a&gt; for rich content, along with a &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;Privacy Config&lt;/a&gt; and a set of Simple Shortcodes that enable static and no-JS versions of various social media embeds.&lt;/p&gt;
+&lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
+      
+    </item>
+    
+    <item>
       <title>Redirect</title>
       <link>https://philip-swoboda.at/post/redirect/</link>
       <pubDate>Sun, 20 Jun 2021 00:00:00 +0000</pubDate>
@@ -82,18 +94,6 @@
       <guid>https://philip-swoboda.at/post/image-test/</guid>
       
         <description>Thumbnails can be enabled easily by setting the thumbnail parameter in the frontmatter to an image such as &amp;quot;images/landscape.</description>
-      
-    </item>
-    
-    <item>
-      <title>Rich Content</title>
-      <link>https://philip-swoboda.at/post/rich-content/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://philip-swoboda.at/post/rich-content/</guid>
-      
-        <description>&lt;p&gt;Hugo ships with several &lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#use-hugos-built-in-shortcodes&#34;&gt;Built-in Shortcodes&lt;/a&gt; for rich content, along with a &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;Privacy Config&lt;/a&gt; and a set of Simple Shortcodes that enable static and no-JS versions of various social media embeds.&lt;/p&gt;
-&lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
       
     </item>
     

@@ -6,13 +6,24 @@
     <description>Recent content on Philip&#39;s Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
-    <lastBuildDate>Wed, 13 Oct 2021 14:06:41 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 13 Oct 2021 21:15:45 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Grundlegende Syntax</title>
+      <link>https://philip-swoboda.at/post/python-grundbefehle/</link>
+      <pubDate>Wed, 13 Oct 2021 21:15:45 +0200</pubDate>
+      
+      <guid>https://philip-swoboda.at/post/python-grundbefehle/</guid>
+      
+        <description>Mal ne kleine Überschrift Text text</description>
+      
+    </item>
+    
     <item>
       <title>Latex Grundbefehle</title>
-      <link>https://philip-swoboda.at/post/grundbefehle/</link>
+      <link>https://philip-swoboda.at/post/latex-grundbefehle/</link>
       <pubDate>Wed, 13 Oct 2021 14:06:41 +0200</pubDate>
       
-      <guid>https://philip-swoboda.at/post/grundbefehle/</guid>
+      <guid>https://philip-swoboda.at/post/latex-grundbefehle/</guid>
       
         <description>Preamble Hier ist eine kleine Auflistung von Befehlen, die ich häufiger brauche und als nützlich erachte.</description>
       
@@ -20,10 +31,10 @@
     
     <item>
       <title>Über mich</title>
-      <link>https://philip-swoboda.at/%C3%BCber/</link>
+      <link>https://philip-swoboda.at/%C3%BCber-mich/</link>
       <pubDate>Wed, 13 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://philip-swoboda.at/%C3%BCber/</guid>
+      <guid>https://philip-swoboda.at/%C3%BCber-mich/</guid>
       
         <description>Ich dachte mir, es wird mal Zeit eine eigene Website mittels Hugo zu erstellen.</description>
       
@@ -37,6 +48,18 @@
       <guid>https://philip-swoboda.at/post/markdown-syntax/</guid>
       
         <description>&lt;p&gt;This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Rich Content</title>
+      <link>https://philip-swoboda.at/post/rich-content/</link>
+      <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://philip-swoboda.at/post/rich-content/</guid>
+      
+        <description>&lt;p&gt;Hugo ships with several &lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#use-hugos-built-in-shortcodes&#34;&gt;Built-in Shortcodes&lt;/a&gt; for rich content, along with a &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;Privacy Config&lt;/a&gt; and a set of Simple Shortcodes that enable static and no-JS versions of various social media embeds.&lt;/p&gt;
+&lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
       
     </item>
     
@@ -131,36 +154,14 @@
     
     <item>
       <title></title>
-      <link>https://philip-swoboda.at/imprint/</link>
+      <link>https://philip-swoboda.at/impressum/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://philip-swoboda.at/imprint/</guid>
+      <guid>https://philip-swoboda.at/impressum/</guid>
       
-        <description>Legal Disclosure Information in accordance with the applicable law
-Jane Doe</description>
-      
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://philip-swoboda.at/readme/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://philip-swoboda.at/readme/</guid>
-      
-        <description>Anatole  Anatole is a beautiful minimalist two-column hugo theme based on farbox-theme-Anatole.</description>
-      
-    </item>
-    
-    <item>
-      <title>Rich Content</title>
-      <link>https://philip-swoboda.at/post/rich-content/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://philip-swoboda.at/post/rich-content/</guid>
-      
-        <description>&lt;p&gt;Hugo ships with several &lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#use-hugos-built-in-shortcodes&#34;&gt;Built-in Shortcodes&lt;/a&gt; for rich content, along with a &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;Privacy Config&lt;/a&gt; and a set of Simple Shortcodes that enable static and no-JS versions of various social media embeds.&lt;/p&gt;
-&lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
+        <description>Impressum  Seiteninhaber: Philip Swoboda
+Kundratstraße 12
+1100 Wien</description>
       
     </item>
     
