@@ -6,7 +6,19 @@
     <description>Recent content in Posts on Philip&#39;s Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
-    <lastBuildDate>Thu, 14 Oct 2021 12:07:32 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 14 Oct 2021 14:42:57 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Table</title>
+      <link>https://philip-swoboda.at/post/table/</link>
+      <pubDate>Thu, 14 Oct 2021 14:42:57 +0200</pubDate>
+      
+      <guid>https://philip-swoboda.at/post/table/</guid>
+      
+        <description>Artikel zur Formatierung von Tabellen in Markdown Entnommen von folgender Quelle: https://ox-hugo.scripter.co/doc/table-styling/
+Table with caption, and CSS attributes specified .table-1 table { text-align: left; }  Table 1: Table with caption, with left-aligned text     h1 h2 h3     abcdefgh ijklmnop qrstuvwx     Above table get wrapped in the auto-generated class table-1 (&amp;ldquo;1&amp;rdquo;, because this is the first table with a caption on this page.</description>
+      
+    </item>
+    
     <item>
       <title>Autocad Grundbefehle</title>
       <link>https://philip-swoboda.at/post/autocad-grundbefehle/</link>

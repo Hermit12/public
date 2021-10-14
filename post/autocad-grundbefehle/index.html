@@ -156,7 +156,7 @@ a mechanical engineer student
 
     ,
         "url" : "https:\/\/philip-swoboda.at\/post\/autocad-grundbefehle\/",
-        "wordCount" : "511",
+        "wordCount" : "858",
         "genre" : [ 
       
       "software"
@@ -395,7 +395,7 @@ a mechanical engineer student
               </span
             >
             <em class="fas fa-stopwatch"></em>
-            <span class="reading-time">3 Minuten zum Lesen</span>
+            <span class="reading-time">5 Minuten zum Lesen</span>
           </div>
 
         
@@ -403,6 +403,7 @@ a mechanical engineer student
         <nav id="TableOfContents">
   <ul>
     <li><a href="#grundlegende-bedienung">Grundlegende Bedienung</a></li>
+    <li><a href="#allgemeine-tipps">Allgemeine Tipps</a></li>
     <li><a href="#wichtige-befehle-und-abkürzungen">Wichtige Befehle und Abkürzungen</a></li>
   </ul>
 </nav><h2 id="grundlegende-bedienung">Grundlegende Bedienung</h2>
@@ -424,10 +425,44 @@ Hier empfiehlt sich &ldquo;Zentrum&rdquo;, &ldquo;Quadrant&rdquo;, &ldquo;Geomet
 <li>
 <p>Es ist empfehlenswert, einen Hilfslinen-Layer zu haben oder sich anzulegen, der nicht gedruckt wird. Mit diesem kann man sämtliche Konstruktionslinien oder Geometrien verwirklichen. Wenn möglich sollte dieser Layer eine auffällige Farbe haben.</p>
 </li>
-<li></li>
+</ul>
+<h2 id="allgemeine-tipps">Allgemeine Tipps</h2>
+<ul>
+<li>
+<p>Wenn man sich nicht sicher ist, um was für Objekte es sich im Modellbereich handelt oder ob ein 2D-Körper korrekt extrudiert wurde und nun ein Volumenselement ist, sollte man einen Blick in die Eigenschaften des Körpers werfen. <code>STRG</code>
+<code>+</code> <code>1</code> zum Öffnen der Eigenschaften des markierten Körpers.</p>
+</li>
+<li>
+<p><code>F2</code> erweitert das Befehlsfenster temporär, um den Befehlsverlauf anzuzeigen.</p>
+</li>
+<li>
+<p>Es empfiehlt sich, den Orthogonalmode immer aktiviert zu lassen (Taste <code>F8</code>). Somit ist sichergestellt, dass man nicht versehentlich ein Objekt in eine unbeabsichtigte Richtung verschiebt.</p>
+</li>
+<li>
+<p>Um 3D Körper schnell und unkompliziert zu verkleinern/vergrößern gibt es folgende Möglichkeit:
+Man klickt auf die zu änderne Fläche oder Kante mit gedrückter <code>STRG</code> Taste. Es wird ein Koordinatensystem mit einem roten Mittelpunkt auf der Fläche ersichtlich. Wenn man auf diesen Punkt klickt kann man die Fläche des Körpers erweitern oder verkürzen, das Volumenselement</p>
+</li>
 </ul>
 <h2 id="wichtige-befehle-und-abkürzungen">Wichtige Befehle und Abkürzungen</h2>
 <p>Hier eine Zusammenstellung der wichtigsten Befehle, die ich im Laufe meiner zeichnerischen Tätigkeit täglich gebraucht habe.</p>
+<style>
+
+.sane-table table {
+  border-collapse: collapse;
+  width: 90%;
+}
+.sane-table th,
+.sane-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+
+</style>
+<div class="ox-hugo-table sane-table">
+<div></div>
+<div class="table-caption">
+</div>
 <table>
 <thead>
 <tr>
@@ -449,48 +484,93 @@ Hier empfiehlt sich &ldquo;Zentrum&rdquo;, &ldquo;Quadrant&rdquo;, &ldquo;Geomet
 </tr>
 <tr>
 <td>Rechteck</td>
-<td style="text-align:center">Re</td>
+<td style="text-align:center">re</td>
 <td>Erzeugt ein Rechteck</td>
 </tr>
 <tr>
+<td>Schieben</td>
+<td style="text-align:center">s</td>
+<td>Verschiebt die ausgewählten Objekte. Mit einer <code>#</code> vor der Eingabe der ersten Koordinate kann man absolute Koordinaten wählen. Das ist praktisch für Verschiebungen in den Ursprung <code>[#,0,0,0]</code>.</td>
+</tr>
+<tr>
 <td>Abflach</td>
-<td style="text-align:center">Ab</td>
+<td style="text-align:center">ab</td>
 <td>Flacht die aktuelle 3D Ansicht in die vorgegebene Ebene ab</td>
 </tr>
 <tr>
 <td>Koordinatensystem</td>
 <td style="text-align:center">bks</td>
-<td>Ändert das Koordinatensystem <br> an Hand von einer vorgegebenen Fläche (wenn dyn. <br>aktiv ist) oder der Raumrichtungen, die man selbst bestimmt.</td>
+<td>Ändert das Koordinatensystem  an Hand von einer vorgegebenen Fläche (wenn dyn. aktiv ist) oder der Raumrichtungen, die man selbst bestimmt. Man kann die gedrehten Koordinatensysteme dauerhaft speichern.</td>
 </tr>
 <tr>
-<td>klickziehen</td>
-<td style="text-align:center">kl</td>
-<td>Erkennt den Zwischenraum zwischen zwei geschlossenen 2D Formen/linien<br> und macht daraus einen 3D Körper in der Raumrichtung, die man vorgibt. <br>Geht nur, wenn die 2D Linien/Formen in der xy Ebene liegen. Linien, die <br> irgendwie im Raum liegen, werden ignoriert.</td>
-</tr>
-<tr>
-<td>isolate</td>
+<td>Isolate</td>
 <td style="text-align:center">isol</td>
-<td>Isoliert den ausgewählten Inhalt und lässt sämtlichen, nicht ausgewählten <br>Inhalt in der Modelansicht ausblenden.</td>
+<td>Isoliert den ausgewählten Inhalt und lässt sämtlichen, nicht ausgewählten Inhalt in der Modelansicht ausblenden.</td>
 </tr>
 <tr>
-<td>hide</td>
+<td>Hide</td>
 <td style="text-align:center">hd</td>
 <td>Versteckt den ausgewählten Inhalt (2D oder 3D) in der Modellansicht.</td>
 </tr>
 <tr>
-<td>unhide</td>
+<td>Unhide</td>
 <td style="text-align:center">unh</td>
 <td>Lässt sämtlichen ausgeblendeten Inhalt wieder erscheinen</td>
 </tr>
 <tr>
 <td>Varia</td>
-<td style="text-align:center">Var</td>
+<td style="text-align:center">var</td>
 <td>Lässt den ausgewählten Inhalt mit einem Faktor, den man selbst bestimmen kann, skalieren.</td>
 </tr>
 <tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
+<td>Extrusion</td>
+<td style="text-align:center">ex</td>
+<td>Extrudiert aus einer geschlossenen 2D Umrandung eien 3D Körper.</td>
+</tr>
+<tr>
+<td>Rotation</td>
+<td style="text-align:center">rot</td>
+<td>Rotiert eine geschlossenen 2D Umrandung um eine Achse, die man im Laufe der Rotation vorgibt. Erstellt aus der Umrandung einen 3D Körper.</td>
+</tr>
+<tr>
+<td>Klickziehen</td>
+<td style="text-align:center">kl</td>
+<td>Erkennt den Zwischenraum zwischen zwei geschlossenen 2D Formen/linien und macht daraus einen 3D Körper in der Raumrichtung, die man vorgibt. Geht nur, wenn die 2D Linien/Formen in der xy Ebene liegen. Linien, die irgendwie im Raum liegen, werden ignoriert.</td>
+</tr>
+<tr>
+<td>Kappen</td>
+<td style="text-align:center">ka</td>
+<td>Kappt 3D Körper. Empfehlenswert ist es, z.B. ein Rechteck in die zu kappende Ebene zu setzen und <em>planares Objekt</em> beim Kappvorgang auszuwählen.</td>
+</tr>
+<tr>
+<td>Ausrichten</td>
+<td style="text-align:center">aus</td>
+<td>Richtet 2D und 3D Objekte an Hand von 3 Raumpunkten aus. Zuerst wählt man den ersten Punkt des auszurichtenden Objekts aus (z.B. eine Ecke) und danach den Punkt, wo dieser liegen soll. So geht man für alle 3 Punkte vor.</td>
+</tr>
+<tr>
+<td>Differenz</td>
+<td style="text-align:center">diff</td>
+<td>Bildet die Differenz von 2 Objekten. Zieht das erste ausgewählte Objekt vom zweiten ab. Praktisch bei 3D Bohrungen, wo man einen Zylinder in der Größe der Bohrung vom Körper abzieht.</td>
+</tr>
+<tr>
+<td>Drehen</td>
+<td style="text-align:center">dr</td>
+<td>Dreht um einen Punkt um die z-Achse, wenn die xy Ebene Arbeitsebene ist.</td>
+</tr>
+<tr>
+<td>3D-Drehen</td>
+<td style="text-align:center">3dd</td>
+<td>Dreht um eine angegebene Koordinatenachse im Raum.</td>
+</tr>
+<tr>
+<td>3D-Fläche</td>
+<td style="text-align:center">3F</td>
+<td>Legt eine Fläche im Raum an. Das Aussehen kann man im Anlegeprozess festlegen. Kann auch zu Regionen umgewandelt werden. Nützlich für schnelle Begrenzungen ohne &ldquo;Inhalt&rdquo;, wie z.B. Wände oder Decken.</td>
+</tr>
+<tr>
+<td>Masseneigenschaften</td>
+<td style="text-align:center">masseig</td>
+<td>Gibt sämtliche Eigenschaften wie Schwerpunkt oder Trägheitsmomente der gewählten Körper an. Alles in den Zeichnungseinheiten.</td>
 </tr>
 <tr>
 <td>Inhalt</td>
@@ -498,49 +578,9 @@ Hier empfiehlt sich &ldquo;Zentrum&rdquo;, &ldquo;Quadrant&rdquo;, &ldquo;Geomet
 <td>Inhalt</td>
 </tr>
 <tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
-</tr>
-<tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
-</tr>
-<tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
-</tr>
-<tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
-</tr>
-<tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
-</tr>
-<tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
-</tr>
-<tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
-</tr>
-<tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
-</tr>
-<tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
+<td>Bemaßungsstil</td>
+<td style="text-align:center">bems</td>
+<td>Legt den Stil fest, wie sämtliche Bemaßungen in Abhängigkeit des gewählten Maßstabs ausstehen.</td>
 </tr>
 <tr>
 <td>Inhalt</td>
@@ -554,36 +594,7 @@ Hier empfiehlt sich &ldquo;Zentrum&rdquo;, &ldquo;Quadrant&rdquo;, &ldquo;Geomet
 </tr>
 </tbody>
 </table>
-<table>
-<thead>
-<tr>
-<th>Header 1</th>
-<th>Header 2</th>
-<th>Header 3</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Item 1</td>
-<td>Item 2</td>
-<td>Item 3</td>
-</tr>
-<tr>
-<td>Item 1a</td>
-<td>Item 2a</td>
-<td>Item 3a</td>
-</tr>
-</tbody>
-</table>
-
-
-
-
-
-|———-|———-|———-|
-| Item 1   | Item 2   | Item 3   |
-| Item 1a  | Item 2a  | Item 3a  |
-
+</div>
 </div>
     <div class="post-footer">
       <div class="info">
