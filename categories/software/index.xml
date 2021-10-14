@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>software on Philip&#39;s Website</title>
+    <link>https://philip-swoboda.at/categories/software/</link>
+    <description>Recent content in software on Philip&#39;s Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>de</language>
+    <lastBuildDate>Thu, 14 Oct 2021 12:07:32 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/categories/software/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Autocad Grundbefehle</title>
+      <link>https://philip-swoboda.at/post/autocad-grundbefehle/</link>
+      <pubDate>Thu, 14 Oct 2021 12:07:32 +0200</pubDate>
+      
+      <guid>https://philip-swoboda.at/post/autocad-grundbefehle/</guid>
+      
+        <description>Grundlegende Bedienung Beim effizienten arbeiten mit Autocad verwendet man am besten nur eine kleine Anzahl von Befehlen, die man sich wohl oder übel merken muss.</description>
+      
+    </item>
+    
+    <item>
+      <title>Python grundlegende Syntax</title>
+      <link>https://philip-swoboda.at/post/python-grundbefehle/</link>
+      <pubDate>Wed, 13 Oct 2021 21:15:45 +0200</pubDate>
+      
+      <guid>https://philip-swoboda.at/post/python-grundbefehle/</guid>
+      
+        <description>Erste Schritte Befehlsausgabe Das Klassische &amp;ldquo;Hello World!&amp;rdquo; Skript:
+print(&amp;#34;Hello World&amp;#34;) </description>
+      
+    </item>
+    
+    <item>
+      <title>Latex grundlegende Syntax</title>
+      <link>https://philip-swoboda.at/post/latex-grundbefehle/</link>
+      <pubDate>Wed, 13 Oct 2021 14:06:41 +0200</pubDate>
+      
+      <guid>https://philip-swoboda.at/post/latex-grundbefehle/</guid>
+      
+        <description>Preamble Hier ist eine kleine Auflistung von Befehlen, die ich häufiger brauche und als nützlich erachte.
+Dokumentenklassen: \documentclass[10pt]{article} %Artikel \documentclass[10pt]{report} %für längere Berichte, welche mehrere Kapitel umfassen, kurze Bücher, Diplomarbeiten, .</description>
+      
+    </item>
+    
+  </channel>
+</rss>

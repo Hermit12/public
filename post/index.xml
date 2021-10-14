@@ -6,9 +6,20 @@
     <description>Recent content in Posts on Philip&#39;s Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
-    <lastBuildDate>Wed, 13 Oct 2021 21:15:45 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 14 Oct 2021 12:07:32 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Grundlegende Syntax</title>
+      <title>Autocad Grundbefehle</title>
+      <link>https://philip-swoboda.at/post/autocad-grundbefehle/</link>
+      <pubDate>Thu, 14 Oct 2021 12:07:32 +0200</pubDate>
+      
+      <guid>https://philip-swoboda.at/post/autocad-grundbefehle/</guid>
+      
+        <description>Grundlegende Bedienung Beim effizienten arbeiten mit Autocad verwendet man am besten nur eine kleine Anzahl von Befehlen, die man sich wohl oder übel merken muss.</description>
+      
+    </item>
+    
+    <item>
+      <title>Python grundlegende Syntax</title>
       <link>https://philip-swoboda.at/post/python-grundbefehle/</link>
       <pubDate>Wed, 13 Oct 2021 21:15:45 +0200</pubDate>
       
@@ -20,13 +31,14 @@ print(&amp;#34;Hello World&amp;#34;) </description>
     </item>
     
     <item>
-      <title>Latex Grundbefehle</title>
+      <title>Latex grundlegende Syntax</title>
       <link>https://philip-swoboda.at/post/latex-grundbefehle/</link>
       <pubDate>Wed, 13 Oct 2021 14:06:41 +0200</pubDate>
       
       <guid>https://philip-swoboda.at/post/latex-grundbefehle/</guid>
       
-        <description>Preamble Hier ist eine kleine Auflistung von Befehlen, die ich häufiger brauche und als nützlich erachte.</description>
+        <description>Preamble Hier ist eine kleine Auflistung von Befehlen, die ich häufiger brauche und als nützlich erachte.
+Dokumentenklassen: \documentclass[10pt]{article} %Artikel \documentclass[10pt]{report} %für längere Berichte, welche mehrere Kapitel umfassen, kurze Bücher, Diplomarbeiten, .</description>
       
     </item>
     
@@ -72,7 +84,7 @@ print(&amp;#34;Hello World&amp;#34;) </description>
       
       <guid>https://philip-swoboda.at/post/figure-shortcode/</guid>
       
-        <description>Hugo has figure shortcode built-in, so you can easily add figure captions or hyperlink rel attributes to images.</description>
+        <description>Hugo has figure shortcode built-in, so you can easily add figure captions or hyperlink rel attributes to images. Documentations can be found here:</description>
       
     </item>
     
@@ -116,7 +128,8 @@ print(&amp;#34;Hello World&amp;#34;) </description>
       
       <guid>https://philip-swoboda.at/post/image-test/</guid>
       
-        <description>Thumbnails can be enabled easily by setting the thumbnail parameter in the frontmatter to an image such as &amp;quot;images/landscape.</description>
+        <description>Thumbnails can be enabled easily by setting the thumbnail parameter in the frontmatter to an image such as &amp;quot;images/landscape.jpg&amp;quot;.
+Make sure to copy the image the static/images/ directory.</description>
       
     </item>
     

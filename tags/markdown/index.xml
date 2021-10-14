@@ -49,7 +49,7 @@
       
       <guid>https://philip-swoboda.at/post/figure-shortcode/</guid>
       
-        <description>Hugo has figure shortcode built-in, so you can easily add figure captions or hyperlink rel attributes to images.</description>
+        <description>Hugo has figure shortcode built-in, so you can easily add figure captions or hyperlink rel attributes to images. Documentations can be found here:</description>
       
     </item>
     
@@ -93,7 +93,8 @@
       
       <guid>https://philip-swoboda.at/post/image-test/</guid>
       
-        <description>Thumbnails can be enabled easily by setting the thumbnail parameter in the frontmatter to an image such as &amp;quot;images/landscape.</description>
+        <description>Thumbnails can be enabled easily by setting the thumbnail parameter in the frontmatter to an image such as &amp;quot;images/landscape.jpg&amp;quot;.
+Make sure to copy the image the static/images/ directory.</description>
       
     </item>
     

@@ -14,7 +14,8 @@
       
       <guid>https://philip-swoboda.at/post/image-test/</guid>
       
-        <description>Thumbnails can be enabled easily by setting the thumbnail parameter in the frontmatter to an image such as &amp;quot;images/landscape.</description>
+        <description>Thumbnails can be enabled easily by setting the thumbnail parameter in the frontmatter to an image such as &amp;quot;images/landscape.jpg&amp;quot;.
+Make sure to copy the image the static/images/ directory.</description>
       
     </item>
     
