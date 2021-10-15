@@ -5,13 +5,13 @@
     <loc>https://philip-swoboda.at/</loc>
     <lastmod>2021-10-15T07:40:46+02:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/latex-horizontal/</loc>
+    <loc>https://philip-swoboda.at/latex/latex-horizontal/</loc>
     <lastmod>2021-10-15T07:40:46+02:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/tags/latex/</loc>
     <lastmod>2021-10-15T07:40:46+02:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/</loc>
+    <loc>https://philip-swoboda.at/latex/</loc>
     <lastmod>2021-10-15T07:40:46+02:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/tags/syntax/</loc>
@@ -23,7 +23,10 @@
     <loc>https://philip-swoboda.at/tags/autocad/</loc>
     <lastmod>2021-10-14T12:07:32+02:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/autocad-grundbefehle/</loc>
+    <loc>https://philip-swoboda.at/autocad/autocad-grundbefehle/</loc>
+    <lastmod>2021-10-14T12:07:32+02:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/autocad/</loc>
     <lastmod>2021-10-14T12:07:32+02:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/categories/</loc>
@@ -35,10 +38,13 @@
     <loc>https://philip-swoboda.at/tags/python/</loc>
     <lastmod>2021-10-13T21:15:45+02:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/python-grundbefehle/</loc>
+    <loc>https://philip-swoboda.at/python/python-grundbefehle/</loc>
     <lastmod>2021-10-13T21:15:45+02:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/latex-grundbefehle/</loc>
+    <loc>https://philip-swoboda.at/python/</loc>
+    <lastmod>2021-10-13T21:15:45+02:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/latex/latex-grundbefehle/</loc>
     <lastmod>2021-10-13T14:06:41+02:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/%C3%BCber-mich/</loc>
@@ -53,37 +59,40 @@
     <loc>https://philip-swoboda.at/tags/markdown/</loc>
     <lastmod>2021-10-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/markdown-syntax/</loc>
+    <loc>https://philip-swoboda.at/markdown/markdown-syntax/</loc>
     <lastmod>2021-10-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/rich-content/</loc>
+    <loc>https://philip-swoboda.at/markdown/</loc>
+    <lastmod>2021-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/markdown/rich-content/</loc>
     <lastmod>2021-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/tags/shortcodes/</loc>
     <lastmod>2021-10-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/table/</loc>
+    <loc>https://philip-swoboda.at/markdown/table/</loc>
     <lastmod>2021-08-14T14:42:57+02:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/redirect/</loc>
+    <loc>https://philip-swoboda.at/markdown/redirect/</loc>
     <lastmod>2021-06-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/tags/redirect/</loc>
     <lastmod>2021-06-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/figure-shortcode/</loc>
+    <loc>https://philip-swoboda.at/markdown/figure-shortcode/</loc>
     <lastmod>2021-03-13T21:47:41+00:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/tags/emoji/</loc>
     <lastmod>2020-03-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/emoji-support/</loc>
+    <loc>https://philip-swoboda.at/markdown/emoji-support/</loc>
     <lastmod>2020-03-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/archives/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/placeholder-text/</loc>
+    <loc>https://philip-swoboda.at/markdown/placeholder-text/</loc>
     <lastmod>2019-03-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/tags/text/</loc>
@@ -95,10 +104,10 @@
     <loc>https://philip-swoboda.at/tags/math/</loc>
     <lastmod>2019-03-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/math-typesetting/</loc>
+    <loc>https://philip-swoboda.at/markdown/math-typesetting/</loc>
     <lastmod>2019-03-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/post/image-test/</loc>
+    <loc>https://philip-swoboda.at/markdown/image-test/</loc>
     <lastmod>2019-03-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/tags/thumbnail/</loc>
@@ -110,6 +119,8 @@
     <loc>https://philip-swoboda.at/tags/index/</loc>
   </url><url>
     <loc>https://philip-swoboda.at/latex/</loc>
+  </url><url>
+    <loc>https://philip-swoboda.at/post/</loc>
   </url><url>
     <loc>https://philip-swoboda.at/series/</loc>
   </url>

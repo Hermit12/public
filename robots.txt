@@ -2,11 +2,11 @@ User-agent: *
 
 Disallow: /
 
-Disallow: /post/latex-horizontal/
+Disallow: /latex/latex-horizontal/
 
 Disallow: /tags/latex/
 
-Disallow: /post/
+Disallow: /latex/
 
 Disallow: /tags/syntax/
 
@@ -14,7 +14,9 @@ Disallow: /tags/
 
 Disallow: /tags/autocad/
 
-Disallow: /post/autocad-grundbefehle/
+Disallow: /autocad/autocad-grundbefehle/
+
+Disallow: /autocad/
 
 Disallow: /categories/
 
@@ -22,9 +24,11 @@ Disallow: /categories/software/
 
 Disallow: /tags/python/
 
-Disallow: /post/python-grundbefehle/
+Disallow: /python/python-grundbefehle/
 
-Disallow: /post/latex-grundbefehle/
+Disallow: /python/
+
+Disallow: /latex/latex-grundbefehle/
 
 Disallow: /%C3%BCber-mich/
 
@@ -34,27 +38,29 @@ Disallow: /tags/html/
 
 Disallow: /tags/markdown/
 
-Disallow: /post/markdown-syntax/
+Disallow: /markdown/markdown-syntax/
 
-Disallow: /post/rich-content/
+Disallow: /markdown/
+
+Disallow: /markdown/rich-content/
 
 Disallow: /tags/shortcodes/
 
-Disallow: /post/table/
+Disallow: /markdown/table/
 
-Disallow: /post/redirect/
+Disallow: /markdown/redirect/
 
 Disallow: /tags/redirect/
 
-Disallow: /post/figure-shortcode/
+Disallow: /markdown/figure-shortcode/
 
 Disallow: /tags/emoji/
 
-Disallow: /post/emoji-support/
+Disallow: /markdown/emoji-support/
 
 Disallow: /archives/
 
-Disallow: /post/placeholder-text/
+Disallow: /markdown/placeholder-text/
 
 Disallow: /tags/text/
 
@@ -62,9 +68,9 @@ Disallow: /contact/
 
 Disallow: /tags/math/
 
-Disallow: /post/math-typesetting/
+Disallow: /markdown/math-typesetting/
 
-Disallow: /post/image-test/
+Disallow: /markdown/image-test/
 
 Disallow: /tags/thumbnail/
 
@@ -73,6 +79,8 @@ Disallow: /impressum/
 Disallow: /tags/index/
 
 Disallow: /latex/
+
+Disallow: /post/
 
 Disallow: /series/
 

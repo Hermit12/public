@@ -9,10 +9,10 @@
     <lastBuildDate>Sun, 10 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://philip-swoboda.at/tags/markdown/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Markdown Syntax</title>
-      <link>https://philip-swoboda.at/post/markdown-syntax/</link>
+      <link>https://philip-swoboda.at/markdown/markdown-syntax/</link>
       <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://philip-swoboda.at/post/markdown-syntax/</guid>
+      <guid>https://philip-swoboda.at/markdown/markdown-syntax/</guid>
       
         <description>&lt;p&gt;This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.&lt;/p&gt;</description>
       
@@ -20,10 +20,10 @@
     
     <item>
       <title>Rich Content</title>
-      <link>https://philip-swoboda.at/post/rich-content/</link>
+      <link>https://philip-swoboda.at/markdown/rich-content/</link>
       <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://philip-swoboda.at/post/rich-content/</guid>
+      <guid>https://philip-swoboda.at/markdown/rich-content/</guid>
       
         <description>&lt;p&gt;Hugo ships with several &lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#use-hugos-built-in-shortcodes&#34;&gt;Built-in Shortcodes&lt;/a&gt; for rich content, along with a &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;Privacy Config&lt;/a&gt; and a set of Simple Shortcodes that enable static and no-JS versions of various social media embeds.&lt;/p&gt;
 &lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
@@ -32,10 +32,10 @@
     
     <item>
       <title>Table</title>
-      <link>https://philip-swoboda.at/post/table/</link>
+      <link>https://philip-swoboda.at/markdown/table/</link>
       <pubDate>Sat, 14 Aug 2021 14:42:57 +0200</pubDate>
       
-      <guid>https://philip-swoboda.at/post/table/</guid>
+      <guid>https://philip-swoboda.at/markdown/table/</guid>
       
         <description>Artikel zur Formatierung von Tabellen in Markdown Entnommen von folgender Quelle: https://ox-hugo.scripter.co/doc/table-styling/
 Table with caption, and CSS attributes specified .table-1 table { text-align: left; }  Table 1: Table with caption, with left-aligned text     h1 h2 h3     abcdefgh ijklmnop qrstuvwx     Above table get wrapped in the auto-generated class table-1 (&amp;ldquo;1&amp;rdquo;, because this is the first table with a caption on this page.</description>
@@ -44,10 +44,10 @@ Table with caption, and CSS attributes specified .table-1 table { text-align: le
     
     <item>
       <title>Redirect</title>
-      <link>https://philip-swoboda.at/post/redirect/</link>
+      <link>https://philip-swoboda.at/markdown/redirect/</link>
       <pubDate>Sun, 20 Jun 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://philip-swoboda.at/post/redirect/</guid>
+      <guid>https://philip-swoboda.at/markdown/redirect/</guid>
       
         <description>Forwarding to gohugo using redirectUrl
       </description>
@@ -56,10 +56,10 @@ Table with caption, and CSS attributes specified .table-1 table { text-align: le
     
     <item>
       <title>Bilder und Text mit Markup</title>
-      <link>https://philip-swoboda.at/post/figure-shortcode/</link>
+      <link>https://philip-swoboda.at/markdown/figure-shortcode/</link>
       <pubDate>Sat, 13 Mar 2021 21:47:41 +0000</pubDate>
       
-      <guid>https://philip-swoboda.at/post/figure-shortcode/</guid>
+      <guid>https://philip-swoboda.at/markdown/figure-shortcode/</guid>
       
         <description>Hugo has figure shortcode built-in, so you can easily add figure captions or hyperlink rel attributes to images. Documentations can be found here:</description>
       
@@ -67,10 +67,10 @@ Table with caption, and CSS attributes specified .table-1 table { text-align: le
     
     <item>
       <title>Emoji Support</title>
-      <link>https://philip-swoboda.at/post/emoji-support/</link>
+      <link>https://philip-swoboda.at/markdown/emoji-support/</link>
       <pubDate>Thu, 05 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://philip-swoboda.at/post/emoji-support/</guid>
+      <guid>https://philip-swoboda.at/markdown/emoji-support/</guid>
       
         <description>&lt;p&gt;Emoji can be enabled in a Hugo project in a number of ways.&lt;/p&gt;</description>
       
@@ -78,10 +78,10 @@ Table with caption, and CSS attributes specified .table-1 table { text-align: le
     
     <item>
       <title>Placeholder Text</title>
-      <link>https://philip-swoboda.at/post/placeholder-text/</link>
+      <link>https://philip-swoboda.at/markdown/placeholder-text/</link>
       <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://philip-swoboda.at/post/placeholder-text/</guid>
+      <guid>https://philip-swoboda.at/markdown/placeholder-text/</guid>
       
         <description>&lt;p&gt;Lorem est tota propiore conpellat pectoribus de pectora summo.&lt;/p&gt;</description>
       
@@ -89,10 +89,10 @@ Table with caption, and CSS attributes specified .table-1 table { text-align: le
     
     <item>
       <title>Math Typesetting</title>
-      <link>https://philip-swoboda.at/post/math-typesetting/</link>
+      <link>https://philip-swoboda.at/markdown/math-typesetting/</link>
       <pubDate>Fri, 08 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://philip-swoboda.at/post/math-typesetting/</guid>
+      <guid>https://philip-swoboda.at/markdown/math-typesetting/</guid>
       
         <description>&lt;p&gt;Mathematical notation in a Hugo project can be enabled by using third party JavaScript libraries.&lt;/p&gt;</description>
       
@@ -100,10 +100,10 @@ Table with caption, and CSS attributes specified .table-1 table { text-align: le
     
     <item>
       <title>Guide to Thumbnails in Hugo</title>
-      <link>https://philip-swoboda.at/post/image-test/</link>
+      <link>https://philip-swoboda.at/markdown/image-test/</link>
       <pubDate>Mon, 04 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://philip-swoboda.at/post/image-test/</guid>
+      <guid>https://philip-swoboda.at/markdown/image-test/</guid>
       
         <description>Thumbnails can be enabled easily by setting the thumbnail parameter in the frontmatter to an image such as &amp;quot;images/landscape.jpg&amp;quot;.
 Make sure to copy the image the static/images/ directory.</description>

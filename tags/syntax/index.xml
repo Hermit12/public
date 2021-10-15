@@ -9,10 +9,10 @@
     <lastBuildDate>Fri, 15 Oct 2021 07:40:46 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/tags/syntax/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Horizontaler Abstand in Latex</title>
-      <link>https://philip-swoboda.at/post/latex-horizontal/</link>
+      <link>https://philip-swoboda.at/latex/latex-horizontal/</link>
       <pubDate>Fri, 15 Oct 2021 07:40:46 +0200</pubDate>
       
-      <guid>https://philip-swoboda.at/post/latex-horizontal/</guid>
+      <guid>https://philip-swoboda.at/latex/latex-horizontal/</guid>
       
         <description>Anbei ist ein Codeblock in Latex-Code abgebildet für sämtliche horizontale Abstandsmöglichkeiten. Diesen kann man in ein entsprechendes Latexprogramm eingeben und rendern.</description>
       
@@ -20,10 +20,10 @@
     
     <item>
       <title>Autocad Grundbefehle</title>
-      <link>https://philip-swoboda.at/post/autocad-grundbefehle/</link>
+      <link>https://philip-swoboda.at/autocad/autocad-grundbefehle/</link>
       <pubDate>Thu, 14 Oct 2021 12:07:32 +0200</pubDate>
       
-      <guid>https://philip-swoboda.at/post/autocad-grundbefehle/</guid>
+      <guid>https://philip-swoboda.at/autocad/autocad-grundbefehle/</guid>
       
         <description>Grundlegende Bedienung Beim effizienten arbeiten mit Autocad verwendet man am besten nur eine kleine Anzahl von Befehlen, die man sich wohl oder übel merken muss.</description>
       
@@ -31,10 +31,10 @@
     
     <item>
       <title>Python grundlegende Syntax</title>
-      <link>https://philip-swoboda.at/post/python-grundbefehle/</link>
+      <link>https://philip-swoboda.at/python/python-grundbefehle/</link>
       <pubDate>Wed, 13 Oct 2021 21:15:45 +0200</pubDate>
       
-      <guid>https://philip-swoboda.at/post/python-grundbefehle/</guid>
+      <guid>https://philip-swoboda.at/python/python-grundbefehle/</guid>
       
         <description>Erste Schritte Befehlsausgabe Das Klassische &amp;ldquo;Hello World!&amp;rdquo; Skript:
 print(&amp;#34;Hello World&amp;#34;) </description>
@@ -43,10 +43,10 @@ print(&amp;#34;Hello World&amp;#34;) </description>
     
     <item>
       <title>Latex grundlegende Syntax</title>
-      <link>https://philip-swoboda.at/post/latex-grundbefehle/</link>
+      <link>https://philip-swoboda.at/latex/latex-grundbefehle/</link>
       <pubDate>Wed, 13 Oct 2021 14:06:41 +0200</pubDate>
       
-      <guid>https://philip-swoboda.at/post/latex-grundbefehle/</guid>
+      <guid>https://philip-swoboda.at/latex/latex-grundbefehle/</guid>
       
         <description>Preamble Hier ist eine kleine Auflistung von Befehlen, die ich häufiger brauche und als nützlich erachte.
 Dokumentenklassen: \documentclass[10pt]{article} %Artikel \documentclass[10pt]{report} %für längere Berichte, welche mehrere Kapitel umfassen, kurze Bücher, Diplomarbeiten, .</description>
@@ -55,10 +55,10 @@ Dokumentenklassen: \documentclass[10pt]{article} %Artikel \documentclass[10pt]{r
     
     <item>
       <title>Markdown Syntax</title>
-      <link>https://philip-swoboda.at/post/markdown-syntax/</link>
+      <link>https://philip-swoboda.at/markdown/markdown-syntax/</link>
       <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://philip-swoboda.at/post/markdown-syntax/</guid>
+      <guid>https://philip-swoboda.at/markdown/markdown-syntax/</guid>
       
         <description>&lt;p&gt;This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.&lt;/p&gt;</description>
       
@@ -66,10 +66,10 @@ Dokumentenklassen: \documentclass[10pt]{article} %Artikel \documentclass[10pt]{r
     
     <item>
       <title>Table</title>
-      <link>https://philip-swoboda.at/post/table/</link>
+      <link>https://philip-swoboda.at/markdown/table/</link>
       <pubDate>Sat, 14 Aug 2021 14:42:57 +0200</pubDate>
       
-      <guid>https://philip-swoboda.at/post/table/</guid>
+      <guid>https://philip-swoboda.at/markdown/table/</guid>
       
         <description>Artikel zur Formatierung von Tabellen in Markdown Entnommen von folgender Quelle: https://ox-hugo.scripter.co/doc/table-styling/
 Table with caption, and CSS attributes specified .table-1 table { text-align: left; }  Table 1: Table with caption, with left-aligned text     h1 h2 h3     abcdefgh ijklmnop qrstuvwx     Above table get wrapped in the auto-generated class table-1 (&amp;ldquo;1&amp;rdquo;, because this is the first table with a caption on this page.</description>

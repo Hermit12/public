@@ -9,10 +9,10 @@
     <lastBuildDate>Thu, 14 Oct 2021 12:07:32 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/categories/software/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Autocad Grundbefehle</title>
-      <link>https://philip-swoboda.at/post/autocad-grundbefehle/</link>
+      <link>https://philip-swoboda.at/autocad/autocad-grundbefehle/</link>
       <pubDate>Thu, 14 Oct 2021 12:07:32 +0200</pubDate>
       
-      <guid>https://philip-swoboda.at/post/autocad-grundbefehle/</guid>
+      <guid>https://philip-swoboda.at/autocad/autocad-grundbefehle/</guid>
       
         <description>Grundlegende Bedienung Beim effizienten arbeiten mit Autocad verwendet man am besten nur eine kleine Anzahl von Befehlen, die man sich wohl oder übel merken muss.</description>
       
@@ -20,10 +20,10 @@
     
     <item>
       <title>Python grundlegende Syntax</title>
-      <link>https://philip-swoboda.at/post/python-grundbefehle/</link>
+      <link>https://philip-swoboda.at/python/python-grundbefehle/</link>
       <pubDate>Wed, 13 Oct 2021 21:15:45 +0200</pubDate>
       
-      <guid>https://philip-swoboda.at/post/python-grundbefehle/</guid>
+      <guid>https://philip-swoboda.at/python/python-grundbefehle/</guid>
       
         <description>Erste Schritte Befehlsausgabe Das Klassische &amp;ldquo;Hello World!&amp;rdquo; Skript:
 print(&amp;#34;Hello World&amp;#34;) </description>
@@ -32,10 +32,10 @@ print(&amp;#34;Hello World&amp;#34;) </description>
     
     <item>
       <title>Latex grundlegende Syntax</title>
-      <link>https://philip-swoboda.at/post/latex-grundbefehle/</link>
+      <link>https://philip-swoboda.at/latex/latex-grundbefehle/</link>
       <pubDate>Wed, 13 Oct 2021 14:06:41 +0200</pubDate>
       
-      <guid>https://philip-swoboda.at/post/latex-grundbefehle/</guid>
+      <guid>https://philip-swoboda.at/latex/latex-grundbefehle/</guid>
       
         <description>Preamble Hier ist eine kleine Auflistung von Befehlen, die ich häufiger brauche und als nützlich erachte.
 Dokumentenklassen: \documentclass[10pt]{article} %Artikel \documentclass[10pt]{report} %für längere Berichte, welche mehrere Kapitel umfassen, kurze Bücher, Diplomarbeiten, .</description>

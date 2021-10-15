@@ -9,10 +9,10 @@
     <lastBuildDate>Fri, 15 Oct 2021 07:40:46 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/tags/latex/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Horizontaler Abstand in Latex</title>
-      <link>https://philip-swoboda.at/post/latex-horizontal/</link>
+      <link>https://philip-swoboda.at/latex/latex-horizontal/</link>
       <pubDate>Fri, 15 Oct 2021 07:40:46 +0200</pubDate>
       
-      <guid>https://philip-swoboda.at/post/latex-horizontal/</guid>
+      <guid>https://philip-swoboda.at/latex/latex-horizontal/</guid>
       
         <description>Anbei ist ein Codeblock in Latex-Code abgebildet für sämtliche horizontale Abstandsmöglichkeiten. Diesen kann man in ein entsprechendes Latexprogramm eingeben und rendern.</description>
       
@@ -20,10 +20,10 @@
     
     <item>
       <title>Latex grundlegende Syntax</title>
-      <link>https://philip-swoboda.at/post/latex-grundbefehle/</link>
+      <link>https://philip-swoboda.at/latex/latex-grundbefehle/</link>
       <pubDate>Wed, 13 Oct 2021 14:06:41 +0200</pubDate>
       
-      <guid>https://philip-swoboda.at/post/latex-grundbefehle/</guid>
+      <guid>https://philip-swoboda.at/latex/latex-grundbefehle/</guid>
       
         <description>Preamble Hier ist eine kleine Auflistung von Befehlen, die ich häufiger brauche und als nützlich erachte.
 Dokumentenklassen: \documentclass[10pt]{article} %Artikel \documentclass[10pt]{report} %für längere Berichte, welche mehrere Kapitel umfassen, kurze Bücher, Diplomarbeiten, .</description>

@@ -9,10 +9,10 @@
     <lastBuildDate>Sun, 20 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://philip-swoboda.at/tags/redirect/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Redirect</title>
-      <link>https://philip-swoboda.at/post/redirect/</link>
+      <link>https://philip-swoboda.at/markdown/redirect/</link>
       <pubDate>Sun, 20 Jun 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://philip-swoboda.at/post/redirect/</guid>
+      <guid>https://philip-swoboda.at/markdown/redirect/</guid>
       
         <description>Forwarding to gohugo using redirectUrl
       </description>
