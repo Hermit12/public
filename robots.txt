@@ -1,1 +1,78 @@
 User-agent: *
+
+Disallow: /
+
+Disallow: /post/latex-horizontal/
+
+Disallow: /post/
+
+Disallow: /tags/autocad/
+
+Disallow: /post/autocad-grundbefehle/
+
+Disallow: /categories/
+
+Disallow: /categories/software/
+
+Disallow: /tags/syntax/
+
+Disallow: /tags/
+
+Disallow: /tags/python/
+
+Disallow: /post/python-grundbefehle/
+
+Disallow: /tags/latex/
+
+Disallow: /post/latex-grundbefehle/
+
+Disallow: /%C3%BCber-mich/
+
+Disallow: /tags/css/
+
+Disallow: /tags/html/
+
+Disallow: /tags/markdown/
+
+Disallow: /post/markdown-syntax/
+
+Disallow: /post/rich-content/
+
+Disallow: /tags/shortcodes/
+
+Disallow: /post/table/
+
+Disallow: /post/redirect/
+
+Disallow: /tags/redirect/
+
+Disallow: /post/figure-shortcode/
+
+Disallow: /tags/emoji/
+
+Disallow: /post/emoji-support/
+
+Disallow: /archives/
+
+Disallow: /post/placeholder-text/
+
+Disallow: /tags/text/
+
+Disallow: /contact/
+
+Disallow: /tags/math/
+
+Disallow: /post/math-typesetting/
+
+Disallow: /post/image-test/
+
+Disallow: /tags/thumbnail/
+
+Disallow: /impressum/
+
+Disallow: /tags/index/
+
+Disallow: /latex/
+
+Disallow: /series/
+
