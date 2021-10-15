@@ -2,6 +2,12 @@ User-agent: *
 
 Disallow: /
 
+Disallow: /tags/autocad/
+
+Disallow: /autocad/effizient-in-3d/
+
+Disallow: /tags/
+
 Disallow: /latex/latex-horizontal/
 
 Disallow: /tags/latex/
@@ -10,13 +16,15 @@ Disallow: /latex/
 
 Disallow: /tags/syntax/
 
-Disallow: /tags/
-
-Disallow: /tags/autocad/
-
 Disallow: /autocad/autocad-grundbefehle/
 
 Disallow: /autocad/
+
+Disallow: /latex/
+
+Disallow: /markdown/
+
+Disallow: /python/
 
 Disallow: /categories/
 
@@ -25,8 +33,6 @@ Disallow: /categories/software/
 Disallow: /tags/python/
 
 Disallow: /python/python-grundbefehle/
-
-Disallow: /python/
 
 Disallow: /latex/latex-grundbefehle/
 
@@ -39,8 +45,6 @@ Disallow: /tags/html/
 Disallow: /tags/markdown/
 
 Disallow: /markdown/markdown-syntax/
-
-Disallow: /markdown/
 
 Disallow: /markdown/rich-content/
 
@@ -77,8 +81,6 @@ Disallow: /tags/thumbnail/
 Disallow: /impressum/
 
 Disallow: /tags/index/
-
-Disallow: /latex/
 
 Disallow: /post/
 

@@ -14,7 +14,8 @@
       
       <guid>https://philip-swoboda.at/markdown/markdown-syntax/</guid>
       
-        <description>&lt;p&gt;This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.&lt;/p&gt;</description>
+        <description>&lt;hr&gt;
+&lt;p&gt;This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.&lt;/p&gt;</description>
       
     </item>
     
@@ -25,7 +26,8 @@
       
       <guid>https://philip-swoboda.at/markdown/rich-content/</guid>
       
-        <description>&lt;p&gt;Hugo ships with several &lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#use-hugos-built-in-shortcodes&#34;&gt;Built-in Shortcodes&lt;/a&gt; for rich content, along with a &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;Privacy Config&lt;/a&gt; and a set of Simple Shortcodes that enable static and no-JS versions of various social media embeds.&lt;/p&gt;
+        <description>&lt;hr&gt;
+&lt;p&gt;Hugo ships with several &lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#use-hugos-built-in-shortcodes&#34;&gt;Built-in Shortcodes&lt;/a&gt; for rich content, along with a &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;Privacy Config&lt;/a&gt; and a set of Simple Shortcodes that enable static and no-JS versions of various social media embeds.&lt;/p&gt;
 &lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
       
     </item>
@@ -38,7 +40,7 @@
       <guid>https://philip-swoboda.at/markdown/table/</guid>
       
         <description>Artikel zur Formatierung von Tabellen in Markdown Entnommen von folgender Quelle: https://ox-hugo.scripter.co/doc/table-styling/
-Table with caption, and CSS attributes specified .table-1 table { text-align: left; }  Table 1: Table with caption, with left-aligned text     h1 h2 h3     abcdefgh ijklmnop qrstuvwx     Above table get wrapped in the auto-generated class table-1 (&amp;ldquo;1&amp;rdquo;, because this is the first table with a caption on this page.</description>
+Table with caption, and CSS attributes specified .</description>
       
     </item>
     
@@ -49,7 +51,7 @@ Table with caption, and CSS attributes specified .table-1 table { text-align: le
       
       <guid>https://philip-swoboda.at/markdown/redirect/</guid>
       
-        <description>Forwarding to gohugo using redirectUrl
+        <description> Forwarding to Startseite using redirectUrl
       </description>
       
     </item>
@@ -72,7 +74,8 @@ Table with caption, and CSS attributes specified .table-1 table { text-align: le
       
       <guid>https://philip-swoboda.at/markdown/emoji-support/</guid>
       
-        <description>&lt;p&gt;Emoji can be enabled in a Hugo project in a number of ways.&lt;/p&gt;</description>
+        <description>&lt;hr&gt;
+&lt;p&gt;Emoji can be enabled in a Hugo project in a number of ways.&lt;/p&gt;</description>
       
     </item>
     
@@ -83,7 +86,8 @@ Table with caption, and CSS attributes specified .table-1 table { text-align: le
       
       <guid>https://philip-swoboda.at/markdown/placeholder-text/</guid>
       
-        <description>&lt;p&gt;Lorem est tota propiore conpellat pectoribus de pectora summo.&lt;/p&gt;</description>
+        <description>&lt;hr&gt;
+&lt;p&gt;Lorem est tota propiore conpellat pectoribus de pectora summo.&lt;/p&gt;</description>
       
     </item>
     
@@ -94,7 +98,8 @@ Table with caption, and CSS attributes specified .table-1 table { text-align: le
       
       <guid>https://philip-swoboda.at/markdown/math-typesetting/</guid>
       
-        <description>&lt;p&gt;Mathematical notation in a Hugo project can be enabled by using third party JavaScript libraries.&lt;/p&gt;</description>
+        <description>&lt;hr&gt;
+&lt;p&gt;Mathematical notation in a Hugo project can be enabled by using third party JavaScript libraries.&lt;/p&gt;</description>
       
     </item>
     
@@ -105,8 +110,7 @@ Table with caption, and CSS attributes specified .table-1 table { text-align: le
       
       <guid>https://philip-swoboda.at/markdown/image-test/</guid>
       
-        <description>Thumbnails can be enabled easily by setting the thumbnail parameter in the frontmatter to an image such as &amp;quot;images/landscape.jpg&amp;quot;.
-Make sure to copy the image the static/images/ directory.</description>
+        <description>Thumbnails can be enabled easily by setting the thumbnail parameter in the frontmatter to an image such as &amp;quot;images/landscape.jpg&amp;quot;.</description>
       
     </item>
     

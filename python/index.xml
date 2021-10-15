@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Pythons on Philip&#39;s Website</title>
+    <title>Beiträge mit Inhalt: Python on Philip&#39;s Website</title>
     <link>https://philip-swoboda.at/python/</link>
-    <description>Recent content in Pythons on Philip&#39;s Website</description>
+    <description>Recent content in Beiträge mit Inhalt: Python on Philip&#39;s Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
-    <lastBuildDate>Wed, 13 Oct 2021 21:15:45 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/python/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 14 Oct 2021 12:07:32 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/python/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Python grundlegende Syntax</title>
       <link>https://philip-swoboda.at/python/python-grundbefehle/</link>
@@ -14,7 +14,7 @@
       
       <guid>https://philip-swoboda.at/python/python-grundbefehle/</guid>
       
-        <description>Erste Schritte Befehlsausgabe Das Klassische &amp;ldquo;Hello World!&amp;rdquo; Skript:
+        <description> Erste Schritte Befehlsausgabe Das Klassische &amp;ldquo;Hello World!&amp;rdquo; Skript:
 print(&amp;#34;Hello World&amp;#34;) </description>
       
     </item>
