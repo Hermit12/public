@@ -12,8 +12,6 @@ Disallow: /latex/latex-horizontal/
 
 Disallow: /tags/latex/
 
-Disallow: /latex/
-
 Disallow: /tags/syntax/
 
 Disallow: /autocad/autocad-grundbefehle/

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Latices on Philip&#39;s Website</title>
+    <title>Beiträge mit Inhalt: LATEX on Philip&#39;s Website</title>
     <link>https://philip-swoboda.at/latex/</link>
-    <description>Recent content in Latices on Philip&#39;s Website</description>
+    <description>Recent content in Beiträge mit Inhalt: LATEX on Philip&#39;s Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
-    <lastBuildDate>Fri, 15 Oct 2021 07:40:46 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/latex/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 14 Oct 2021 12:07:32 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/latex/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Horizontaler Abstand in Latex</title>
       <link>https://philip-swoboda.at/latex/latex-horizontal/</link>
