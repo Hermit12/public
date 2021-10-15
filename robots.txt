@@ -4,7 +4,13 @@ Disallow: /
 
 Disallow: /post/latex-horizontal/
 
+Disallow: /tags/latex/
+
 Disallow: /post/
+
+Disallow: /tags/syntax/
+
+Disallow: /tags/
 
 Disallow: /tags/autocad/
 
@@ -14,15 +20,9 @@ Disallow: /categories/
 
 Disallow: /categories/software/
 
-Disallow: /tags/syntax/
-
-Disallow: /tags/
-
 Disallow: /tags/python/
 
 Disallow: /post/python-grundbefehle/
-
-Disallow: /tags/latex/
 
 Disallow: /post/latex-grundbefehle/
 

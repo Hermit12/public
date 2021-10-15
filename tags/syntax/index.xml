@@ -6,7 +6,18 @@
     <description>Recent content in syntax on Philip&#39;s Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
-    <lastBuildDate>Thu, 14 Oct 2021 12:07:32 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/tags/syntax/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 15 Oct 2021 07:40:46 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/tags/syntax/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Horizontaler Abstand in Latex</title>
+      <link>https://philip-swoboda.at/post/latex-horizontal/</link>
+      <pubDate>Fri, 15 Oct 2021 07:40:46 +0200</pubDate>
+      
+      <guid>https://philip-swoboda.at/post/latex-horizontal/</guid>
+      
+        <description>Anbei ist ein Codeblock in Latex-Code abgebildet für sämtliche horizontale Abstandsmöglichkeiten. Diesen kann man in ein entsprechendes Latexprogramm eingeben und rendern.</description>
+      
+    </item>
+    
     <item>
       <title>Autocad Grundbefehle</title>
       <link>https://philip-swoboda.at/post/autocad-grundbefehle/</link>
