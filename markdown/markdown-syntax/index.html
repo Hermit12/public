@@ -149,7 +149,7 @@
 
     ,
         "url" : "https:\/\/philip-swoboda.at\/markdown\/markdown-syntax\/",
-        "wordCount" : "495",
+        "wordCount" : "693",
         "genre" : [ ],
         "keywords" : [ 
       
@@ -386,7 +386,7 @@
         <h1>Markdown Syntax</h1>
         
       </div><hr>
-<p>This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.</p>
+<p>Dieser Artikel sammelt Beispiele der Markdown Syntax, die auf dieser Website verwendet werden. Er wird laufend erweitert.</p>
 <h2 id="headings">Headings</h2>
 <p>The following HTML <code>&lt;h1&gt;</code>—<code>&lt;h6&gt;</code> elements represent six levels of section headings. <code>&lt;h1&gt;</code> is the highest section level while <code>&lt;h6&gt;</code> is the lowest.</p>
 <h1 id="h1">H1</h1>
@@ -396,7 +396,20 @@
 <h5 id="h5">H5</h5>
 <h6 id="h6">H6</h6>
 <h2 id="paragraph">Paragraph</h2>
-<p>Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="gh"># H1
+</span><span class="gh"></span>
+<span class="gu">## H2
+</span><span class="gu"></span>
+<span class="gu">### H3
+</span><span class="gu"></span>
+<span class="gu">#### H4
+</span><span class="gu"></span>
+<span class="gu">##### H5
+</span><span class="gu"></span>
+<span class="gu">###### H6
+</span><span class="gu"></span>
+<span class="gu">## Paragraph
+</span></code></pre></div><p>Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.</p>
 <p>Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.</p>
 <h2 id="blockquotes">Blockquotes</h2>
 <p>The blockquote element represents content that is quoted from another source, optionally with a citation which must be within a <code>footer</code> or <code>cite</code> element, and optionally with in-line changes such as annotations and abbreviations.</p>
@@ -410,7 +423,18 @@
 <p>Don&rsquo;t communicate by sharing memory, share memory by communicating.<br>
 — <cite>Rob Pike<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></cite></p>
 </blockquote>
-<h2 id="tables">Tables</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="gu">#### Blockquote without attribution
+</span><span class="gu"></span><span class="k">
+</span><span class="k">&gt; </span><span class="ge">Tiam, ad mint andaepu dandae nostion secatur sequo quae.
+</span><span class="ge"></span><span class="k">&gt; </span><span class="ge">**Note** that you can use _Markdown syntax_ within a blockquote.
+</span><span class="ge"></span>
+<span class="gu">#### Blockquote with attribution
+</span><span class="gu"></span><span class="k">
+</span><span class="k">&gt; </span><span class="ge">Don&#39;t communicate by sharing memory, share memory by communicating.&lt;br&gt;
+</span><span class="ge"></span><span class="k">&gt; </span><span class="ge">— &lt;cite&gt;Rob Pike[^1]&lt;/cite&gt;
+</span><span class="ge"></span>
+[^1]: The above quote is excerpted from Rob Pike&#39;s [<span class="nt">talk</span>](<span class="na">https://www.youtube.com/watch?v=PAAkCSZUG1c</span>) during Gopherfest, November 18, 2015.
+</code></pre></div><h2 id="tables">Tables</h2>
 <p>Tables aren&rsquo;t part of the core Markdown spec, but Hugo supports supports them out-of-the-box.</p>
 <table>
 <thead>
@@ -430,7 +454,11 @@
 </tr>
 </tbody>
 </table>
-<h4 id="inline-markdown-within-tables">Inline Markdown within tables</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown">| Name  | Age |
+| ----- | --- |
+| Bob   | 27  |
+| Alice | 23  |
+</code></pre></div><h4 id="inline-markdown-within-tables">Inline Markdown within tables</h4>
 <table>
 <thead>
 <tr>
@@ -447,7 +475,10 @@
 </tr>
 </tbody>
 </table>
-<h2 id="code-blocks">Code Blocks</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown">| Italics   | Bold     | Code   |
+| --------- | -------- | ------ |
+| <span class="ge">_italics_</span> | <span class="gs">**bold**</span> | <span class="sb">`code`</span> |
+</code></pre></div><h2 id="code-blocks">Code Blocks</h2>
 <h4 id="code-block-with-backticks">Code block with backticks</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
@@ -459,19 +490,31 @@
     <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Test<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
   <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</code></pre></div><h4 id="code-block-indented-with-four-spaces">Code block indented with four spaces</h4>
-<pre><code>&lt;!doctype html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-  &lt;meta charset=&quot;utf-8&quot;&gt;
-  &lt;title&gt;Example HTML5 Document&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;p&gt;Test&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<h4 id="code-block-with-hugos-internal-highlight-shortcode">Code block with Hugo&rsquo;s internal highlight shortcode</h4>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown">```html
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Example HTML5 Document<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Test<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
+#### Code block indented with four spaces
+
+    &lt;!doctype html&gt;
+    &lt;html lang=&#34;en&#34;&gt;
+    &lt;head&gt;
+      &lt;meta charset=&#34;utf-8&#34;&gt;
+      &lt;title&gt;Example HTML5 Document&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+      &lt;p&gt;Test&lt;/p&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+</code></pre></div><h4 id="code-block-with-hugos-internal-highlight-shortcode">Code block with Hugo&rsquo;s internal highlight shortcode</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
@@ -482,20 +525,36 @@
   <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Test<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></code></pre></div>
-<h2 id="list-types">List Types</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-HTML" data-lang="HTML"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Example HTML5 Document<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Test<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></code></pre></div>
+</code></pre></div><h2 id="list-types">List Types</h2>
 <h4 id="ordered-list">Ordered List</h4>
 <ol>
 <li>First item</li>
 <li>Second item</li>
 <li>Third item</li>
 </ol>
-<h4 id="unordered-list">Unordered List</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="k">1.</span> First item
+<span class="k">2.</span> Second item
+<span class="k">3.</span> Third item
+</code></pre></div><h4 id="unordered-list">Unordered List</h4>
 <ul>
 <li>List item</li>
 <li>Another item</li>
 <li>And another item</li>
 </ul>
-<h4 id="nested-list">Nested list</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="k">-</span> List item
+<span class="k">-</span> Another item
+<span class="k">-</span> And another item
+</code></pre></div><h4 id="nested-list">Nested list</h4>
 <ul>
 <li>Fruit
 <ul>
@@ -511,13 +570,29 @@
 </ul>
 </li>
 </ul>
-<h2 id="other-elements--abbr-sub-sup-kbd-mark">Other Elements — abbr, sub, sup, kbd, mark</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="k">-</span> Fruit
+  <span class="k">-</span> Apple
+  <span class="k">-</span> Orange
+  <span class="k">-</span> Banana
+<span class="k">-</span> Dairy
+  <span class="k">-</span> Milk
+  <span class="k">-</span> Cheese
+</code></pre></div><h2 id="other-elements--abbr-sub-sup-kbd-mark">Other Elements — abbr, sub, sup, kbd, mark</h2>
 <p><abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.</p>
 <p>H<sub>2</sub>O</p>
 <p>X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup></p>
 <p>Press <kbd><kbd>CTRL</kbd>+<kbd>ALT</kbd>+<kbd>Delete</kbd></kbd> to end the session.</p>
 <p>Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.</p>
-<h2 id="text-zentrierung">Text Zentrierung</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="p">&lt;</span><span class="nt">abbr</span> <span class="na">title</span><span class="o">=</span><span class="s">&#34;Graphics Interchange Format&#34;</span><span class="p">&gt;</span>GIF<span class="p">&lt;/</span><span class="nt">abbr</span><span class="p">&gt;</span> is a bitmap image format.
+
+H<span class="p">&lt;</span><span class="nt">sub</span><span class="p">&gt;</span>2<span class="p">&lt;/</span><span class="nt">sub</span><span class="p">&gt;</span>O
+
+X<span class="p">&lt;</span><span class="nt">sup</span><span class="p">&gt;</span>n<span class="p">&lt;/</span><span class="nt">sup</span><span class="p">&gt;</span> + Y<span class="p">&lt;</span><span class="nt">sup</span><span class="p">&gt;</span>n<span class="p">&lt;/</span><span class="nt">sup</span><span class="p">&gt;</span> = Z<span class="p">&lt;</span><span class="nt">sup</span><span class="p">&gt;</span>n<span class="p">&lt;/</span><span class="nt">sup</span><span class="p">&gt;</span>
+
+Press <span class="p">&lt;</span><span class="nt">kbd</span><span class="p">&gt;&lt;</span><span class="nt">kbd</span><span class="p">&gt;</span>CTRL<span class="p">&lt;/</span><span class="nt">kbd</span><span class="p">&gt;</span>+<span class="p">&lt;</span><span class="nt">kbd</span><span class="p">&gt;</span>ALT<span class="p">&lt;/</span><span class="nt">kbd</span><span class="p">&gt;</span>+<span class="p">&lt;</span><span class="nt">kbd</span><span class="p">&gt;</span>Delete<span class="p">&lt;/</span><span class="nt">kbd</span><span class="p">&gt;&lt;/</span><span class="nt">kbd</span><span class="p">&gt;</span> to end the session.
+
+Most <span class="p">&lt;</span><span class="nt">mark</span><span class="p">&gt;</span>salamanders<span class="p">&lt;/</span><span class="nt">mark</span><span class="p">&gt;</span> are nocturnal, and hunt for insects, worms, and other small creatures.
+</code></pre></div><h2 id="text-zentrierung">Text Zentrierung</h2>
 <p>Um Text zu zentrieren muss man css und html verwenden.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-HTML" data-lang="HTML"><span class="p">&lt;</span><span class="nt">p</span> <span class="na">align</span><span class="o">=</span><span class="s">&#34;center&#34;</span><span class="p">&gt;</span>
     // Inhaltstext

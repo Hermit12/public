@@ -61,7 +61,7 @@ Dokumentenklassen: \documentclass[10pt]{article} %Artikel \documentclass[10pt]{r
       <guid>https://philip-swoboda.at/markdown/markdown-syntax/</guid>
       
         <description>&lt;hr&gt;
-&lt;p&gt;This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.&lt;/p&gt;</description>
+&lt;p&gt;Dieser Artikel sammelt Beispiele der Markdown Syntax, die auf dieser Website verwendet werden. Er wird laufend erweitert.&lt;/p&gt;</description>
       
     </item>
     
