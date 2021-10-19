@@ -6,7 +6,18 @@
     <description>Recent content on Philip&#39;s Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
-    <lastBuildDate>Fri, 15 Oct 2021 15:00:40 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 19 Oct 2021 13:26:11 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Matlab Syntax</title>
+      <link>https://philip-swoboda.at/matlab/matlab-syntax/</link>
+      <pubDate>Tue, 19 Oct 2021 13:26:11 +0200</pubDate>
+      
+      <guid>https://philip-swoboda.at/matlab/matlab-syntax/</guid>
+      
+        <description>Wichtige Grundbefehle  .sane-table table { border-collapse: collapse; width: 90%; } .sane-table th, .sane-table td { padding: 0.75rem; text-align: left; border: 1px solid #ccc; }        Befehl Beschreibung     pwd Print Working Directory   cd change directory, z.</description>
+      
+    </item>
+    
     <item>
       <title>Effizientes arbeiten in 3D</title>
       <link>https://philip-swoboda.at/autocad/effizient-in-3d/</link>
@@ -89,7 +100,7 @@ Hier ist noch mein CV</description>
     </item>
     
     <item>
-      <title>Rich Content</title>
+      <title>Rich Content and Shortcodes</title>
       <link>https://philip-swoboda.at/markdown/rich-content/</link>
       <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
       

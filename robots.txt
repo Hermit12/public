@@ -2,17 +2,27 @@ User-agent: *
 
 Disallow: /
 
+Disallow: /categories/
+
+Disallow: /tags/matlab/
+
+Disallow: /matlab/matlab-syntax/
+
+Disallow: /matlab/
+
+Disallow: /categories/software/
+
+Disallow: /tags/syntax/
+
+Disallow: /tags/
+
 Disallow: /tags/autocad/
 
 Disallow: /autocad/effizient-in-3d/
 
-Disallow: /tags/
-
 Disallow: /latex/latex-horizontal/
 
 Disallow: /tags/latex/
-
-Disallow: /tags/syntax/
 
 Disallow: /autocad/autocad-grundbefehle/
 
@@ -23,10 +33,6 @@ Disallow: /latex/
 Disallow: /markdown/
 
 Disallow: /python/
-
-Disallow: /categories/
-
-Disallow: /categories/software/
 
 Disallow: /tags/python/
 

@@ -6,7 +6,18 @@
     <description>Recent content in syntax on Philip&#39;s Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
-    <lastBuildDate>Fri, 15 Oct 2021 07:40:46 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/tags/syntax/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 19 Oct 2021 13:26:11 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/tags/syntax/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Matlab Syntax</title>
+      <link>https://philip-swoboda.at/matlab/matlab-syntax/</link>
+      <pubDate>Tue, 19 Oct 2021 13:26:11 +0200</pubDate>
+      
+      <guid>https://philip-swoboda.at/matlab/matlab-syntax/</guid>
+      
+        <description>Wichtige Grundbefehle  .sane-table table { border-collapse: collapse; width: 90%; } .sane-table th, .sane-table td { padding: 0.75rem; text-align: left; border: 1px solid #ccc; }        Befehl Beschreibung     pwd Print Working Directory   cd change directory, z.</description>
+      
+    </item>
+    
     <item>
       <title>Horizontaler Abstand in Latex</title>
       <link>https://philip-swoboda.at/latex/latex-horizontal/</link>

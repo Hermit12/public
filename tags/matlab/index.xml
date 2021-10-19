@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>matlab on Philip&#39;s Website</title>
+    <link>https://philip-swoboda.at/tags/matlab/</link>
+    <description>Recent content in matlab on Philip&#39;s Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>de</language>
+    <lastBuildDate>Tue, 19 Oct 2021 13:26:11 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/tags/matlab/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Matlab Syntax</title>
+      <link>https://philip-swoboda.at/matlab/matlab-syntax/</link>
+      <pubDate>Tue, 19 Oct 2021 13:26:11 +0200</pubDate>
+      
+      <guid>https://philip-swoboda.at/matlab/matlab-syntax/</guid>
+      
+        <description>Wichtige Grundbefehle  .sane-table table { border-collapse: collapse; width: 90%; } .sane-table th, .sane-table td { padding: 0.75rem; text-align: left; border: 1px solid #ccc; }        Befehl Beschreibung     pwd Print Working Directory   cd change directory, z.</description>
+      
+    </item>
+    
+  </channel>
+</rss>

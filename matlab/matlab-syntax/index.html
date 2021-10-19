@@ -7,7 +7,7 @@
   <title>
     Philip Swoboda
       |
-      Latex grundlegende Syntax
+      Matlab Syntax
 
 
     
@@ -19,7 +19,7 @@
   <meta
     name="description"
     content="
-      Kurze Vorstellung von Latexbefehlen
+      Hier ist eine Zusammenstelung von Matlab Befehlen
 
 
     "
@@ -56,7 +56,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="/latex/latex-grundbefehle/" />
+  <link rel="canonical" href="/matlab/matlab-syntax/" />
 
   
   
@@ -81,8 +81,8 @@
 
   
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Latex grundlegende Syntax"/>
-<meta name="twitter:description" content="Kurze Vorstellung von Latexbefehlen"/>
+<meta name="twitter:title" content="Matlab Syntax"/>
+<meta name="twitter:description" content="Hier ist eine Zusammenstelung von Matlab Befehlen"/>
 
 
 
@@ -97,12 +97,12 @@
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
-        "articleSection": "latex",
-        "name": "Latex grundlegende Syntax",
-        "headline": "Latex grundlegende Syntax",
+        "articleSection": "matlab",
+        "name": "Matlab Syntax",
+        "headline": "Matlab Syntax",
         "alternativeHeadline": "",
         "description": "
-      Kurze Vorstellung von Latexbefehlen
+      Hier ist eine Zusammenstelung von Matlab Befehlen
 
 
     ",
@@ -110,7 +110,7 @@
         "isFamilyFriendly": "true",
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https:\/\/philip-swoboda.at\/latex\/latex-grundbefehle\/"
+            "@id": "https:\/\/philip-swoboda.at\/matlab\/matlab-syntax\/"
         },
         "author" : {
             "@type": "Person",
@@ -129,9 +129,9 @@
             "name": "Philip Swoboda"
         },
         "copyrightYear" : "2021",
-        "dateCreated": "2021-10-13T14:06:41.00Z",
-        "datePublished": "2021-10-13T14:06:41.00Z",
-        "dateModified": "2021-10-13T14:06:41.00Z",
+        "dateCreated": "2021-10-19T13:26:11.00Z",
+        "datePublished": "2021-10-19T13:26:11.00Z",
+        "dateModified": "2021-10-19T13:26:11.00Z",
         "publisher":{
             "@type":"Organization",
             "name": "Philip Swoboda",
@@ -148,8 +148,8 @@
       ]
 
     ,
-        "url" : "https:\/\/philip-swoboda.at\/latex\/latex-grundbefehle\/",
-        "wordCount" : "247",
+        "url" : "https:\/\/philip-swoboda.at\/matlab\/matlab-syntax\/",
+        "wordCount" : "109",
         "genre" : [ 
       
       "software"
@@ -157,7 +157,7 @@
     ],
         "keywords" : [ 
       
-      "latex"
+      "matlab"
 
     
       
@@ -373,90 +373,82 @@
   <div class="post-content">
     
       <div class="post-title">
-        <h1>Latex grundlegende Syntax</h1>
+        <h1>Matlab Syntax</h1>
         
-      </div><h3>Inhaltsverzeichnis</h3>
-        <nav id="TableOfContents">
-  <ul>
-    <li><a href="#preamble">Preamble</a>
-      <ul>
-        <li></li>
-      </ul>
-    </li>
-    <li><a href="#listen">Listen</a></li>
-    <li><a href="#zeilenabstand">Zeilenabstand</a></li>
-    <li><a href="#einrückungen">Einrückungen</a></li>
-    <li><a href="#mathematik">Mathematik</a></li>
-  </ul>
-</nav><hr>
-<h2 id="preamble">Preamble</h2>
-<p>Hier ist eine kleine Auflistung von Befehlen, die ich häufiger brauche und als nützlich erachte.</p>
-<h4 id="dokumentenklassen">Dokumentenklassen:</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="se">\d</span>ocumentclass<span class="o">[</span>10pt<span class="o">]{</span>article<span class="o">}</span>   %Artikel
-<span class="se">\d</span>ocumentclass<span class="o">[</span>10pt<span class="o">]{</span>report<span class="o">}</span>    %für längere Berichte, welche mehrere Kapitel umfassen, kurze Bücher, Diplomarbeiten, ...
-<span class="se">\d</span>ocumentclass<span class="o">[</span>10pt<span class="o">]{</span>book<span class="o">}</span>      %Für Bücher
-<span class="se">\d</span>ocumentclass<span class="o">[</span>10pt<span class="o">]{</span>slides<span class="o">}</span>    %für Folien<span class="p">;</span> diese Klasse verwendet große, serifenlose Buchstaben
-<span class="se">\d</span>ocumentclass<span class="o">[</span>10pt<span class="o">]{</span>letter<span class="o">}</span>    %zum Schreiben von Briefen
-</code></pre></div><h4 id="verschiedene-pakete">Verschiedene Pakete:</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="se">\u</span>sepackage<span class="o">[</span>german<span class="o">]{</span>babel<span class="o">}</span>      %Für
-<span class="se">\u</span>sepackage<span class="o">{</span>amsmath<span class="o">}</span>            %Für Mathe
-<span class="se">\u</span>sepackage<span class="o">{</span>amsfonts<span class="o">}</span>
-<span class="se">\u</span>sepackage<span class="o">{</span>amssymb<span class="o">}</span>
-<span class="se">\u</span>sepackage<span class="o">{</span>hyperref<span class="o">}</span>
-</code></pre></div><h4 id="beginn-und-ende-des-dokuments-festlegen">Beginn und Ende des Dokuments festlegen:</h4>
-<p>Nach der allgemeinen Festlegung des Dokuments und der zu ladenden Pakete folgt der Dokumentenbeginn. Dieser wird mit dem End Befehl am Ende des Dokuments vervollständigt.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="se">\b</span>egin<span class="o">{</span>document<span class="o">}</span>
-
-<span class="se">\e</span>nd<span class="o">{</span>document<span class="o">}</span>
-</code></pre></div><h4 id="titelseite">Titelseite:</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="se">\a</span>uthor<span class="o">{</span>Beispielauthor<span class="o">}</span>
-<span class="se">\t</span>itle<span class="o">{</span>Beispieltitel<span class="o">}</span>
-
-<span class="se">\m</span>aketitle                    %Setzt an diese Stelle die Titelseite
-
-<span class="se">\n</span>ewpage                      %Erzeugt einen Seitenumbruch
-
-<span class="se">\t</span>ableofcontents              %Inhaltsverzeichnis
-</code></pre></div><h4 id="inhaltsstruktur">Inhaltsstruktur:</h4>
-<p>Mit diesen Befehlen wird dem Dokument eine inhaltliche Struktur gegeben.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="se">\s</span>ection<span class="o">{</span>Beispieltitel<span class="o">}</span>                 %1. Überschrift
-
-<span class="se">\s</span>ubsection<span class="o">{</span>Unterüberschrift<span class="o">}</span>           %2. Überschrift
-
-<span class="se">\s</span>ubsubsection<span class="o">{</span>Unterunterüberschrift<span class="o">}</span>   %3. Überschrift
-</code></pre></div><p>ect.</p>
+      </div><hr>
+<h2 id="wichtige-grundbefehle">Wichtige Grundbefehle</h2>
 <br>
-<h2 id="listen">Listen</h2>
-<p>Hier eine nummerische Liste als Beispiel Code:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="se">\b</span>egin<span class="o">{</span>enumerate<span class="o">}</span>
+<style>
 
-<span class="se">\i</span>tem First item
+.sane-table table {
+  border-collapse: collapse;
+  width: 90%;
+}
+.sane-table th,
+.sane-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border: 1px solid #ccc;
+}
 
-<span class="se">\i</span>tem Second item<span class="se">\l</span>abel<span class="o">{</span>it:second<span class="o">}</span>
-
-<span class="se">\e</span>nd<span class="o">{</span>enumerate<span class="o">}</span>
-</code></pre></div><p>Mögliche Listenbefehle:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="se">\b</span>egin<span class="o">{</span>itemize<span class="o">}</span>                             %mit Punkten <span class="se">\i</span>tem oder <span class="se">\i</span>tem<span class="o">[</span>symbol<span class="o">]</span>
-
-<span class="se">\b</span>egin<span class="o">{</span>enumerate<span class="o">}</span>                           %mit Nummern <span class="se">\i</span>tem
-
-<span class="se">\b</span>egin<span class="o">{</span>description<span class="o">}</span>                         %Fett <span class="se">\i</span>tem<span class="o">[</span>word<span class="o">]</span>
-</code></pre></div><br>
-<h2 id="zeilenabstand">Zeilenabstand</h2>
-<p>Es gibt mehrere Möglichkeiten, einen vertikalen Abstand zu erzeugen:</p>
-<p>Ein dynamischer vertikaler Abstand:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="se">\v</span>fill
-</code></pre></div><p>Ein vorgegebener vertikaler Abstand:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="se">\v</span>space<span class="o">{</span>2cm<span class="o">}</span>
-</code></pre></div><br>
-<h2 id="einrückungen">Einrückungen</h2>
-<p>Je nach gewählter Dokumentenart erzeugt Latex automatisch Einrückungen zu Beginn eines neuen Absatzes. Dies kann recht unsauber wirken, wenn man zum Beispiel eine reine Liste mit Überschriften erstellt.</p>
-<p>Um Einrückungen, die nach Absätzen oder Abbildungen generiert werden, global aus dem Dokument zu entfernen, verwendet man diesen Code im Preamble:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="se">\s</span>etlength<span class="o">{</span><span class="se">\p</span>arindent<span class="o">}{</span>0pt<span class="o">}</span>
-</code></pre></div><p>Um Einrückungen lokal an bestimmten Stellen zu verhindern, setzt man folgenden Befehl vor die Zeile:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="se">\n</span>oindent
-</code></pre></div><br>
-<h2 id="mathematik">Mathematik</h2>
+</style>
+<div class="ox-hugo-table sane-table">
+<div></div>
+<div class="table-caption">
+</div>
+<center>
+<table>
+<thead>
+<tr>
+<th>Befehl</th>
+<th style="text-align:center">Beschreibung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pwd</td>
+<td style="text-align:center">Print Working Directory</td>
+</tr>
+<tr>
+<td>cd</td>
+<td style="text-align:center">change directory, z.B. <code>cd(mypath)</code> ändert das Verzeichnis zu einer vorher definierten Variable &lsquo;mypath&rsquo;.</td>
+</tr>
+<tr>
+<td>clc</td>
+<td style="text-align:center">Löscht den Inhalt des Command Windows</td>
+</tr>
+<tr>
+<td>ls</td>
+<td style="text-align:center">List Objects - listet die Dateien im aktuellen Verzeichnis auf</td>
+</tr>
+<tr>
+<td>edit</td>
+<td style="text-align:center">Öffnet die angehängte Datei, z.B. <code>edit startup</code>  öffnet die Datei &lsquo;startup.m&rsquo; im aktuellen Verzeichnis.</td>
+</tr>
+<tr>
+<td>userpath</td>
+<td style="text-align:center">Gibt den userpath aus</td>
+</tr>
+<tr>
+<td>who</td>
+<td style="text-align:center">Listet aktuelle Objekte im Workspace auf</td>
+</tr>
+<tr>
+<td>whos</td>
+<td style="text-align:center">Mehr Details zu aktuellen Objekten im Workspace</td>
+</tr>
+<tr>
+<td>clear</td>
+<td style="text-align:center">Löscht die Memory/Objekte im Workspace</td>
+</tr>
+<tr>
+<td>clear</td>
+<td style="text-align:center">Löscht die Memory/Objekte im Workspace</td>
+</tr>
+</tbody>
+</table>
+</center>
+</div>
 </div>
     <div class="post-footer">
       <div class="info">
@@ -469,7 +461,7 @@
         
 
         
-          <span class="separator"><a class="tag" href="/tags/latex/">latex</a><a class="tag" href="/tags/syntax/">syntax</a></span>
+          <span class="separator"><a class="tag" href="/tags/matlab/">matlab</a><a class="tag" href="/tags/syntax/">syntax</a></span>
 
 
 
