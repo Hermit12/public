@@ -92,9 +92,5 @@ Disallow: /tags/thumbnail/
 
 Disallow: /impressum/
 
-Disallow: /tags/index/
-
-Disallow: /post/
-
 Disallow: /series/
 
