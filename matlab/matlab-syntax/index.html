@@ -149,7 +149,7 @@
 
     ,
         "url" : "https:\/\/philip-swoboda.at\/matlab\/matlab-syntax\/",
-        "wordCount" : "109",
+        "wordCount" : "261",
         "genre" : [ 
       
       "software"
@@ -378,6 +378,8 @@
       </div><hr>
 <h2 id="wichtige-grundbefehle">Wichtige Grundbefehle</h2>
 <br>
+<p>Hier ist eine Zusammenstellung von Grundbefehlen zum schnellen Nachschlagen für das Matrix Laboratory, oder kurz Matlab. Ein Matlab File mit weiteren wichtigen Grundbefehlen gibt es <a href="/dateien/example_script_1.m">hier</a>. Man kann es einfach in eine neue Datei hineinkopieren und die Befehle mittels &lsquo;Step run&rsquo; nacheinander durchlaufen lassen, um zu sehen, was sie bewirken.</p>
+<br>
 <style>
 
 .sane-table table {
@@ -436,6 +438,42 @@
 <tr>
 <td>whos</td>
 <td>Mehr Details zu aktuellen Objekten im Workspace</td>
+</tr>
+<tr>
+<td>clear</td>
+<td>Löscht die Memory/Objekte im Workspace</td>
+</tr>
+<tr>
+<td>which</td>
+<td>Gibt an, ob die nachfolgende Variable vergeben ist. Z.B. <code>which x</code>für Variable &lsquo;x&rsquo;.</td>
+</tr>
+<tr>
+<td>clear i</td>
+<td>Löscht die Variable &lsquo;x&rsquo;</td>
+</tr>
+<tr>
+<td>eps</td>
+<td>Kleinst mögliche Nummer. 1 + eps &gt; 1</td>
+</tr>
+<tr>
+<td>==</td>
+<td>Vergleicht zwei Variablen miteinander und gibt logisch true (1) oder false (0) aus. <code>f=(2==3)</code>gibt 0 aus.</td>
+</tr>
+<tr>
+<td>xr=[1 3 5]</td>
+<td>Nummerischer Reihen-Vektor mit 3 Zeilen. Vektoreintagungen können mit einem Abstand oder Beistrich getrennt sein.</td>
+</tr>
+<tr>
+<td>'</td>
+<td>Transponiert einen Vektor. <code>xc=xr'</code> macht aus dem Reihenvektor xr den Spaltenvektor xc.</td>
+</tr>
+<tr>
+<td>xl=[1 3 5;4 5 6]</td>
+<td>Strichpunkt erstellt eine weitere Reihe in der Matrix.</td>
+</tr>
+<tr>
+<td>unique()</td>
+<td>Gibt die Eigenwerte eines Vektors aus.</td>
 </tr>
 <tr>
 <td>clear</td>
