@@ -77,11 +77,11 @@ Dokumentenklassen: \documentclass[10pt]{article} %Artikel \documentclass[10pt]{r
     </item>
     
     <item>
-      <title>Table</title>
-      <link>https://philip-swoboda.at/markdown/table/</link>
+      <title>Markdown Tabellen</title>
+      <link>https://philip-swoboda.at/markdown/markdown-tabellen/</link>
       <pubDate>Sat, 14 Aug 2021 14:42:57 +0200</pubDate>
       
-      <guid>https://philip-swoboda.at/markdown/table/</guid>
+      <guid>https://philip-swoboda.at/markdown/markdown-tabellen/</guid>
       
         <description>Artikel zur Formatierung von Tabellen in Markdown Entnommen von folgender Quelle: https://ox-hugo.scripter.co/doc/table-styling/
 Table with caption, and CSS attributes specified .</description>

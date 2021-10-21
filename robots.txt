@@ -62,7 +62,7 @@ Disallow: /markdown/rich-content/
 
 Disallow: /tags/shortcodes/
 
-Disallow: /markdown/table/
+Disallow: /markdown/markdown-tabellen/
 
 Disallow: /markdown/redirect/
 
