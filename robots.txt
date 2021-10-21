@@ -2,6 +2,16 @@ User-agent: *
 
 Disallow: /
 
+Disallow: /japanisch/japanisch-grundbegriffe/
+
+Disallow: /tags/japanisch/
+
+Disallow: /japanisch/
+
+Disallow: /tags/sprache/
+
+Disallow: /tags/
+
 Disallow: /categories/
 
 Disallow: /tags/matlab/
@@ -13,8 +23,6 @@ Disallow: /matlab/
 Disallow: /categories/software/
 
 Disallow: /tags/syntax/
-
-Disallow: /tags/
 
 Disallow: /tags/autocad/
 
