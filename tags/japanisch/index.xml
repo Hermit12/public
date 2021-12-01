@@ -14,7 +14,7 @@
       
       <guid>https://philip-swoboda.at/japanisch/alphabeth-hiragana/</guid>
       
-        <description>n | w- | r- |y- | m- | h- |n- | t- | s- |k- | | |</description>
+        <description>.sane-table table { border-collapse: collapse; width: 90%; } .sane-table th, .sane-table td { padding: 0.75rem; text-align: left; border: 1px solid #ccc; }     n | w- | r- |y- | m- | h- |n- | t- | s- |k- | | |</description>
       
     </item>
     
