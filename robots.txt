@@ -2,15 +2,17 @@ User-agent: *
 
 Disallow: /
 
-Disallow: /japanisch/japanisch-grundbegriffe/
+Disallow: /japanisch/alphabeth-hiragana/
 
 Disallow: /tags/japanisch/
 
 Disallow: /japanisch/
 
-Disallow: /tags/sprache/
-
 Disallow: /tags/
+
+Disallow: /japanisch/japanisch-grundbegriffe/
+
+Disallow: /tags/sprache/
 
 Disallow: /categories/
 
