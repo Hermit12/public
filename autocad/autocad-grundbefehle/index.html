@@ -156,7 +156,7 @@ a person interested in programming
 
     ,
         "url" : "https:\/\/philip-swoboda.at\/autocad\/autocad-grundbefehle\/",
-        "wordCount" : "912",
+        "wordCount" : "1128",
         "genre" : [ 
       
       "software"
@@ -391,7 +391,7 @@ a person interested in programming
 <h2 id="grundlegende-bedienung">Grundlegende Bedienung</h2>
 <p>Beim effizienten arbeiten mit Autocad verwendet man am besten nur eine kleine Anzahl von Befehlen, die man sich wohl oder übel merken muss. Diese kann man aber schnell durch die Eingabe der jeweiligen Kurzbefehle aufrufen und erspart sich damit die langwierige Suche nach dem graphischen Symbol. Falls man dann doch einen speziellen Befehl braucht, kann man diesen in Ruhe suchen.</p>
 <p>Es empfieht sich weiters, für die Eingabe der Befehle die <code>Leertaste</code> statt der <code>Enter</code> Taste zu nehmen.</p>
-<p>Im Autocad selbst gibt es keine fixierten Einheiten, man bestimmt selbstständig, womit man arbeitet. Wenn man nun einer Linie die normierte Länge 1 zuweist muss man sich selbst im Klaren sein, ob man nun mit Metern oder Millimetern arbeitet. Abgesehen davon kann man in den <em>Einstellungen</em> unter <em>Format</em> eine Zeichnungseinheit festlegen. Dies dient aber nur Autocad zur Hilfestellung, wenn es darum geht, Blöcke zu importieren oder die eigene Zeichnung als Block in eine neue Zeichnung einzufügen.</p>
+<p>Im AutoCAD selbst gibt es keine fixierten Einheiten, man bestimmt selbstständig, womit man arbeitet. Wenn man nun einer Linie die normierte Länge 1 zuweist muss man sich selbst im Klaren sein, ob man nun mit Metern oder Millimetern arbeitet. Abgesehen davon kann man in den <em>Einstellungen</em> unter <em>Format</em> eine Zeichnungseinheit festlegen. Dies dient aber nur Autocad zur Hilfestellung, wenn es darum geht, Blöcke zu importieren oder die eigene Zeichnung als Block in eine neue Zeichnung einzufügen.</p>
 <p>Wichtige erste Einstellungen sind weiters:</p>
 <ul>
 <li>
@@ -408,6 +408,7 @@ Hier empfiehlt sich &ldquo;Zentrum&rdquo;, &ldquo;Quadrant&rdquo;, &ldquo;Geomet
 <p>Es ist empfehlenswert, einen Hilfslinen-Layer zu haben oder sich anzulegen, der nicht gedruckt wird. Mit diesem kann man sämtliche Konstruktionslinien oder Geometrien verwirklichen. Wenn möglich sollte dieser Layer eine auffällige Farbe haben.</p>
 </li>
 </ul>
+<p>Es gibt zwei Arten von Einstellungen: Generelle Einstellungen für AutoCAD, die in jeder Zeichnung gelten und Zeichnungseinstellungen, die nur mit der Zeichnung gespeichert werden. Die zeichnungsspezifischen Einstellungen sind in den Optionen durch ein kleines &ldquo;Zeichnungssymbol&rdquo; gekennzeichnet.</p>
 <h2 id="allgemeine-tipps">Allgemeine Tipps</h2>
 <ul>
 <li>
@@ -418,7 +419,13 @@ Hier empfiehlt sich &ldquo;Zentrum&rdquo;, &ldquo;Quadrant&rdquo;, &ldquo;Geomet
 <p><code>F2</code> erweitert das Befehlsfenster temporär, um den Befehlsverlauf anzuzeigen.</p>
 </li>
 <li>
+<p><code>F3</code>schaltet den Fang ab. Generell ist es besser, mit Objektfang zu arbeiten. Wenn AutoCAD jedoch zu viele Punkte oder falsche Punkte findet ist es besser, den Fang temporär abzuschalten. Dies geht auch während einer laufenden Operation, z.B. während man ein Objekt an eine bestimmte Stelle kopieren möchte und der Fang stört, kann man kurz auf <code>F3</code>drücken, um den Fang abzustellen.</p>
+</li>
+<li>
 <p>Es empfiehlt sich, den Orthogonalmode immer aktiviert zu lassen (Taste <code>F8</code>). Somit ist sichergestellt, dass man nicht versehentlich ein Objekt in eine unbeabsichtigte Richtung verschiebt.</p>
+</li>
+<li>
+<p><code>STRG+W</code>aktiviert und deaktiviert die wechselnde Auswahl. Falls mehrere Linien oder Objekte übereinander liegen oder AutoCAD ein Objekt falsch auswählt, weil es zu klein ist, hilft die wechselnde Auswahl. Mit dieser werden alle Objekte im Klickbereich in einer Liste dargestellt und man kann per Mausklick das passende auswählen.</p>
 </li>
 <li>
 <p>Um 3D Körper schnell und unkompliziert zu verkleinern/vergrößern gibt es folgende Möglichkeit:
@@ -571,39 +578,34 @@ Man klickt auf die zu änderne Fläche oder Kante mit gedrückter <code>STRG</co
 <td>Legt den Stil fest, wie sämtliche Bemaßungen in Abhängigkeit des gewählten Maßstabs ausstehen.</td>
 </tr>
 <tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
+<td>Kopieren</td>
+<td style="text-align:center">ko</td>
+<td>Kopiert innerhalb einer Zeichnung. Anders als das Kopieren mittels <code>Strg+C</code>, welches zeichnungsübergreifend kopiert.</td>
 </tr>
 <tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
+<td>Versetzen</td>
+<td style="text-align:center">vers</td>
+<td>Praktisch für Bauteildicken. Versetzt eine Linie oder Polylinie um einen einzugebenden Betrag 90 Grad parallel.</td>
 </tr>
 <tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
+<td>Zylinder</td>
+<td style="text-align:center">zyl</td>
+<td>Erstellt einen 3D Zylinder mit einzugebenden Durchmesser und Höhe.</td>
 </tr>
 <tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
+<td>Vereinigen</td>
+<td style="text-align:center">verein</td>
+<td>Vereinigt sich überschneidende 3D Objekte zu einem neuen Objekt. Das Gegenteil von Kappen.</td>
 </tr>
 <tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
+<td>Verbinden</td>
+<td style="text-align:center">verb</td>
+<td>Verbindet 2D Objekte wie Linien zu Polylinien.</td>
 </tr>
 <tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
-</tr>
-<tr>
-<td>Inhalt</td>
-<td style="text-align:center">Inhalt</td>
-<td>Inhalt</td>
+<td>Ursprung</td>
+<td style="text-align:center">ur</td>
+<td>Löst sämtliche Verbindungen um eine Stufe auf. Bsp: Ein Block wird mit Ursprung in seine Einzelteile aufgelöst, ein 3D Objekt wird in Flächen zerlegt ect.</td>
 </tr>
 </tbody>
 </table>
