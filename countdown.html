@@ -5,6 +5,7 @@
     <title>Countdown-Zähler</title>
     
     <style>
+      /* Light mode */
       body {
         display: flex;
         flex-direction: column;
@@ -26,10 +27,13 @@
         font-size: 40px;
         font-weight: bold;
         line-height: 80px;
+        margin-top: 10px;
+        text-align: center;
       }
       #countdown {
         text-align: center;
         margin-bottom: 10px;
+        padding-top: 50px; /* add more padding to create more space */
       }
       #countdown-desc {
         text-align: center;
@@ -37,54 +41,47 @@
         font-size: 30px;
         margin-top: 20px;
       }
+      
+      /* Dark mode */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #333;
+          color: #fff;
+        }
+        .countdown-section {
+          background-color: #444;
+          border-color: #555;
+          color: #fff;
+        }
+      }
     </style>
  
   </head>
- 
 
-
-<style>
-  body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 50px;
-    padding-top: 50px;
-  }
-
-  .countdown-section {
-    display: inline-block;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin: 0 10px;
-    text-align: center;
-    width: 80px;
-    height: 80px;
-    font-size: 40px;
-    font-weight: bold;
-    line-height: 80px;
-  }
-
-  #countdown {
-    text-align: center;
-    margin-bottom: 10px;
-  }
-
-  #countdown-desc {
-    text-align: center;
-    font-weight: bold;
-    font-size: 30px;
-    margin-top: 20px;
-  }
-
-  #countdown-desc span {
-    font-weight: normal;
-    font-size: 20px;
-  }
-</style>
+<body>
+  <h1 style="font-size: 50px;">Baby - Countdown</h1>
+  <div id="countdown">
+    <div class="countdown-section">
+      <span id="months"></span>
+      <div id="countdown-desc" style="font-weight: 300; font-size: 25px;">Monate</div>
+    </div>
+    <div class="countdown-section">
+      <span id="days"></span>
+      <div id="countdown-desc" style="font-weight: 300; font-size: 25px;">Tage</div>
+    </div>
+    <div class="countdown-section">
+      <span id="hours"></span>
+      <div id="countdown-desc" style="font-weight: 300; font-size: 25px;">Stunden</div>
+    </div>
+    <div class="countdown-section">
+      <span id="minutes"></span>
+      <div id="countdown-desc" style="font-weight: 300; font-size: 25px;">Minuten</div>
+    </div>
+    <div class="countdown-section">
+      <span id="seconds"></span>
+      <div id="countdown-desc" style="font-weight: 300; font-size: 25px;">Sekunden</div>
+    </div>
+  </div>
 
 
 <script>
@@ -117,37 +114,10 @@
     // If the countdown is over, display a message
     if (timeRemaining < 0) {
       clearInterval(x);
-      document.getElementById("countdown").innerHTML = "ABGELAUFEN";
+      document.getElementById("countdown").innerHTML = "Gratulation!!!";
       document.getElementById("countdown-desc").innerHTML = "";
     }
   }, 1000);
 </script>
-
-
-<body>
-  <h1 style="font-size: 50px;">Countdown Timer</h1>
-  <div id="countdown">
-    <div class="countdown-section">
-      <span id="months"></span>
-      <div id="countdown-desc" style="font-weight: 300;" "font-size: 10px;" >Monate</div>
-    </div>
-    <div class="countdown-section">
-      <span id="days"></span>
-      <div id="countdown-desc" style="font-weight: 300;">Tage</div>
-    </div>
-    <div class="countdown-section">
-      <span id="hours"></span>
-      <div id="countdown-desc" style="font-weight: 300;">Stunden</div>
-    </div>
-    <div class="countdown-section">
-      <span id="minutes"></span>
-      <div id="countdown-desc" style="font-weight: 300;">Minuten</div>
-    </div>
-    <div class="countdown-section">
-      <span id="seconds"></span>
-      <div id="countdown-desc" style="font-weight: 300;">Sekunden</div>
-    </div>
-  </div>
-</body>
 
 </html>
