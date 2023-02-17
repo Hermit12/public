@@ -1,70 +1,153 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Countdown Timer</title>
-  <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: Helvetica, Arial, sans-serif;
-      font-size: 50px;
-      padding-top: 50px;
-    }
-
-    #countdown {
-      font-size: 50px;
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    #countdown-desc {
-      text-align: center;
-      font-weight: normal;
-      font-size: 30px;
-    }
-  </style>
-  <script>
-    // Set the end date for the countdown
-    var endDate = new Date("September 20, 2023 00:00:00").getTime();
-
-    // Update the countdown every second
-    var x = setInterval(function() {
-
-      // Get the current date and time
-      var now = new Date().getTime();
-
-      // Calculate the time remaining
-      var timeRemaining = endDate - now;
-
-      // Calculate the number of months, days, hours, minutes, and seconds remaining
-      var months = Math.floor(timeRemaining / (1000 * 60 * 60 * 24 * 30));
-      var days = Math.floor((timeRemaining % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-      var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-      var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-      // Display the countdown
-      document.getElementById("countdown").innerHTML = months + "m " + days + "d " + hours + "h "
-      + minutes + "m " + seconds + "s ";
-
-      // Display the description of each time unit
-      document.getElementById("countdown-desc").innerHTML = "months days hours minutes seconds";
-
-      // If the countdown is over, display a message
-      if (timeRemaining < 0) {
-        clearInterval(x);
-        document.getElementById("countdown").innerHTML = "EXPIRED";
-        document.getElementById("countdown-desc").innerHTML = "";
+  <head>
+    <meta charset="UTF-8">
+    <title>Countdown-Zähler</title>
+    
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 50px;
+        padding-top: 50px;
       }
-    }, 1000);
-  </script>
-</head>
+      .countdown-section {
+        display: inline-block;
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin: 0 10px;
+        text-align: center;
+        width: 80px;
+        height: 80px;
+        font-size: 40px;
+        font-weight: bold;
+        line-height: 80px;
+      }
+      #countdown {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      #countdown-desc {
+        text-align: center;
+        font-weight: bold;
+        font-size: 30px;
+        margin-top: 20px;
+      }
+    </style>
+ 
+  </head>
+ 
+
+
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 50px;
+    padding-top: 50px;
+  }
+
+  .countdown-section {
+    display: inline-block;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0 10px;
+    text-align: center;
+    width: 80px;
+    height: 80px;
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 80px;
+  }
+
+  #countdown {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  #countdown-desc {
+    text-align: center;
+    font-weight: bold;
+    font-size: 30px;
+    margin-top: 20px;
+  }
+
+  #countdown-desc span {
+    font-weight: normal;
+    font-size: 20px;
+  }
+</style>
+
+
+<script>
+  // Set the end date for the countdown
+  var endDate = new Date("September 20, 2023 00:00:00").getTime();
+
+  // Update the countdown every second
+  var x = setInterval(function() {
+
+    // Get the current date and time
+    var now = new Date().getTime();
+
+    // Calculate the time remaining
+    var timeRemaining = endDate - now;
+
+    // Calculate the number of months, days, hours, minutes, and seconds remaining
+    var months = Math.floor(timeRemaining / (1000 * 60 * 60 * 24 * 30));
+    var days = Math.floor((timeRemaining % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+    // Display the countdown
+    document.getElementById("months").innerHTML = months;
+    document.getElementById("days").innerHTML = days;
+    document.getElementById("hours").innerHTML = hours;
+    document.getElementById("minutes").innerHTML = minutes;
+    document.getElementById("seconds").innerHTML = seconds;
+
+    // If the countdown is over, display a message
+    if (timeRemaining < 0) {
+      clearInterval(x);
+      document.getElementById("countdown").innerHTML = "ABGELAUFEN";
+      document.getElementById("countdown-desc").innerHTML = "";
+    }
+  }, 1000);
+</script>
+
+
 <body>
   <h1 style="font-size: 50px;">Countdown Timer</h1>
-  <div id="countdown"></div>
-  <div id="countdown-desc"></div>
+  <div id="countdown">
+    <div class="countdown-section">
+      <span id="months"></span>
+      <div id="countdown-desc" style="font-weight: 300;" "font-size: 10px;" >Monate</div>
+    </div>
+    <div class="countdown-section">
+      <span id="days"></span>
+      <div id="countdown-desc" style="font-weight: 300;">Tage</div>
+    </div>
+    <div class="countdown-section">
+      <span id="hours"></span>
+      <div id="countdown-desc" style="font-weight: 300;">Stunden</div>
+    </div>
+    <div class="countdown-section">
+      <span id="minutes"></span>
+      <div id="countdown-desc" style="font-weight: 300;">Minuten</div>
+    </div>
+    <div class="countdown-section">
+      <span id="seconds"></span>
+      <div id="countdown-desc" style="font-weight: 300;">Sekunden</div>
+    </div>
+  </div>
 </body>
+
 </html>
