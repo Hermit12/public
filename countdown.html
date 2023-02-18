@@ -13,23 +13,27 @@
         justify-content: center;
         font-family: Helvetica, Arial, sans-serif;
         font-size: 50px;
-        padding-top: 50px;
+        padding-top: 150px;
       }
       .countdown-section {
-        display: inline-block;
-        background-color: #f5f5f5;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        margin: 0 10px;
-        text-align: center;
-        width: 80px;
-        height: 80px;
-        font-size: 40px;
-        font-weight: bold;
-        line-height: 80px;
-        margin-top: 10px;
-        text-align: center;
+      display: inline-block;
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 0 10px;
+      text-align: center;
+      width: 80px;
+      height: 80px;
+      font-size: 40px;
+      font-weight: bold;
+      line-height: 80px;
+      margin-top: 10px;
+      text-align: center;
+      /* Center the description text */
+      margin-left: auto;
+      margin-right: 20px;
       }
+
       #countdown {
         text-align: center;
         margin-bottom: 10px;
@@ -82,8 +86,8 @@
   <h1 style="font-size: 50px;">Baby - Countdown</h1>
   <div id="countdown">
     <div class="countdown-section">
-      <span id="months"></span>
-      <div id="countdown-desc" style="font-weight: 300; font-size: 25px;">Monate</div>
+      <span id="weeks"></span>
+      <div id="countdown-desc" style="font-weight: 300; font-size: 25px;">Wochen</div>
     </div>
     <div class="countdown-section">
       <span id="days"></span>
@@ -119,15 +123,15 @@
     // Calculate the time remaining
     var timeRemaining = endDate - now;
 
-    // Calculate the number of months, days, hours, minutes, and seconds remaining
-    var months = Math.floor(timeRemaining / (1000 * 60 * 60 * 24 * 30));
+    // Calculate the number of weeks, days, hours, minutes, and seconds remaining
+    var weeks = Math.floor(timeRemaining / (1000 * 60 * 60 * 24 * 7));
     var days = Math.floor((timeRemaining % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
     var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
     // Display the countdown
-    document.getElementById("months").innerHTML = months;
+    document.getElementById("weeks").innerHTML = weeks;
     document.getElementById("days").innerHTML = days;
     document.getElementById("hours").innerHTML = hours;
     document.getElementById("minutes").innerHTML = minutes;
