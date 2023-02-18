@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Baby-Countdown</title>
+    <title>Baby-Countup</title>
     
     <style>
       /* Light mode */
@@ -79,7 +79,7 @@
   </head>
 
 <body>
-  <h1 style="font-size: 50px;">Baby - Countdown</h1>
+  <h1 style="font-size: 50px;">Baby - Countup</h1>
   <div id="countdown">
     <div class="countdown-section">
       <span id="months"></span>
@@ -103,43 +103,43 @@
     </div>
   </div>
 
-<button onclick="window.location.href = 'https://www.philip-swoboda.at/countdown'">Zeige vergangene Zeit</button>
+<button onclick="window.location.href = 'https://www.philip-swoboda.at/countdown'">Zeige verbleibende Zeit</button>
 
 
 <script>
-  // Set the end date for the countdown
-  var endDate = new Date("September 20, 2023 00:00:00").getTime();
+  
+// Set the start date for the countdown
+var startDate = new Date("December 14, 2022 00:00:00").getTime();
 
-  // Update the countdown every second
-  var x = setInterval(function() {
+// Update the countdown every second
+var x = setInterval(function() {
 
-    // Get the current date and time
-    var now = new Date().getTime();
+  // Get the current date and time
+  var now = new Date().getTime();
 
-    // Calculate the time remaining
-    var timeRemaining = endDate - now;
+  // Calculate the time elapsed
+  var timeElapsed = now - startDate;
 
-    // Calculate the number of months, days, hours, minutes, and seconds remaining
-    var months = Math.floor(timeRemaining / (1000 * 60 * 60 * 24 * 30));
-    var days = Math.floor((timeRemaining % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+  // Calculate the number of months, days, hours, minutes, and seconds elapsed
+  var months = Math.floor(timeElapsed / (1000 * 60 * 60 * 24 * 30));
+  var days = Math.floor((timeElapsed % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((timeElapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
 
-    // Display the countdown
-    document.getElementById("months").innerHTML = months;
-    document.getElementById("days").innerHTML = days;
-    document.getElementById("hours").innerHTML = hours;
-    document.getElementById("minutes").innerHTML = minutes;
-    document.getElementById("seconds").innerHTML = seconds;
+  // Display the countdown
+  document.getElementById("months").innerHTML = months;
+  document.getElementById("days").innerHTML = days;
+  document.getElementById("hours").innerHTML = hours;
+  document.getElementById("minutes").innerHTML = minutes;
+  document.getElementById("seconds").innerHTML = seconds;
 
-    // If the countdown is over, display a message
-    if (timeRemaining < 0) {
-      clearInterval(x);
-      document.getElementById("countdown").innerHTML = "Gratulation!!!";
-      document.getElementById("countdown-desc").innerHTML = "";
-    }
-  }, 1000);
+}, 1000);
+
+
+
+
+
 </script>
 
 </html>
