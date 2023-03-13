@@ -66,31 +66,33 @@
       }
 
 
-      /* Styles for devices with a max width of 600px (mobile devices) */
-      @media only screen and (max-width: 600px) {
-      
-      body {
-      font-size: 30px; /* Increase font size for better readability */
-      }
+      /* Styles for devices with a max width of 480px (mobile devices) */
+@media only screen and (max-width: 480px) {
+  body {
+    font-size: 60%;
+    padding-top: 10%;
+    text-align: center;
+  }
+  
+  #countdown {
+    padding-top: 20%;
+  }
 
-      #countdown {
-      padding-top: 100px; /* Decrease padding for better visibility */
-      }
+  .countdown-section {
+    width: 30%;
+    height: 30%;
+    font-size: 150%;
+    line-height: 100%;
+    margin-top: 5%;
+  }
 
-      .countdown-section {
-      width: 100px; /* Increase width of the countdown section */
-      height: 100px; /* Increase height of the countdown section */
-      font-size: 30px; /* Increase font size for better readability */
-      line-height: 100px; /* Increase line-height for better centering */
-      margin-top: 10px; /* Increase top margin for better spacing */
-      }
+  #countdown-desc-weeks {
+    margin-top: 20%;
+    margin-bottom: 20%;
+    font-size: 120%;
+  }
+}
 
-      #countdown-desc-weeks {
-      margin-top: 50px; /* Increase top margin for better spacing */
-      margin-bottom: 50px; /* Increase bottom margin for better spacing */
-      font-size: 15px; /* Decrease font size for better readability */
-      }
-      }
 
 
       /* Dark mode */
