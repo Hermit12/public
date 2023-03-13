@@ -27,7 +27,7 @@
       font-size: 40px;
       font-weight: bold;
       line-height: 80px;
-      margin-top: 10px;
+      margin-top: 5px;
       text-align: center;
       /* Center the description text */
       margin-left: auto;
@@ -46,6 +46,12 @@
         margin-top: 20px;
       }
       
+      #countdown-desc-weeks {
+        margin-top: 20px; /* ändere den Wert entsprechend deiner Bedürfnisse */
+        margin-bottom: 20px; /* ändere den Wert entsprechend deiner Bedürfnisse */
+        font-size: 24px; /* ändere den Wert entsprechend deiner Bedürfnisse */
+      }
+
 
       /* Button */
       button {
@@ -123,6 +129,9 @@
     </div>
   </div>
 
+<div id="countdown-desc-weeks" style="font-weight: 300; font-size: 20px;">(Das ist die <span id="weeks1-ssw"></span>. (<span id="weeks-ssw"></span>+ <span id="days-ssw"></span>) Schwangerschafftswoche)</div>
+
+
 <button onclick="window.location.href = 'https://www.philip-swoboda.at/countdown'">Zeige verbleibende Zeit</button>
 
 
@@ -149,7 +158,10 @@ var x = setInterval(function() {
 
   // Display the countdown
   document.getElementById("weeks").innerHTML = weeks;
+  document.getElementById("weeks-ssw").innerHTML = weeks;
+  document.getElementById("weeks1-ssw").innerHTML = weeks + 1;
   document.getElementById("days").innerHTML = days;
+  document.getElementById("days-ssw").innerHTML = days;
   document.getElementById("hours").innerHTML = hours;
   document.getElementById("minutes").innerHTML = minutes;
   document.getElementById("seconds").innerHTML = seconds;
