@@ -3,7 +3,28 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://philip-swoboda.at/</loc>
-    <lastmod>2021-12-01T20:08:12+01:00</lastmod>
+    <lastmod>2023-04-13T21:15:45+02:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/categories/</loc>
+    <lastmod>2023-04-13T21:15:45+02:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/tags/python/</loc>
+    <lastmod>2023-04-13T21:15:45+02:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/python/python-einstieg/</loc>
+    <lastmod>2023-04-13T21:15:45+02:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/categories/software/</loc>
+    <lastmod>2023-04-13T21:15:45+02:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/tags/syntax/</loc>
+    <lastmod>2023-04-13T21:15:45+02:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/tags/</loc>
+    <lastmod>2023-04-13T21:15:45+02:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/python/python-loops/</loc>
+    <lastmod>2023-04-09T20:15:45+02:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/japanisch/alphabeth-hiragana/</loc>
     <lastmod>2021-12-01T20:08:12+01:00</lastmod>
@@ -14,17 +35,11 @@
     <loc>https://philip-swoboda.at/japanisch/</loc>
     <lastmod>2021-12-01T20:08:12+01:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/tags/</loc>
-    <lastmod>2021-12-01T20:08:12+01:00</lastmod>
-  </url><url>
     <loc>https://philip-swoboda.at/japanisch/japanisch-grundbegriffe/</loc>
     <lastmod>2021-10-21T14:50:55+02:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/tags/sprache/</loc>
     <lastmod>2021-10-21T14:50:55+02:00</lastmod>
-  </url><url>
-    <loc>https://philip-swoboda.at/categories/</loc>
-    <lastmod>2021-10-19T13:26:11+02:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/tags/matlab/</loc>
     <lastmod>2021-10-19T13:26:11+02:00</lastmod>
@@ -33,12 +48,6 @@
     <lastmod>2021-10-19T13:26:11+02:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/matlab/</loc>
-    <lastmod>2021-10-19T13:26:11+02:00</lastmod>
-  </url><url>
-    <loc>https://philip-swoboda.at/categories/software/</loc>
-    <lastmod>2021-10-19T13:26:11+02:00</lastmod>
-  </url><url>
-    <loc>https://philip-swoboda.at/tags/syntax/</loc>
     <lastmod>2021-10-19T13:26:11+02:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/tags/autocad/</loc>
@@ -67,9 +76,6 @@
   </url><url>
     <loc>https://philip-swoboda.at/python/</loc>
     <lastmod>2021-10-14T12:07:32+02:00</lastmod>
-  </url><url>
-    <loc>https://philip-swoboda.at/tags/python/</loc>
-    <lastmod>2021-10-13T21:15:45+02:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/python/python-grundbefehle/</loc>
     <lastmod>2021-10-13T21:15:45+02:00</lastmod>

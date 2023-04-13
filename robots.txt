@@ -2,29 +2,35 @@ User-agent: *
 
 Disallow: /
 
+Disallow: /categories/
+
+Disallow: /tags/python/
+
+Disallow: /python/python-einstieg/
+
+Disallow: /categories/software/
+
+Disallow: /tags/syntax/
+
+Disallow: /tags/
+
+Disallow: /python/python-loops/
+
 Disallow: /japanisch/alphabeth-hiragana/
 
 Disallow: /tags/japanisch/
 
 Disallow: /japanisch/
 
-Disallow: /tags/
-
 Disallow: /japanisch/japanisch-grundbegriffe/
 
 Disallow: /tags/sprache/
-
-Disallow: /categories/
 
 Disallow: /tags/matlab/
 
 Disallow: /matlab/matlab-syntax/
 
 Disallow: /matlab/
-
-Disallow: /categories/software/
-
-Disallow: /tags/syntax/
 
 Disallow: /tags/autocad/
 
@@ -43,8 +49,6 @@ Disallow: /latex/
 Disallow: /markdown/
 
 Disallow: /python/
-
-Disallow: /tags/python/
 
 Disallow: /python/python-grundbefehle/
 

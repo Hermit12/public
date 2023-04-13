@@ -8,7 +8,7 @@
     
       Philip Swoboda
         |
-        Python grundlegende Syntax
+        Python loops
 
 
       
@@ -62,7 +62,7 @@ a person interested in programming
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 
-  <link rel="canonical" href="https://philip-swoboda.at/python/python-grundbefehle/" />
+  <link rel="canonical" href="https://philip-swoboda.at/python/python-loops/" />
 
   
   
@@ -87,9 +87,8 @@ a person interested in programming
 
   
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Python grundlegende Syntax"/>
-<meta name="twitter:description" content="Standardbefehle Folgende Befehle müssen im Schlaf gehen:
- .sane-table table { border-collapse: collapse; width: 70%; } .sane-table th, .sane-table td { padding: 0."/>
+<meta name="twitter:title" content="Python loops"/>
+<meta name="twitter:description" content="The while loop: The while loop repeats a block of code as long as a condition is true. The syntax is as follows:"/>
 
 
 
@@ -105,12 +104,12 @@ a person interested in programming
         "@context": "http://schema.org",
         "@type": "BlogPosting",
         "articleSection": "python",
-        "name": "Python grundlegende Syntax",
-        "headline": "Python grundlegende Syntax",
+        "name": "Python loops",
+        "headline": "Python loops",
         "alternativeHeadline": "",
         "description": "
       
-        Standardbefehle Folgende Befehle müssen im Schlaf gehen:\n .sane-table table { border-collapse: collapse; width: 70%; } .sane-table th, .sane-table td { padding: 0.
+        The while loop: The while loop repeats a block of code as long as a condition is true. The syntax is as follows:
 
 
       
@@ -121,7 +120,7 @@ a person interested in programming
         "isFamilyFriendly": "true",
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https:\/\/philip-swoboda.at\/python\/python-grundbefehle\/"
+            "@id": "https:\/\/philip-swoboda.at\/python\/python-loops\/"
         },
         "author" : {
             "@type": "Person",
@@ -139,10 +138,10 @@ a person interested in programming
             "@type": "Person",
             "name": "Philip Swoboda"
         },
-        "copyrightYear" : "2021",
-        "dateCreated": "2021-10-13T21:15:45.00Z",
-        "datePublished": "2021-10-13T21:15:45.00Z",
-        "dateModified": "2021-10-13T21:15:45.00Z",
+        "copyrightYear" : "2023",
+        "dateCreated": "2023-04-09T20:15:45.00Z",
+        "datePublished": "2023-04-09T20:15:45.00Z",
+        "dateModified": "2023-04-09T20:15:45.00Z",
         "publisher":{
             "@type":"Organization",
             "name": "Philip Swoboda",
@@ -159,8 +158,8 @@ a person interested in programming
       ]
 
     ,
-        "url" : "https:\/\/philip-swoboda.at\/python\/python-grundbefehle\/",
-        "wordCount" : "257",
+        "url" : "https:\/\/philip-swoboda.at\/python\/python-loops\/",
+        "wordCount" : "255",
         "genre" : [ 
       
       "software"
@@ -382,266 +381,94 @@ a person interested in programming
     <div class="post-content">
       
       <div class="post-title">
-        <h1>Python grundlegende Syntax</h1>
+        <h1>Python loops</h1>
         
       </div><h3>Table of Contents</h3>
         <nav id="TableOfContents">
   <ul>
-    <li><a href="#standardbefehle">Standardbefehle</a>
-      <ul>
-        <li><a href="#für-macos">Für MacOS:</a></li>
-        <li><a href="#für-windows">Für Windows:</a></li>
-      </ul>
-    </li>
-    <li><a href="#befehlsausgabe">Befehlsausgabe</a></li>
+    <li><a href="#the-while-loop">The while loop:</a></li>
+    <li><a href="#the-for-loop">The for loop:</a></li>
+    <li><a href="#the-range-function">The range() function:</a></li>
+    <li><a href="#the-break-statement">The break statement:</a></li>
+    <li><a href="#the-continue-statement">The continue statement:</a></li>
   </ul>
-</nav><hr>
-<h2 id="standardbefehle">Standardbefehle</h2>
-<p>Folgende Befehle müssen im Schlaf gehen:</p>
-<style>
-
-.sane-table table {
-  border-collapse: collapse;
-  width: 70%;
-}
-.sane-table th,
-.sane-table td {
-  padding: 0.75rem;
-  text-align: left;
-  border: 1px solid #ccc;
-}
-
-</style>
-<div class="ox-hugo-table sane-table">
-<div></div>
-<div class="table-caption">
+</nav><h2 id="the-while-loop">The while loop:</h2>
+<p>The while loop repeats a block of code as long as a condition is true. The syntax is as follows:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">while</span> <span class="n">condition</span><span class="p">:</span>
+    <span class="n">code</span> <span class="n">block</span>
+</code></pre></div><p>Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">css</span>
+<span class="n">Copy</span> <span class="n">code</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div><p>Output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">Copy</span> <span class="n">code</span>
+<span class="mi">0</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">4</span>
+</code></pre></div><h2 id="the-for-loop">The for loop:</h2>
+<p>The for loop iterates over a sequence (such as a list or string) and executes a block of code for each item in the sequence. The syntax is as follows:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">:</span>
+    <span class="n">code</span> <span class="n">block</span>
+</code></pre></div><p>Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">animals</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;dog&#39;</span><span class="p">,</span> <span class="s1">&#39;bird&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">animal</span> <span class="ow">in</span> <span class="n">animals</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">animal</span><span class="p">)</span>
+</code></pre></div><p>Output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">cat</span>
+<span class="n">dog</span>
+<span class="n">bird</span>
+</code></pre></div><h2 id="the-range-function">The range() function:</h2>
+<p>The range() function generates a sequence of numbers that can be used in a loop. The syntax is as follows:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+</code></pre></div><p>Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div><p>Output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">Copy</span> <span class="n">code</span>
+<span class="mi">1</span>
+<span class="mi">3</span>
+<span class="mi">5</span>
+</code></pre></div><h2 id="the-break-statement">The break statement:</h2>
+<p>The break statement allows you to exit a loop prematurely. The syntax is as follows:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">while</span> <span class="n">condition</span><span class="p">:</span>
+    <span class="n">code</span> <span class="n">block</span>
+    <span class="k">if</span> <span class="n">condition</span><span class="p">:</span>
+        <span class="k">break</span>
+</code></pre></div><p>Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="k">break</span>
+</code></pre></div><p>Output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="mi">0</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">4</span>
+</code></pre></div><h2 id="the-continue-statement">The continue statement:</h2>
+<p>The continue statement skips the current iteration of a loop and continues with the next iteration. The syntax is as follows:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">condition</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">code</span> <span class="n">block</span>
+</code></pre></div><p>Example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">animals</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;dog&#39;</span><span class="p">,</span> <span class="s1">&#39;bird&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">animal</span> <span class="ow">in</span> <span class="n">animals</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">animal</span> <span class="o">==</span> <span class="s1">&#39;cat&#39;</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">animal</span><span class="p">)</span>
+</code></pre></div><p>Output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">dog</span>
+<span class="n">bird</span>
+</code></pre></div><p>That&rsquo;s it! With these basic concepts, you can start writing loops in Python.</p>
 </div>
-<h3 id="für-macos">Für MacOS:</h3>
-<table>
-<thead>
-<tr>
-<th>Befehl</th>
-<th>Erklärung</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>pwd</code></td>
-<td>print working directory</td>
-</tr>
-<tr>
-<td><code>hostname</code></td>
-<td>Computer Hostname</td>
-</tr>
-<tr>
-<td><code>mkdir</code></td>
-<td>make directory</td>
-</tr>
-<tr>
-<td><code>cd</code></td>
-<td>change directory</td>
-</tr>
-<tr>
-<td><code>ls</code></td>
-<td>list directory</td>
-</tr>
-<tr>
-<td><code>rmdir</code></td>
-<td>remove directory</td>
-</tr>
-<tr>
-<td><code>pushd</code></td>
-<td>push directory</td>
-</tr>
-<tr>
-<td><code>popd</code></td>
-<td>pop directory</td>
-</tr>
-<tr>
-<td><code>cp</code></td>
-<td>copy a file or directory</td>
-</tr>
-<tr>
-<td><code>mv</code></td>
-<td>move a file or directory</td>
-</tr>
-<tr>
-<td><code>less</code></td>
-<td>page through a file</td>
-</tr>
-<tr>
-<td><code>cat</code></td>
-<td>print the whole file</td>
-</tr>
-<tr>
-<td><code>xargs</code></td>
-<td>execute arguments</td>
-</tr>
-<tr>
-<td><code>find</code></td>
-<td>find files</td>
-</tr>
-<tr>
-<td><code>grep</code></td>
-<td>find things inside files</td>
-</tr>
-<tr>
-<td><code>man</code></td>
-<td>read a manual page</td>
-</tr>
-<tr>
-<td><code>apropos</code></td>
-<td>find which man page is appropriate</td>
-</tr>
-<tr>
-<td><code>env</code></td>
-<td>look at your environment</td>
-</tr>
-<tr>
-<td><code>echo</code></td>
-<td>print some arguments</td>
-</tr>
-<tr>
-<td><code>export</code></td>
-<td>export/set a new variable</td>
-</tr>
-<tr>
-<td><code>exit</code></td>
-<td>exit the shell</td>
-</tr>
-<tr>
-<td><code>sudo</code></td>
-<td>become super user root</td>
-</tr>
-</tbody>
-</table>
-</div>
-<style>
-
-.sane-table table {
-  border-collapse: collapse;
-  width: 70%;
-}
-.sane-table th,
-.sane-table td {
-  padding: 0.75rem;
-  text-align: left;
-  border: 1px solid #ccc;
-}
-
-</style>
-<div class="ox-hugo-table sane-table">
-<div></div>
-<div class="table-caption">
-</div>
-<br>    
-<br>
-<h3 id="für-windows">Für Windows:</h3>
-<table>
-<thead>
-<tr>
-<th>Befehl</th>
-<th>Erklärung</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>pwd</code></td>
-<td>print working directory</td>
-</tr>
-<tr>
-<td><code>hostname</code></td>
-<td>Computer Hostname</td>
-</tr>
-<tr>
-<td><code>mkdir</code></td>
-<td>make directory</td>
-</tr>
-<tr>
-<td><code>cd</code></td>
-<td>change directory</td>
-</tr>
-<tr>
-<td><code>ls</code></td>
-<td>list directory</td>
-</tr>
-<tr>
-<td><code>rmdir</code></td>
-<td>remove directory</td>
-</tr>
-<tr>
-<td><code>pushd</code></td>
-<td>push directory</td>
-</tr>
-<tr>
-<td><code>popd</code></td>
-<td>pop directory</td>
-</tr>
-<tr>
-<td><code>cp</code></td>
-<td>copy a file or directory</td>
-</tr>
-<tr>
-<td><code>robocopy</code></td>
-<td>robust copy</td>
-</tr>
-<tr>
-<td><code>mv</code></td>
-<td>move a file or directory</td>
-</tr>
-<tr>
-<td><code>more</code></td>
-<td>page through a file</td>
-</tr>
-<tr>
-<td><code>type</code></td>
-<td>print the whole file</td>
-</tr>
-<tr>
-<td><code>forfiles</code></td>
-<td>run a command on lots of files</td>
-</tr>
-<tr>
-<td><code>dir -r</code></td>
-<td>find files</td>
-</tr>
-<tr>
-<td><code>select-string</code></td>
-<td>find things inside files</td>
-</tr>
-<tr>
-<td><code>help</code></td>
-<td>read a manual page</td>
-</tr>
-<tr>
-<td><code>helpctr</code></td>
-<td>find which man page is appropriate</td>
-</tr>
-<tr>
-<td><code>echo</code></td>
-<td>print some arguments</td>
-</tr>
-<tr>
-<td><code>set</code></td>
-<td>export/set a new variable</td>
-</tr>
-<tr>
-<td><code>exit</code></td>
-<td>exit the shell</td>
-</tr>
-<tr>
-<td><code>runas</code></td>
-<td>become super user root</td>
-</tr>
-</tbody>
-</table>
-</div>
-<br>    
-<br>
-<h2 id="befehlsausgabe">Befehlsausgabe</h2>
-<p>Das Klassische &ldquo;Hello World!&rdquo; Skript:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Hello World&#34;</span><span class="p">)</span>
-</code></pre></div></div>
     <div class="post-footer">
       <div class="info">
         
