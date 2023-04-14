@@ -6,7 +6,18 @@
     <description>Recent content on Philip&#39;s Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
-    <lastBuildDate>Thu, 13 Apr 2023 21:15:45 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 14 Apr 2023 20:20:37 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Python classes</title>
+      <link>https://philip-swoboda.at/python/python-classes/</link>
+      <pubDate>Fri, 14 Apr 2023 20:20:37 +0200</pubDate>
+      
+      <guid>https://philip-swoboda.at/python/python-classes/</guid>
+      
+        <description>Python is an object-oriented programming language, which means it has built-in support for creating classes and objects. Classes are used to define objects, which contain attributes (variables) and methods (functions).</description>
+      
+    </item>
+    
     <item>
       <title>Python Beginners Guide</title>
       <link>https://philip-swoboda.at/python/python-einstieg/</link>
@@ -58,7 +69,7 @@
       
       <guid>https://philip-swoboda.at/matlab/matlab-syntax/</guid>
       
-        <description>Wichtige Grundbefehle Hier ist eine Zusammenstellung von Grundbefehlen zum schnellen Nachschlagen für das Matrix Laboratory, oder kurz Matlab. Ein Matlab File mit weiteren wichtigen Grundbefehlen gibt es hier.</description>
+        <description>Hier ist eine Zusammenstelung von Matlab Befehlen</description>
       
     </item>
     
@@ -69,7 +80,7 @@
       
       <guid>https://philip-swoboda.at/autocad/effizient-in-3d/</guid>
       
-        <description>Headline   Navigation: Im 3D-Raum navigiert man in AutoCAD mittels gleichzeitig gedrückter Umschalttaste + Mausradtaste. Alternativ kann man auch den Orbit verwenden, dies ist aber sehr umständlich.</description>
+        <description>Eine Hilfestellung zum schnellen und effizienten arbeiten in AutoCAD mit 3D-Körpern</description>
       
     </item>
     
@@ -80,7 +91,7 @@
       
       <guid>https://philip-swoboda.at/latex/latex-horizontal/</guid>
       
-        <description>Anbei ist ein Codeblock in Latex-Code abgebildet für sämtliche horizontale Abstandsmöglichkeiten. Diesen kann man in ein entsprechendes Latexprogramm eingeben und rendern.</description>
+        <description>Horizontaler Abstand in Latex</description>
       
     </item>
     
@@ -114,8 +125,7 @@
       
       <guid>https://philip-swoboda.at/latex/latex-grundbefehle/</guid>
       
-        <description>Preamble Hier ist eine kleine Auflistung von Befehlen, die ich häufiger brauche und als nützlich erachte.
-Dokumentenklassen: \documentclass[10pt]{article} %Artikel \documentclass[10pt]{report} %für längere Berichte, welche mehrere Kapitel umfassen, kurze Bücher, Diplomarbeiten, .</description>
+        <description>Kurze Vorstellung von Latexbefehlen</description>
       
     </item>
     
@@ -138,8 +148,7 @@ Hier ist noch mein CV</description>
       
       <guid>https://philip-swoboda.at/markdown/markdown-syntax/</guid>
       
-        <description>&lt;hr&gt;
-&lt;p&gt;Dieser Artikel sammelt Beispiele der Markdown Syntax, die auf dieser Website verwendet werden. Er wird laufend erweitert.&lt;/p&gt;</description>
+        <description>Beispiele zur Formatierung mit Markup, CSS und html</description>
       
     </item>
     
@@ -150,9 +159,7 @@ Hier ist noch mein CV</description>
       
       <guid>https://philip-swoboda.at/markdown/rich-content/</guid>
       
-        <description>&lt;hr&gt;
-&lt;p&gt;Hugo ships with several &lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#use-hugos-built-in-shortcodes&#34;&gt;Built-in Shortcodes&lt;/a&gt; for rich content, along with a &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;Privacy Config&lt;/a&gt; and a set of Simple Shortcodes that enable static and no-JS versions of various social media embeds.&lt;/p&gt;
-&lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
+        <description>Hugo Shortcodes</description>
       
     </item>
     
@@ -163,8 +170,7 @@ Hier ist noch mein CV</description>
       
       <guid>https://philip-swoboda.at/markdown/markdown-tabellen/</guid>
       
-        <description>Artikel zur Formatierung von Tabellen in Markdown Entnommen von folgender Quelle: https://ox-hugo.scripter.co/doc/table-styling/
-Table with caption, and CSS attributes specified .</description>
+        <description>Verschiedene Tabellenstile für Markdown</description>
       
     </item>
     
@@ -175,8 +181,7 @@ Table with caption, and CSS attributes specified .</description>
       
       <guid>https://philip-swoboda.at/markdown/redirect/</guid>
       
-        <description> Forwarding to Startseite using redirectUrl
-      </description>
+        <description>Usage of redirectUrl</description>
       
     </item>
     
@@ -198,8 +203,7 @@ Table with caption, and CSS attributes specified .</description>
       
       <guid>https://philip-swoboda.at/markdown/emoji-support/</guid>
       
-        <description>&lt;hr&gt;
-&lt;p&gt;Emoji can be enabled in a Hugo project in a number of ways.&lt;/p&gt;</description>
+        <description>Guide to emoji usage in Hugo</description>
       
     </item>
     
@@ -221,8 +225,7 @@ Table with caption, and CSS attributes specified .</description>
       
       <guid>https://philip-swoboda.at/markdown/placeholder-text/</guid>
       
-        <description>&lt;hr&gt;
-&lt;p&gt;Lorem est tota propiore conpellat pectoribus de pectora summo.&lt;/p&gt;</description>
+        <description>Lorem Ipsum Dolor Si Amet</description>
       
     </item>
     
@@ -233,7 +236,7 @@ Table with caption, and CSS attributes specified .</description>
       
       <guid>https://philip-swoboda.at/contact/</guid>
       
-        <description></description>
+        <description>Contact Page</description>
       
     </item>
     
@@ -244,8 +247,7 @@ Table with caption, and CSS attributes specified .</description>
       
       <guid>https://philip-swoboda.at/markdown/math-typesetting/</guid>
       
-        <description>&lt;hr&gt;
-&lt;p&gt;Mathematical notation in a Hugo project can be enabled by using third party JavaScript libraries.&lt;/p&gt;</description>
+        <description>A brief guide to setup KaTeX</description>
       
     </item>
     
@@ -256,7 +258,7 @@ Table with caption, and CSS attributes specified .</description>
       
       <guid>https://philip-swoboda.at/markdown/image-test/</guid>
       
-        <description>Thumbnails can be enabled easily by setting the thumbnail parameter in the frontmatter to an image such as &amp;quot;images/landscape.jpg&amp;quot;.</description>
+        <description>Guide to Thumbnails in Hugo</description>
       
     </item>
     

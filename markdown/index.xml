@@ -14,8 +14,7 @@
       
       <guid>https://philip-swoboda.at/markdown/markdown-syntax/</guid>
       
-        <description>&lt;hr&gt;
-&lt;p&gt;Dieser Artikel sammelt Beispiele der Markdown Syntax, die auf dieser Website verwendet werden. Er wird laufend erweitert.&lt;/p&gt;</description>
+        <description>Beispiele zur Formatierung mit Markup, CSS und html</description>
       
     </item>
     
@@ -26,9 +25,7 @@
       
       <guid>https://philip-swoboda.at/markdown/rich-content/</guid>
       
-        <description>&lt;hr&gt;
-&lt;p&gt;Hugo ships with several &lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#use-hugos-built-in-shortcodes&#34;&gt;Built-in Shortcodes&lt;/a&gt; for rich content, along with a &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;Privacy Config&lt;/a&gt; and a set of Simple Shortcodes that enable static and no-JS versions of various social media embeds.&lt;/p&gt;
-&lt;h2 id=&#34;heading&#34;&gt;&lt;/h2&gt;</description>
+        <description>Hugo Shortcodes</description>
       
     </item>
     
@@ -39,8 +36,7 @@
       
       <guid>https://philip-swoboda.at/markdown/markdown-tabellen/</guid>
       
-        <description>Artikel zur Formatierung von Tabellen in Markdown Entnommen von folgender Quelle: https://ox-hugo.scripter.co/doc/table-styling/
-Table with caption, and CSS attributes specified .</description>
+        <description>Verschiedene Tabellenstile für Markdown</description>
       
     </item>
     
@@ -51,8 +47,7 @@ Table with caption, and CSS attributes specified .</description>
       
       <guid>https://philip-swoboda.at/markdown/redirect/</guid>
       
-        <description> Forwarding to Startseite using redirectUrl
-      </description>
+        <description>Usage of redirectUrl</description>
       
     </item>
     
@@ -74,8 +69,7 @@ Table with caption, and CSS attributes specified .</description>
       
       <guid>https://philip-swoboda.at/markdown/emoji-support/</guid>
       
-        <description>&lt;hr&gt;
-&lt;p&gt;Emoji can be enabled in a Hugo project in a number of ways.&lt;/p&gt;</description>
+        <description>Guide to emoji usage in Hugo</description>
       
     </item>
     
@@ -86,8 +80,7 @@ Table with caption, and CSS attributes specified .</description>
       
       <guid>https://philip-swoboda.at/markdown/placeholder-text/</guid>
       
-        <description>&lt;hr&gt;
-&lt;p&gt;Lorem est tota propiore conpellat pectoribus de pectora summo.&lt;/p&gt;</description>
+        <description>Lorem Ipsum Dolor Si Amet</description>
       
     </item>
     
@@ -98,8 +91,7 @@ Table with caption, and CSS attributes specified .</description>
       
       <guid>https://philip-swoboda.at/markdown/math-typesetting/</guid>
       
-        <description>&lt;hr&gt;
-&lt;p&gt;Mathematical notation in a Hugo project can be enabled by using third party JavaScript libraries.&lt;/p&gt;</description>
+        <description>A brief guide to setup KaTeX</description>
       
     </item>
     
@@ -110,7 +102,7 @@ Table with caption, and CSS attributes specified .</description>
       
       <guid>https://philip-swoboda.at/markdown/image-test/</guid>
       
-        <description>Thumbnails can be enabled easily by setting the thumbnail parameter in the frontmatter to an image such as &amp;quot;images/landscape.jpg&amp;quot;.</description>
+        <description>Guide to Thumbnails in Hugo</description>
       
     </item>
     

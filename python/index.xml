@@ -8,6 +8,17 @@
     <language>de</language>
     <lastBuildDate>Thu, 14 Oct 2021 12:07:32 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/python/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Python classes</title>
+      <link>https://philip-swoboda.at/python/python-classes/</link>
+      <pubDate>Fri, 14 Apr 2023 20:20:37 +0200</pubDate>
+      
+      <guid>https://philip-swoboda.at/python/python-classes/</guid>
+      
+        <description>Python is an object-oriented programming language, which means it has built-in support for creating classes and objects. Classes are used to define objects, which contain attributes (variables) and methods (functions).</description>
+      
+    </item>
+    
+    <item>
       <title>Python Beginners Guide</title>
       <link>https://philip-swoboda.at/python/python-einstieg/</link>
       <pubDate>Thu, 13 Apr 2023 21:15:45 +0200</pubDate>

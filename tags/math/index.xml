@@ -14,8 +14,7 @@
       
       <guid>https://philip-swoboda.at/markdown/math-typesetting/</guid>
       
-        <description>&lt;hr&gt;
-&lt;p&gt;Mathematical notation in a Hugo project can be enabled by using third party JavaScript libraries.&lt;/p&gt;</description>
+        <description>A brief guide to setup KaTeX</description>
       
     </item>
     

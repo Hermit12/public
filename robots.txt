@@ -6,13 +6,15 @@ Disallow: /categories/
 
 Disallow: /tags/python/
 
-Disallow: /python/python-einstieg/
+Disallow: /python/python-classes/
 
 Disallow: /categories/software/
 
 Disallow: /tags/syntax/
 
 Disallow: /tags/
+
+Disallow: /python/python-einstieg/
 
 Disallow: /python/python-loops/
 

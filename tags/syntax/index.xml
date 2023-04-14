@@ -6,7 +6,18 @@
     <description>Recent content in syntax on Philip&#39;s Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
-    <lastBuildDate>Thu, 13 Apr 2023 21:15:45 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/tags/syntax/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 14 Apr 2023 20:20:37 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/tags/syntax/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Python classes</title>
+      <link>https://philip-swoboda.at/python/python-classes/</link>
+      <pubDate>Fri, 14 Apr 2023 20:20:37 +0200</pubDate>
+      
+      <guid>https://philip-swoboda.at/python/python-classes/</guid>
+      
+        <description>Python is an object-oriented programming language, which means it has built-in support for creating classes and objects. Classes are used to define objects, which contain attributes (variables) and methods (functions).</description>
+      
+    </item>
+    
     <item>
       <title>Python Beginners Guide</title>
       <link>https://philip-swoboda.at/python/python-einstieg/</link>
@@ -36,7 +47,7 @@
       
       <guid>https://philip-swoboda.at/matlab/matlab-syntax/</guid>
       
-        <description>Wichtige Grundbefehle Hier ist eine Zusammenstellung von Grundbefehlen zum schnellen Nachschlagen für das Matrix Laboratory, oder kurz Matlab. Ein Matlab File mit weiteren wichtigen Grundbefehlen gibt es hier.</description>
+        <description>Hier ist eine Zusammenstelung von Matlab Befehlen</description>
       
     </item>
     
@@ -47,7 +58,7 @@
       
       <guid>https://philip-swoboda.at/latex/latex-horizontal/</guid>
       
-        <description>Anbei ist ein Codeblock in Latex-Code abgebildet für sämtliche horizontale Abstandsmöglichkeiten. Diesen kann man in ein entsprechendes Latexprogramm eingeben und rendern.</description>
+        <description>Horizontaler Abstand in Latex</description>
       
     </item>
     
@@ -81,8 +92,7 @@
       
       <guid>https://philip-swoboda.at/latex/latex-grundbefehle/</guid>
       
-        <description>Preamble Hier ist eine kleine Auflistung von Befehlen, die ich häufiger brauche und als nützlich erachte.
-Dokumentenklassen: \documentclass[10pt]{article} %Artikel \documentclass[10pt]{report} %für längere Berichte, welche mehrere Kapitel umfassen, kurze Bücher, Diplomarbeiten, .</description>
+        <description>Kurze Vorstellung von Latexbefehlen</description>
       
     </item>
     
@@ -93,8 +103,7 @@ Dokumentenklassen: \documentclass[10pt]{article} %Artikel \documentclass[10pt]{r
       
       <guid>https://philip-swoboda.at/markdown/markdown-syntax/</guid>
       
-        <description>&lt;hr&gt;
-&lt;p&gt;Dieser Artikel sammelt Beispiele der Markdown Syntax, die auf dieser Website verwendet werden. Er wird laufend erweitert.&lt;/p&gt;</description>
+        <description>Beispiele zur Formatierung mit Markup, CSS und html</description>
       
     </item>
     
@@ -105,8 +114,7 @@ Dokumentenklassen: \documentclass[10pt]{article} %Artikel \documentclass[10pt]{r
       
       <guid>https://philip-swoboda.at/markdown/markdown-tabellen/</guid>
       
-        <description>Artikel zur Formatierung von Tabellen in Markdown Entnommen von folgender Quelle: https://ox-hugo.scripter.co/doc/table-styling/
-Table with caption, and CSS attributes specified .</description>
+        <description>Verschiedene Tabellenstile für Markdown</description>
       
     </item>
     
