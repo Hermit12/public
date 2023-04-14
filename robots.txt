@@ -72,9 +72,9 @@ Disallow: /tags/shortcodes/
 
 Disallow: /markdown/markdown-tabellen/
 
-Disallow: /markdown/redirect/
-
 Disallow: /tags/redirect/
+
+Disallow: /markdown/redirect/
 
 Disallow: /markdown/figure-shortcode/
 
