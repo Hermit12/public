@@ -2,6 +2,10 @@ User-agent: *
 
 Disallow: /
 
+Disallow: /misc/
+
+Disallow: /misc/thermischeturbo/
+
 Disallow: /categories/
 
 Disallow: /tags/python/
@@ -52,11 +56,7 @@ Disallow: /markdown/
 
 Disallow: /python/
 
-Disallow: /misc/
-
 Disallow: /python/python-grundbefehle/
-
-Disallow: /misc/thermischeturbo/
 
 Disallow: /latex/latex-grundbefehle/
 

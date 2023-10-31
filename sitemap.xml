@@ -3,7 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://philip-swoboda.at/</loc>
-    <lastmod>2023-04-14T20:20:37+02:00</lastmod>
+    <lastmod>2023-10-31T21:15:45+02:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/misc/</loc>
+    <lastmod>2023-10-31T21:15:45+02:00</lastmod>
+  </url><url>
+    <loc>https://philip-swoboda.at/misc/thermischeturbo/</loc>
+    <lastmod>2023-10-31T21:15:45+02:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/categories/</loc>
     <lastmod>2023-04-14T20:20:37+02:00</lastmod>
@@ -80,13 +86,7 @@
     <loc>https://philip-swoboda.at/python/</loc>
     <lastmod>2021-10-14T12:07:32+02:00</lastmod>
   </url><url>
-    <loc>https://philip-swoboda.at/misc/</loc>
-    <lastmod>2021-10-13T21:15:45+02:00</lastmod>
-  </url><url>
     <loc>https://philip-swoboda.at/python/python-grundbefehle/</loc>
-    <lastmod>2021-10-13T21:15:45+02:00</lastmod>
-  </url><url>
-    <loc>https://philip-swoboda.at/misc/thermischeturbo/</loc>
     <lastmod>2021-10-13T21:15:45+02:00</lastmod>
   </url><url>
     <loc>https://philip-swoboda.at/latex/latex-grundbefehle/</loc>

@@ -6,7 +6,18 @@
     <description>Recent content on Philip&#39;s Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>de</language>
-    <lastBuildDate>Fri, 14 Apr 2023 20:20:37 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 31 Oct 2023 21:15:45 +0200</lastBuildDate><atom:link href="https://philip-swoboda.at/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Thermische Turbomaschinen</title>
+      <link>https://philip-swoboda.at/misc/thermischeturbo/</link>
+      <pubDate>Tue, 31 Oct 2023 21:15:45 +0200</pubDate>
+      
+      <guid>https://philip-swoboda.at/misc/thermischeturbo/</guid>
+      
+        <description>Radialverdichter: Kennfeld und Regelung Beschreiben Sie die dimensionslosen Größen, die bei der Darstellung des Verdichterkennfeldes verwendet werden. Bei der Darstellung des Kennfeldes eines Verdichters werden dimensionslose Größen verwendet, um die Leistung und das Verhalten des Verdichters unter verschiedenen Betriebsbedingungen darzustellen.</description>
+      
+    </item>
+    
     <item>
       <title>Python classes</title>
       <link>https://philip-swoboda.at/python/python-classes/</link>
@@ -115,17 +126,6 @@
       
         <description>Standardbefehle Folgende Befehle müssen im Schlaf gehen:
 Für MacOS: Befehl Erklärung pwd print working directory hostname Computer Hostname mkdir make directory cd change directory ls list directory rmdir remove directory pushd push directory popd pop directory cp copy a file or directory mv move a file or directory less page through a file cat print the whole file xargs execute arguments find find files grep find things inside files man read a manual page apropos find which man page is appropriate env look at your environment echo print some arguments export export/set a new variable exit exit the shell sudo become super user root Für Windows: Befehl Erklärung pwd print working directory hostname Computer Hostname mkdir make directory cd change directory ls list directory rmdir remove directory pushd push directory popd pop directory cp copy a file or directory robocopy robust copy mv move a file or directory more page through a file type print the whole file forfiles run a command on lots of files dir -r find files select-string find things inside files help read a manual page helpctr find which man page is appropriate echo print some arguments set export/set a new variable exit exit the shell runas become super user root Befehlsausgabe Das Klassische &amp;ldquo;Hello World!</description>
-      
-    </item>
-    
-    <item>
-      <title>Thermische Turbomaschinen</title>
-      <link>https://philip-swoboda.at/misc/thermischeturbo/</link>
-      <pubDate>Wed, 13 Oct 2021 21:15:45 +0200</pubDate>
-      
-      <guid>https://philip-swoboda.at/misc/thermischeturbo/</guid>
-      
-        <description>Radialverdichter:Kennfeldund Regelung Beschreiben Sie die dimensionslosen Größen, die bei der Darstellung des Verdichterkennfeldes verwendet werden. Bei der Darstellung des Kennfeldes eines Verdichters werden dimensionslose Größen verwendet, um die Leistung und das Verhalten des Verdichters unter verschiedenen Betriebsbedingungen darzustellen.</description>
       
     </item>
     
