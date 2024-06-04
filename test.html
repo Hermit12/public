@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Count Up Timer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f0f0f0;
+            margin: 0;
+        }
+        .timer {
+            font-size: 2em;
+            color: #333;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="timer" id="timer">00:00:00</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const timerElement = document.getElementById('timer');
+
+            const startTime = Date.now();
+
+            function updateTimer() {
+                const currentTime = Date.now();
+                const elapsedTime = currentTime - startTime;
+
+                const hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+                const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+
+                timerElement.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                requestAnimationFrame(updateTimer);
+            }
+
+            updateTimer();
+        });
+    </script>
+</body>
+</html>
