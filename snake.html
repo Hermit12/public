@@ -26,10 +26,10 @@
         }
 
         .arrow-buttons button {
-            margin: 0 10px;
-            width: 40px;
-            height: 40px;
-            font-size: 20px;
+            margin: 0 5px;
+            width: 30px;
+            height: 30px;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -175,6 +175,10 @@
 
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             showArrowButtons();
+            document.getElementById('upButton').addEventListener('touchstart', () => { dx = 0; dy = -1; });
+            document.getElementById('leftButton').addEventListener('touchstart', () => { dx = -1; dy = 0; });
+            document.getElementById('downButton').addEventListener('touchstart', () => { dx = 0; dy = 1; });
+            document.getElementById('rightButton').addEventListener('touchstart', () => { dx = 1; dy = 0; });
             canvas.addEventListener('touchstart', handleTouchStart);
         } else {
             document.addEventListener('keydown', handleKeydown);
