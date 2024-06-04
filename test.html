@@ -20,7 +20,7 @@
         }
         .title {
             font-size: 2em;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
             color: #333;
         }
         .timer {
@@ -43,6 +43,11 @@
         .label {
             font-size: 0.8em;
             color: #666;
+        }
+        .days-passed {
+            font-size: 1.5em;
+            margin-top: 20px;
+            color: #333;
         }
     </style>
 </head>
@@ -79,6 +84,7 @@
                 <div class="label">Sekunden</div>
             </div>
         </div>
+        <div class="days-passed" id="days-passed">Es sind 0 Tage vergangen</div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
@@ -95,6 +101,7 @@
                 const hours = Math.floor((elapsedTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+                const totalDays = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
 
                 document.getElementById('years').textContent = years;
                 document.getElementById('months').textContent = months;
@@ -103,6 +110,7 @@
                 document.getElementById('hours').textContent = hours;
                 document.getElementById('minutes').textContent = minutes;
                 document.getElementById('seconds').textContent = seconds;
+                document.getElementById('days-passed').textContent = `Es sind ${totalDays} Tage vergangen`;
 
                 requestAnimationFrame(updateTimer);
             }
@@ -112,5 +120,3 @@
     </script>
 </body>
 </html>
-
-
