@@ -34,6 +34,7 @@
         let score = 0;
         let level = 1;
         let speed = 200; // Initial speed
+        const speedIncrement = 10; // Speed increment after eating 5 fruits
 
         function drawCell(x, y) {
             ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
@@ -55,6 +56,9 @@
 
             if (head.x === food.x && head.y === food.y) {
                 score++;
+                if (score % 5 === 0) {
+                    speed -= speedIncrement;
+                }
                 generateFood();
             } else {
                 snake.pop();
@@ -116,9 +120,8 @@
         // Start the game loop with initial speed
         setTimeout(() => {
             update();
-            setInterval(increaseSpeed, 10000); // Increase speed every 10 seconds
+            setInterval(increaseSpeed, 5000); // Increase speed every 5 seconds
         }, speed);
     </script>
 </body>
 </html>
-
