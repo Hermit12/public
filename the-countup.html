@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Baby-Countup</title>
+    <title>The Countup</title>
     <style>
       /* Light mode */
       body {
@@ -115,8 +115,12 @@
     </style>
   </head>
   <body>
-    <h1 style="font-size: 50px;">Days since The impact</h1>
+    <h1 style="font-size: 50px;">The Countup</h1>
     <div id="countdown">
+      <div class="countdown-section">
+        <span id="years"></span>
+        <div id="countdown-desc" style="font-weight: 300;">Jahre</div>
+      </div>
       <div class="countdown-section">
         <span id="weeks"></span>
         <div id="countdown-desc" style="font-weight: 300;">Wochen</div>
@@ -147,13 +151,15 @@
         var now = new Date().getTime();
         // Calculate the time elapsed
         var timeElapsed = now - startDate;
-        // Calculate the number of weeks, days, hours, minutes, and seconds elapsed
-        var weeks = Math.floor(timeElapsed / (1000 * 60 * 60 * 24 * 7));
-        var days = Math.floor(timeElapsed / (1000 * 60 * 60 * 24)) % 7;
+        // Calculate the number of years, weeks, days, hours, minutes, and seconds elapsed
+        var years = Math.floor(timeElapsed / (1000 * 60 * 60 * 24 * 365));
+        var weeks = Math.floor((timeElapsed % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 7));
+        var days = Math.floor((timeElapsed % (1000 * 60 * 60 * 24 * 7)) / (1000 * 60 * 60 * 24));
         var hours = Math.floor((timeElapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
         // Display the countup
+        document.getElementById("years").innerHTML = years;
         document.getElementById("weeks").innerHTML = weeks;
         document.getElementById("days").innerHTML = days;
         document.getElementById("hours").innerHTML = hours;
@@ -163,3 +169,4 @@
     </script>
   </body>
 </html>
+
