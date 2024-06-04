@@ -98,7 +98,7 @@
             requestAnimationFrame(update);
         }
 
-        document.addEventListener('keydown', event => {
+        function handleKeydown(event) {
             if (event.key === 'ArrowUp' && dy === 0) {
                 dx = 0;
                 dy = -1;
@@ -112,7 +112,35 @@
                 dx = 1;
                 dy = 0;
             }
-        });
+        }
+
+        function handleTouchStart(event) {
+            const touchX = event.touches[0].clientX;
+            const touchY = event.touches[0].clientY;
+            const headX = snake[0].x * cellSize;
+            const headY = snake[0].y * cellSize;
+
+            if (Math.abs(touchX - headX) > Math.abs(touchY - headY)) {
+                if (touchX > headX) {
+                    dx = 1;
+                    dy = 0;
+                } else {
+                    dx = -1;
+                    dy = 0;
+                }
+            } else {
+                if (touchY > headY) {
+                    dy = 1;
+                    dx = 0;
+                } else {
+                    dy = -1;
+                    dx = 0;
+                }
+            }
+        }
+
+        document.addEventListener('keydown', handleKeydown);
+        canvas.addEventListener('touchstart', handleTouchStart);
 
         // Start the game loop
         generateFood(); // Generate initial food
