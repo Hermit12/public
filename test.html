@@ -15,33 +15,55 @@
             margin: 0;
         }
         .timer {
-            font-size: 2em;
+            font-size: 1.5em;
             color: #333;
             background: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
+            max-width: 90%;
+            box-sizing: border-box;
+        }
+        .timer span {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="timer" id="timer">00:00:00</div>
+    <div class="timer" id="timer">
+        <span id="years">Jahre: 0</span>
+        <span id="months">Monate: 0</span>
+        <span id="weeks">Wochen: 0</span>
+        <span id="days">Tage: 0</span>
+        <span id="hours">Stunden: 0</span>
+        <span id="minutes">Minuten: 0</span>
+        <span id="seconds">Sekunden: 0</span>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const timerElement = document.getElementById('timer');
-
-            const startTime = Date.now();
+            const startTime = new Date('2020-01-01T00:00:00').getTime();
 
             function updateTimer() {
                 const currentTime = Date.now();
                 const elapsedTime = currentTime - startTime;
 
-                const hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+                const years = Math.floor(elapsedTime / (1000 * 60 * 60 * 24 * 365));
+                const months = Math.floor((elapsedTime % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+                const weeks = Math.floor(((elapsedTime % (1000 * 60 * 60 * 24 * 365)) % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24 * 7));
+                const days = Math.floor((((elapsedTime % (1000 * 60 * 60 * 24 * 365)) % (1000 * 60 * 60 * 24 * 30)) % (1000 * 60 * 60 * 24 * 7)) / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((elapsedTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
 
-                timerElement.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                document.getElementById('years').textContent = `Jahre: ${years}`;
+                document.getElementById('months').textContent = `Monate: ${months}`;
+                document.getElementById('weeks').textContent = `Wochen: ${weeks}`;
+                document.getElementById('days').textContent = `Tage: ${days}`;
+                document.getElementById('hours').textContent = `Stunden: ${hours}`;
+                document.getElementById('minutes').textContent = `Minuten: ${minutes}`;
+                document.getElementById('seconds').textContent = `Sekunden: ${seconds}`;
 
                 requestAnimationFrame(updateTimer);
             }
@@ -51,3 +73,4 @@
     </script>
 </body>
 </html>
+
