@@ -110,7 +110,7 @@
                 document.getElementById('hours').textContent = hours;
                 document.getElementById('minutes').textContent = minutes;
                 document.getElementById('seconds').textContent = seconds;
-                document.getElementById('days-passed').textContent = `Es sind ${totalDays} Tage vergangen`;
+                document.getElementById('days-passed').textContent = `Es sind ${totalDays+1} Tage vergangen`;
 
                 requestAnimationFrame(updateTimer);
             }
