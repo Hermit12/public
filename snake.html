@@ -16,10 +16,34 @@
         canvas {
             border: 5px solid black;
         }
+
+        .arrow-buttons {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .arrow-buttons button {
+            margin: 0 10px;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+    <div class="arrow-buttons">
+        <button id="upButton">&#8593;</button>
+        <div>
+            <button id="leftButton">&#8592;</button>
+            <button id="downButton">&#8595;</button>
+            <button id="rightButton">&#8594;</button>
+        </div>
+    </div>
 
     <script>
         // Snake Game JavaScript Code
@@ -139,8 +163,22 @@
             }
         }
 
-        document.addEventListener('keydown', handleKeydown);
-        canvas.addEventListener('touchstart', handleTouchStart);
+        function showArrowButtons() {
+            const arrowButtons = document.querySelector('.arrow-buttons');
+            arrowButtons.style.display = 'flex';
+        }
+
+        function hideArrowButtons() {
+            const arrowButtons = document.querySelector('.arrow-buttons');
+            arrowButtons.style.display = 'none';
+        }
+
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            showArrowButtons();
+            canvas.addEventListener('touchstart', handleTouchStart);
+        } else {
+            document.addEventListener('keydown', handleKeydown);
+        }
 
         // Start the game loop
         generateFood(); // Generate initial food
