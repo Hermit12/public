@@ -69,6 +69,8 @@
             if (head.x >= canvas.width / cellSize) head.x = 0;
             if (head.y < 0) head.y = canvas.height / cellSize - 1;
             if (head.y >= canvas.height / cellSize) head.y = 0;
+            
+            setTimeout(moveSnake, speed);
         }
 
         function generateFood() {
@@ -90,7 +92,6 @@
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            moveSnake();
             drawFood();
             drawSnake();
 
@@ -113,15 +114,8 @@
             }
         });
 
-        function increaseSpeed() {
-            speed -= 10; // Adjust the speed increment based on your preference
-        }
-
-        // Start the game loop with initial speed
-        setTimeout(() => {
-            update();
-            setInterval(increaseSpeed, 5000); // Increase speed every 5 seconds
-        }, speed);
+        // Start the game loop
+        update();
     </script>
 </body>
 </html>
