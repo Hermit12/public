@@ -32,6 +32,8 @@
         let dx = 0;
         let dy = 0;
         let score = 0;
+        let level = 1;
+        let speed = 200; // Initial speed
 
         function drawCell(x, y) {
             ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
@@ -57,6 +59,12 @@
             } else {
                 snake.pop();
             }
+
+            // Wrap around the canvas
+            if (head.x < 0) head.x = canvas.width / cellSize - 1;
+            if (head.x >= canvas.width / cellSize) head.x = 0;
+            if (head.y < 0) head.y = canvas.height / cellSize - 1;
+            if (head.y >= canvas.height / cellSize) head.y = 0;
         }
 
         function generateFood() {
@@ -66,13 +74,7 @@
 
         function checkCollision() {
             const head = snake[0];
-            return (
-                head.x < 0 || 
-                head.x >= canvas.width / cellSize || 
-                head.y < 0 || 
-                head.y >= canvas.height / cellSize || 
-                snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y)
-            );
+            return snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y);
         }
 
         function update() {
@@ -107,7 +109,16 @@
             }
         });
 
-        setTimeout(update, 1000); // Start the game loop with a delay of 1 second
+        function increaseSpeed() {
+            speed -= 10; // Adjust the speed increment based on your preference
+        }
+
+        // Start the game loop with initial speed
+        setTimeout(() => {
+            update();
+            setInterval(increaseSpeed, 10000); // Increase speed every 10 seconds
+        }, speed);
     </script>
 </body>
 </html>
+
