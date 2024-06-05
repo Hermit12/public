@@ -7,8 +7,9 @@
     <style>
         body {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
             margin: 0;
             background-color: #000;
@@ -16,6 +17,9 @@
 
         #game-container {
             position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         #gameCanvas {
@@ -24,63 +28,73 @@
         }
 
         #joystick-container {
-            display: none; /* Verstecke Joysticks standardmäßig */
+            display: none;
             position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        #joystick-left, #joystick-right {
+            bottom: -150px;
             width: 100px;
             height: 100px;
             background-color: rgba(255, 255, 255, 0.5);
             border-radius: 50%;
+            justify-content: center;
+            align-items: center;
+            touch-action: none;
         }
 
         @media (max-width: 768px) {
             #joystick-container {
-                display: flex; /* Zeige Joysticks nur im mobilen Modus */
+                display: flex;
             }
+        }
+
+        #score {
+            color: white;
+            font-size: 20px;
         }
     </style>
 </head>
 <body>
     <div id="game-container">
         <canvas id="gameCanvas" width="400" height="400"></canvas>
-        <div id="joystick-container">
-            <div id="joystick-left"></div>
-            <div id="joystick-right"></div>
-        </div>
+        <div id="joystick-container"></div>
+        <div id="score">Punktestand: 0 | Höchststand: 0</div>
     </div>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const joystickContainer = document.getElementById('joystick-container');
-        const joystickLeft = document.getElementById('joystick-left');
-        const joystickRight = document.getElementById('joystick-right');
+        const scoreDisplay = document.getElementById('score');
 
         let snake = [{x: 10, y: 10}];
         let direction = {x: 1, y: 0};
         let food = {x: 15, y: 15};
+        let score = 0;
+        let highScore = localStorage.getItem('highScore') || 0;
         const gridSize = 20;
-        let isMobile = window.matchMedia("only screen and (max-width: 768px)").matches;
+        let gameSpeed = 200;
 
         function gameLoop() {
             update();
             draw();
-            setTimeout(gameLoop, 100);
+            setTimeout(gameLoop, gameSpeed);
         }
 
         function update() {
             const head = {x: snake[0].x + direction.x, y: snake[0].y + direction.y};
+
+            head.x = (head.x + canvas.width / gridSize) % (canvas.width / gridSize);
+            head.y = (head.y + canvas.height / gridSize) % (canvas.height / gridSize);
+
             snake.unshift(head);
-            
+
             if (head.x === food.x && head.y === food.y) {
+                score++;
+                if (score > highScore) {
+                    highScore = score;
+                    localStorage.setItem('highScore', highScore);
+                }
+                if (score % 5 === 0 && gameSpeed > 50) {
+                    gameSpeed -= 10;
+                }
                 food = {
                     x: Math.floor(Math.random() * canvas.width / gridSize),
                     y: Math.floor(Math.random() * canvas.height / gridSize)
@@ -89,9 +103,11 @@
                 snake.pop();
             }
 
-            if (head.x < 0 || head.x >= canvas.width / gridSize || head.y < 0 || head.y >= canvas.height / gridSize || snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y)) {
+            if (snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y)) {
                 resetGame();
             }
+
+            scoreDisplay.textContent = `Punktestand: ${score} | Höchststand: ${highScore}`;
         }
 
         function draw() {
@@ -111,6 +127,8 @@
             snake = [{x: 10, y: 10}];
             direction = {x: 1, y: 0};
             food = {x: 15, y: 15};
+            score = 0;
+            gameSpeed = 200;
         }
 
         window.addEventListener('keydown', e => {
@@ -130,28 +148,36 @@
             }
         });
 
-        function handleTouchStart(e) {
-            const touchX = e.touches[0].clientX;
-            const touchY = e.touches[0].clientY;
-            const middleX = window.innerWidth / 2;
-            const middleY = window.innerHeight / 2;
+        let startX, startY;
 
-            if (touchX < middleX && touchY < middleY) {
-                direction = {x: 0, y: -1}; // oben
-            } else if (touchX < middleX && touchY > middleY) {
-                direction = {x: 0, y: 1}; // unten
-            } else if (touchX > middleX && touchY < middleY) {
-                direction = {x: 1, y: 0}; // rechts
-            } else if (touchX > middleX && touchY > middleY) {
-                direction = {x: -1, y: 0}; // links
+        joystickContainer.addEventListener('touchstart', e => {
+            e.preventDefault();
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        });
+
+        joystickContainer.addEventListener('touchmove', e => {
+            e.preventDefault();
+            const deltaX = e.touches[0].clientX - startX;
+            const deltaY = e.touches[0].clientY - startY;
+
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                if (deltaX > 0 && direction.x === 0) {
+                    direction = {x: 1, y: 0};
+                } else if (deltaX < 0 && direction.x === 0) {
+                    direction = {x: -1, y: 0};
+                }
+            } else {
+                if (deltaY > 0 && direction.y === 0) {
+                    direction = {x: 0, y: 1};
+                } else if (deltaY < 0 && direction.y === 0) {
+                    direction = {x: 0, y: -1};
+                }
             }
-        }
-
-        if (isMobile) {
-            joystickContainer.addEventListener('touchstart', handleTouchStart);
-        }
+        });
 
         gameLoop();
     </script>
 </body>
 </html>
+
