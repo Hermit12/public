@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Tetris</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        #game-board {
+            display: grid;
+            grid-template-rows: repeat(20, 30px);
+            grid-template-columns: repeat(10, 30px);
+            gap: 1px;
+            background-color: #000;
+        }
+        .cell {
+            width: 30px;
+            height: 30px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+        .block-red { background-color: red; }
+        .block-green { background-color: green; }
+        .block-blue { background-color: blue; }
+        .block-yellow { background-color: yellow; }
+        .block-orange { background-color: orange; }
+        .block-cyan { background-color: cyan; }
+        .block-purple { background-color: purple; }
+        #score-board {
+            margin: 20px;
+            font-size: 24px;
+        }
+        .mobile-controls {
+            display: none;
+            margin-top: 20px;
+        }
+        .control-button {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            font-size: 20px;
+        }
+        @media (max-width: 600px) {
+            .mobile-controls {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="score-board">
+        <div>Aktueller Punktestand: <span id="score">0</span></div>
+        <div>Highscore: <span id="highscore">0</span></div>
+    </div>
+    <div id="game-board"></div>
+    <div class="mobile-controls">
+        <button class="control-button" id="left-button">←</button>
+        <button class="control-button" id="rotate-button">⟳</button>
+        <button class="control-button" id="right-button">→</button>
+        <button class="control-button" id="drop-button">↓</button>
+        <button class="control-button" id="instant-drop-button">⤓</button>
+    </div>
+
+    <script>
+        const colors = ['red', 'green', 'blue', 'yellow', 'orange', 'cyan', 'purple'];
+        const tetrominoes = [
+            { shape: [[1, 1, 1, 1]], color: 'red' }, // I
+            { shape: [[1, 1], [1, 1]], color: 'yellow' }, // O
+            { shape: [[0, 1, 0], [1, 1, 1]], color: 'purple' }, // T
+            { shape: [[1, 1, 0], [0, 1, 1]], color: 'green' }, // S
+            { shape: [[0, 1, 1], [1, 1, 0]], color: 'red' }, // Z
+            { shape: [[1, 1, 1], [1, 0, 0]], color: 'orange' }, // L
+            { shape: [[1, 1, 1], [0, 0, 1]], color: 'blue' }, // J
+        ];
+        const rows = 20;
+        const cols = 10;
+        const board = Array.from({ length: rows }, () => Array(cols).fill(null));
+        let currentPiece;
+        let score = 0;
+        let highscore = localStorage.getItem('tetris-highscore') || 0;
+        let gameInterval;
+        let level = 1;
+
+        document.getElementById('highscore').textContent = highscore;
+
+        function drawBoard() {
+            const gameBoard = document.getElementById('game-board');
+            gameBoard.innerHTML = '';
+            board.forEach(row => {
+                row.forEach(cell => {
+                    const div = document.createElement('div');
+                    div.className = 'cell';
+                    if (cell) {
+                        div.classList.add(`block-${cell}`);
+                    }
+                    gameBoard.appendChild(div);
+                });
+            });
+        }
+
+        function drawPiece() {
+            currentPiece.shape.forEach((row, y) => {
+                row.forEach((value, x) => {
+                    if (value) {
+                        const index = (currentPiece.y + y) * cols + (currentPiece.x + x);
+                        const cell = document.querySelector(`#game-board .cell:nth-child(${index + 1})`);
+                        if (cell) {
+                            cell.classList.add(`block-${currentPiece.color}`);
+                        }
+                    }
+                });
+            });
+        }
+
+        function clearLines() {
+            for (let y = rows - 1; y >= 0; y--) {
+                if (board[y].every(cell => cell !== null)) {
+                    board.splice(y, 1);
+                    board.unshift(Array(cols).fill(null));
+                    score += 100;
+                    level = Math.floor(score / 500) + 1;
+                    clearInterval(gameInterval);
+                    gameInterval = setInterval(tick, Math.max(1000 - (level - 1) * 100, 100));
+                }
+            }
+        }
+
+        function tick() {
+            if (canMove(currentPiece, 0, 1)) {
+                currentPiece.y++;
+            } else {
+                mergePiece();
+                clearLines();
+                newPiece();
+                if (!canMove(currentPiece, 0, 0)) {
+                    alert('Game Over');
+                    if (score > highscore) {
+                        highscore = score;
+                        localStorage.setItem('tetris-highscore', highscore);
+                    }
+                    score = 0;
+                    level = 1;
+                    board.forEach(row => row.fill(null));
+                }
+            }
+            drawBoard();
+            drawPiece();
+            document.getElementById('score').textContent = score;
+            document.getElementById('highscore').textContent = highscore;
+        }
+
+        function mergePiece() {
+            currentPiece.shape.forEach((row, y) => {
+                row.forEach((value, x) => {
+                    if (value) {
+                        board[currentPiece.y + y][currentPiece.x + x] = currentPiece.color;
+                    }
+                });
+            });
+        }
+
+        function canMove(piece, dx, dy) {
+            return piece.shape.every((row, y) => {
+                return row.every((value, x) => {
+                    const newX = piece.x + x + dx;
+                    const newY = piece.y + y + dy;
+                    return (
+                        !value ||
+                        (newX >= 0 && newX < cols && newY >= 0 && newY < rows && !board[newY][newX])
+                    );
+                });
+            });
+        }
+
+        function rotatePiece() {
+            const newShape = currentPiece.shape[0].map((_, i) =>
+                currentPiece.shape.map(row => row[i]).reverse()
+            );
+            if (canMove({ ...currentPiece, shape: newShape }, 0, 0)) {
+                currentPiece.shape = newShape;
+            }
+        }
+
+        function newPiece() {
+            const { shape, color } = tetrominoes[Math.floor(Math.random() * tetrominoes.length)];
+            currentPiece = { shape, color, x: Math.floor(cols / 2) - 1, y: 0 };
+        }
+
+        function movePiece(dx, dy) {
+            if (canMove(currentPiece, dx, dy)) {
+                currentPiece.x += dx;
+                currentPiece.y += dy;
+            }
+            drawBoard();
+            drawPiece();
+        }
+
+        function dropPiece() {
+            while (canMove(currentPiece, 0, 1)) {
+                currentPiece.y++;
+            }
+            tick();
+        }
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'ArrowLeft') movePiece(-1, 0);
+            if (event.key === 'ArrowRight') movePiece(1, 0);
+            if (event.key === 'ArrowDown') movePiece(0, 1);
+            if (event.key === ' ') dropPiece();
+            if (event.key === 'ArrowUp') rotatePiece();
+        });
+
+        document.getElementById('left-button').addEventListener('click', () => movePiece(-1, 0));
+        document.getElementById('right-button').addEventListener('click', () => movePiece(1, 0));
+        document.getElementById('drop-button').addEventListener('click', () => movePiece(0, 1));
+        document.getElementById('instant-drop-button').addEventListener('click', dropPiece);
+        document.getElementById('rotate-button').addEventListener('click', rotatePiece);
+
+        newPiece();
+        gameInterval = setInterval(tick, 1000);
+        drawBoard();
+        drawPiece();
+    </script>
+</body>
+</html>
