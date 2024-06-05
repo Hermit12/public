@@ -7,14 +7,21 @@
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            font-family: Arial, sans-serif;
         }
 
         canvas {
             border: 5px solid black;
+        }
+
+        .scoreboard {
+            margin-bottom: 10px;
+            font-size: 24px;
         }
 
         .arrow-buttons {
@@ -23,35 +30,41 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
+            flex-direction: column;
+            align-items: center;
         }
 
         .arrow-buttons button {
             margin: 5px;
-            width: 50px;
-            height: 50px;
-            font-size: 24px;
+            width: 60px;
+            height: 60px;
+            font-size: 30px;
+            border-radius: 10px;
+            background-color: #e0e0e0;
+            border: none;
         }
 
-        .up-down {
+        .arrow-row {
             display: flex;
             justify-content: center;
-            align-items: center;
+            width: 100%;
         }
     </style>
 </head>
 <body>
+    <div class="scoreboard">
+        Score: <span id="score">0</span> | High Score: <span id="highScore">0</span>
+    </div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
 
     <div class="arrow-buttons">
-        <div class="up-down">
+        <div class="arrow-row">
             <button id="upButton">&#8593;</button>
         </div>
-        <div>
+        <div class="arrow-row">
             <button id="leftButton">&#8592;</button>
-            <button id="rightButton">&#8594;</button>
-        </div>
-        <div class="up-down">
             <button id="downButton">&#8595;</button>
+            <button id="rightButton">&#8594;</button>
         </div>
     </div>
 
@@ -59,6 +72,8 @@
         // Snake Game JavaScript Code
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const highScoreElement = document.getElementById('highScore');
 
         const cellSize = 20;
         let snake = [{x: 10, y: 10}];
@@ -66,22 +81,25 @@
         let dx = 0;
         let dy = 0;
         let score = 0;
-        let level = 1;
         let speed = 200; // Initial speed
         const speedIncrement = 10; // Speed increment after eating 5 fruits
 
-        function drawCell(x, y) {
+        let highScore = localStorage.getItem('highScore') || 0;
+        highScoreElement.innerText = highScore;
+
+        function drawCell(x, y, color) {
+            ctx.fillStyle = color;
             ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+            ctx.strokeStyle = 'white';
+            ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
         }
 
         function drawSnake() {
-            ctx.fillStyle = 'green';
-            snake.forEach(segment => drawCell(segment.x, segment.y));
+            snake.forEach((segment, index) => drawCell(segment.x, segment.y, index === 0 ? 'darkgreen' : 'green'));
         }
 
         function drawFood() {
-            ctx.fillStyle = 'red';
-            drawCell(food.x, food.y);
+            drawCell(food.x, food.y, 'red');
         }
 
         function moveSnake() {
@@ -90,6 +108,12 @@
 
             if (head.x === food.x && head.y === food.y) {
                 score++;
+                scoreElement.innerText = score;
+                if (score > highScore) {
+                    highScore = score;
+                    localStorage.setItem('highScore', highScore);
+                    highScoreElement.innerText = highScore;
+                }
                 if (score % 5 === 0) {
                     speed -= speedIncrement;
                 }
