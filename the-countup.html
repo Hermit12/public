@@ -89,44 +89,68 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
-            const startTime = new Date('2024-05-13T00:06:12').getTime();
+    const startTime = new Date('2024-05-13T00:06:12');
 
-            function updateTimer() {
-    const currentTime = new Date();
-    const elapsedTime = currentTime - startTime;
+    function isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+    }
 
-    const totalDays = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
-    
-    const years = Math.floor(totalDays / 365);
-    let remainingDays = totalDays % 365;
-    
-    const months = Math.floor(remainingDays / 30);
-    remainingDays = remainingDays % 30;
-    
-    const weeks = Math.floor(remainingDays / 7);
-    const days = remainingDays % 7;
+    function getDaysInMonth(year, month) {
+        const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        if (month === 1 && isLeapYear(year)) {
+            return 29;
+        }
+        return daysInMonth[month];
+    }
 
-    const hours = currentTime.getHours();
-    const minutes = currentTime.getMinutes();
-    const seconds = currentTime.getSeconds();
+    function updateTimer() {
+        const currentTime = new Date();
+        let tempDate = new Date(startTime);
+        let years = 0, months = 0, days = 0, totalDays = 0;
 
-    document.getElementById('years').textContent = years;
-    document.getElementById('months').textContent = months;
-    document.getElementById('weeks').textContent = weeks;
-    document.getElementById('days').textContent = days;
-    document.getElementById('hours').textContent = hours;
-    document.getElementById('minutes').textContent = minutes;
-    document.getElementById('seconds').textContent = seconds;
-    
-    const totalWeeks = Math.floor(totalDays / 7);
-    document.getElementById('weeks-passed').textContent = `Es ist die ${totalWeeks + 1}. Woche`;
-    document.getElementById('days-passed').textContent = `Es ist der ${totalDays + 1}. Tag`;
+        while (tempDate < currentTime) {
+            const daysInCurrentMonth = getDaysInMonth(tempDate.getFullYear(), tempDate.getMonth());
+            if (tempDate.getDate() === daysInCurrentMonth || 
+                (tempDate.getFullYear() === currentTime.getFullYear() && 
+                 tempDate.getMonth() === currentTime.getMonth() && 
+                 tempDate.getDate() === currentTime.getDate())) {
+                tempDate.setMonth(tempDate.getMonth() + 1, 1);
+                months++;
+                if (months === 12) {
+                    years++;
+                    months = 0;
+                }
+            } else {
+                days = (currentTime - tempDate) / (1000 * 60 * 60 * 24);
+                break;
+            }
+            totalDays += daysInCurrentMonth;
+        }
+        totalDays += days;
 
-    requestAnimationFrame(updateTimer);
-}
+        const elapsedTime = currentTime - startTime;
+        const hours = currentTime.getHours();
+        const minutes = currentTime.getMinutes();
+        const seconds = currentTime.getSeconds();
 
-            updateTimer();
-        });
+        const weeksPassed = Math.floor(elapsedTime / (1000 * 60 * 60 * 24 * 7));
+        const currentWeekDay = Math.floor((elapsedTime / (1000 * 60 * 60 * 24)) % 7);
+
+        document.getElementById('years').textContent = Math.floor(years);
+        document.getElementById('months').textContent = Math.floor(months);
+        document.getElementById('weeks').textContent = currentWeekDay;
+        document.getElementById('days').textContent = Math.floor(days);
+        document.getElementById('hours').textContent = hours;
+        document.getElementById('minutes').textContent = minutes;
+        document.getElementById('seconds').textContent = seconds;
+        document.getElementById('weeks-passed').textContent = `Es ist die ${weeksPassed + 1}. Woche`;
+        document.getElementById('days-passed').textContent = `Es ist der ${Math.floor(totalDays) + 1}te Tag`;
+
+        requestAnimationFrame(updateTimer);
+    }
+
+    updateTimer();
+});
     </script>
 </body>
 </html>
