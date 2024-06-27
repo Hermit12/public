@@ -88,35 +88,45 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
-            const startTime = new Date('2024-05-13T00:06:12').getTime();
+    const startTime = new Date('2024-05-13T00:06:12').getTime();
 
-            function updateTimer() {
-                const currentTime = Date.now();
-                const elapsedTime = currentTime - startTime;
+    function updateTimer() {
+        const currentTime = new Date();
+        const elapsedTime = currentTime - startTime;
 
-                const years = Math.floor(elapsedTime / (1000 * 60 * 60 * 24 * 365));
-                const months = Math.floor((elapsedTime % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
-                const weeks = Math.floor(((elapsedTime % (1000 * 60 * 60 * 24 * 365)) % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24 * 7));
-                const days = Math.floor((((elapsedTime % (1000 * 60 * 60 * 24 * 365)) % (1000 * 60 * 60 * 24 * 30)) % (1000 * 60 * 60 * 24 * 7)) / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((elapsedTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
-                const totalDays = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
-
-                document.getElementById('years').textContent = years;
-                document.getElementById('months').textContent = months;
-                document.getElementById('weeks').textContent = weeks;
-                document.getElementById('days').textContent = days;
-                document.getElementById('hours').textContent = hours;
-                document.getElementById('minutes').textContent = minutes;
-                document.getElementById('seconds').textContent = seconds;
-                document.getElementById('days-passed').textContent = `Es ist der ${totalDays+1}te Tag`;
-
-                requestAnimationFrame(updateTimer);
+        const years = currentTime.getFullYear() - new Date(startTime).getFullYear();
+        const months = currentTime.getMonth() - new Date(startTime).getMonth() + (years * 12);
+        
+        let startDate = new Date(startTime);
+        let weeksPassed = 0;
+        while (startDate <= currentTime) {
+            if (startDate.getDay() === 1) { // Monday
+                weeksPassed++;
             }
+            startDate.setDate(startDate.getDate() + 1);
+        }
+        weeksPassed--; // Subtract 1 to not count the current week if it's not complete
 
-            updateTimer();
-        });
+        const days = Math.floor((currentTime - new Date(currentTime.getFullYear(), currentTime.getMonth(), 1)) / (1000 * 60 * 60 * 24));
+        const hours = currentTime.getHours();
+        const minutes = currentTime.getMinutes();
+        const seconds = currentTime.getSeconds();
+        const totalDays = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
+
+        document.getElementById('years').textContent = years;
+        document.getElementById('months').textContent = months % 12;
+        document.getElementById('weeks').textContent = weeksPassed % 4;
+        document.getElementById('days').textContent = days;
+        document.getElementById('hours').textContent = hours;
+        document.getElementById('minutes').textContent = minutes;
+        document.getElementById('seconds').textContent = seconds;
+        document.getElementById('days-passed').textContent = `Es ist der ${totalDays+1}te Tag`;
+
+        requestAnimationFrame(updateTimer);
+    }
+
+    updateTimer();
+});
     </script>
 </body>
 </html>
