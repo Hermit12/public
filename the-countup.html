@@ -88,7 +88,7 @@
         <div class="days-passed" id="days-passed">Es ist der 0te Tag</div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
+       document.addEventListener('DOMContentLoaded', (event) => {
     const startTime = new Date('2024-05-13T00:06:12');
 
     function isLeapYear(year) {
@@ -103,7 +103,7 @@
     function updateTimer() {
         const currentTime = new Date();
         let tempDate = new Date(startTime);
-        let years = 0, months = 0, days = 0, totalDays = 0;
+        let years = 0, months = 0, days = 0, totalDays = -1; // Start at -1 to count the first day as day 0
 
         while (tempDate < currentTime) {
             const daysInCurrentMonth = getDaysInMonth(tempDate.getFullYear(), tempDate.getMonth());
@@ -136,7 +136,7 @@
         document.getElementById('minutes').textContent = minutes;
         document.getElementById('seconds').textContent = seconds;
         document.getElementById('weeks-passed').textContent = `Es ist die ${weeksPassed + 1}. Woche`;
-        document.getElementById('days-passed').textContent = `Es ist der ${totalDays + 1}te Tag`;
+        document.getElementById('days-passed').textContent = `Es ist der ${totalDays}. Tag`; // Removed +1
 
         requestAnimationFrame(updateTimer);
     }
