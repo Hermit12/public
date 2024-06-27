@@ -44,7 +44,7 @@
             font-size: 0.8em;
             color: #666;
         }
-        .days-passed {
+        .weeks-passed, .days-passed {
             font-size: 1.5em;
             margin-top: 20px;
             color: #333;
@@ -84,49 +84,51 @@
                 <div class="label">Sekunden</div>
             </div>
         </div>
-        <div class="days-passed" id="days-passed">Es sind 0 Tage vergangen</div>
+        <div class="weeks-passed" id="weeks-passed">Es ist die 0. Woche</div>
+        <div class="days-passed" id="days-passed">Es ist der 0te Tag</div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
-    const startTime = new Date('2024-05-13T00:06:12').getTime();
+            const startTime = new Date('2024-05-13T00:06:12').getTime();
 
-    function updateTimer() {
-        const currentTime = new Date();
-        const elapsedTime = currentTime - startTime;
+            function updateTimer() {
+                const currentTime = new Date();
+                const elapsedTime = currentTime - startTime;
 
-        const years = currentTime.getFullYear() - new Date(startTime).getFullYear();
-        const months = currentTime.getMonth() - new Date(startTime).getMonth() + (years * 12);
-        
-        let startDate = new Date(startTime);
-        let weeksPassed = 0;
-        while (startDate <= currentTime) {
-            if (startDate.getDay() === 1) { // Monday
-                weeksPassed++;
+                const years = currentTime.getFullYear() - new Date(startTime).getFullYear();
+                const months = currentTime.getMonth() - new Date(startTime).getMonth() + (years * 12);
+                
+                let startDate = new Date(startTime);
+                let weeksPassed = 0;
+                while (startDate <= currentTime) {
+                    if (startDate.getDay() === 1) { // Monday
+                        weeksPassed++;
+                    }
+                    startDate.setDate(startDate.getDate() + 1);
+                }
+                weeksPassed--; // Subtract 1 to not count the current week if it's not complete
+
+                const days = Math.floor((currentTime - new Date(currentTime.getFullYear(), currentTime.getMonth(), 1)) / (1000 * 60 * 60 * 24));
+                const hours = currentTime.getHours();
+                const minutes = currentTime.getMinutes();
+                const seconds = currentTime.getSeconds();
+                const totalDays = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
+
+                document.getElementById('years').textContent = years;
+                document.getElementById('months').textContent = months % 12;
+                document.getElementById('weeks').textContent = weeksPassed % 4;
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours;
+                document.getElementById('minutes').textContent = minutes;
+                document.getElementById('seconds').textContent = seconds;
+                document.getElementById('weeks-passed').textContent = `Es ist die ${weeksPassed + 1}. Woche`;
+                document.getElementById('days-passed').textContent = `Es ist der ${totalDays + 1}te Tag`;
+
+                requestAnimationFrame(updateTimer);
             }
-            startDate.setDate(startDate.getDate() + 1);
-        }
-        weeksPassed--; // Subtract 1 to not count the current week if it's not complete
 
-        const days = Math.floor((currentTime - new Date(currentTime.getFullYear(), currentTime.getMonth(), 1)) / (1000 * 60 * 60 * 24));
-        const hours = currentTime.getHours();
-        const minutes = currentTime.getMinutes();
-        const seconds = currentTime.getSeconds();
-        const totalDays = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
-
-        document.getElementById('years').textContent = years;
-        document.getElementById('months').textContent = months % 12;
-        document.getElementById('weeks').textContent = weeksPassed % 4;
-        document.getElementById('days').textContent = days;
-        document.getElementById('hours').textContent = hours;
-        document.getElementById('minutes').textContent = minutes;
-        document.getElementById('seconds').textContent = seconds;
-        document.getElementById('days-passed').textContent = `Es ist der ${totalDays+1}te Tag`;
-
-        requestAnimationFrame(updateTimer);
-    }
-
-    updateTimer();
-});
+            updateTimer();
+        });
     </script>
 </body>
 </html>
