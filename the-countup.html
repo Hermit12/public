@@ -82,11 +82,11 @@
             z-index: 1;
         }
         .flip-top {
-            animation: flipTop 0.3s ease-out;
+            animation: flipTop 0.3s ease-out forwards;
             transform-origin: bottom;
         }
         .flip-bottom {
-            animation: flipBottom 0.3s ease-in;
+            animation: flipBottom 0.3s ease-in forwards;
             transform-origin: top;
         }
         @keyframes flipTop {
@@ -202,20 +202,20 @@
 
                 const flipTop = document.createElement('div');
                 flipTop.className = 'flip-top';
-                flipTop.textContent = currentValue;
+                flipTop.textContent = newValue;
 
                 const flipBottom = document.createElement('div');
                 flipBottom.className = 'flip-bottom';
-                flipBottom.textContent = newValue;
+                flipBottom.textContent = currentValue;
 
                 flipCard.appendChild(flipTop);
                 flipCard.appendChild(flipBottom);
 
                 setTimeout(() => {
-                    flipTop.remove();
-                    flipBottom.remove();
                     element.querySelector('.top').textContent = newValue;
                     element.querySelector('.bottom').textContent = newValue;
+                    flipTop.remove();
+                    flipBottom.remove();
                 }, 300);
             }
         }
@@ -245,23 +245,28 @@
             const minutes = Math.floor((elapsedSeconds % 3600) / 60);
             const seconds = elapsedSeconds % 60;
 
-            const weeksPassed = Math.floor((elapsedMilliseconds - (6 * 60 * 1000 + 12 * 1000)) / (7 * 24 * 60 * 60 * 1000));
-            days = totalDays % 7;
+            const weeksPassed = Math.floor((elapsedMilliseconds - (years * 365.25 * 24 * 60 * 60 * 1000 + months * 30.4375 * 24 * 60 * 60 * 1000 + days * 24 * 60 * 60 * 1000)) / (7 * 24 * 60 * 60 * 1000));
 
-            animateFlip(document.getElementById('years'), years.toString().padStart(2, '0'));
-            animateFlip(document.getElementById('months'), (months % 12).toString().padStart(2, '0'));
-            animateFlip(document.getElementById('weeks'), (weeksPassed % 4).toString().padStart(2, '0'));
-            animateFlip(document.getElementById('days'), days.toString().padStart(2, '0'));
-            animateFlip(document.getElementById('hours'), hours.toString().padStart(2, '0'));
-            animateFlip(document.getElementById('minutes'), minutes.toString().padStart(2, '0'));
-            animateFlip(document.getElementById('seconds'), seconds.toString().padStart(2, '0'));
+            const timeUnits = [
+                { id: 'years', value: String(years).padStart(2, '0') },
+                { id: 'months', value: String(months % 12).padStart(2, '0') },
+                { id: 'weeks', value: String(weeksPassed).padStart(2, '0') },
+                { id: 'days', value: String(totalDays % 365.25 % 30.4375 % 7).padStart(2, '0') },
+                { id: 'hours', value: String(hours).padStart(2, '0') },
+                { id: 'minutes', value: String(minutes).padStart(2, '0') },
+                { id: 'seconds', value: String(seconds).padStart(2, '0') }
+            ];
 
-            document.getElementById('weeks-passed').textContent = `Es ist die ${weeksPassed + 1}. Woche`;
-            document.getElementById('days-passed').textContent = `Es ist der ${totalDays}. Tag`;
+            timeUnits.forEach(unit => {
+                const element = document.getElementById(unit.id);
+                animateFlip(element, unit.value);
+            });
 
-            requestAnimationFrame(updateTimer);
+            document.getElementById('weeks-passed').textContent = `Es ist die ${weeksPassed}. Woche`;
+            document.getElementById('days-passed').textContent = `Es ist der ${totalDays % 365.25 % 30.4375}te Tag`;
         }
 
+        setInterval(updateTimer, 1000);
         updateTimer();
     });
     </script>
