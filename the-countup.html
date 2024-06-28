@@ -44,15 +44,56 @@
             border-radius: 5px;
             position: relative;
             overflow: hidden;
+            height: 60px;
+            width: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .value::before {
-            content: '';
+        .flip-top, .flip-bottom {
             position: absolute;
-            top: 50%;
             left: 0;
             right: 0;
-            height: 1px;
-            background: rgba(255,255,255,0.2);
+            height: 50%;
+            overflow: hidden;
+            background: #303030;
+        }
+        .flip-top {
+            top: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        .flip-bottom {
+            bottom: 0;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        .flip-top::before, .flip-bottom::after {
+            content: attr(data-value);
+            position: absolute;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .flip-top::before {
+            bottom: 0;
+        }
+        .flip-bottom::after {
+            top: -30px;
+        }
+        .flip-top.flip {
+            animation: flipTop 0.3s ease-in;
+        }
+        .flip-bottom.flip {
+            animation: flipBottom 0.3s ease-out;
+        }
+        @keyframes flipTop {
+            0% { transform: rotateX(0deg); }
+            100% { transform: rotateX(-90deg); }
+        }
+        @keyframes flipBottom {
+            0% { transform: rotateX(90deg); }
+            100% { transform: rotateX(0deg); }
         }
         .label {
             font-size: 0.8em;
@@ -69,31 +110,52 @@
         <div class="title">Days since The Impact</div>
         <div class="timer">
             <div class="time-unit">
-                <div class="value" id="years">00</div>
+                <div class="value" id="years">
+                    <div class="flip-top" data-value="00"></div>
+                    <div class="flip-bottom" data-value="00"></div>
+                </div>
                 <div class="label">Jahre</div>
             </div>
             <div class="time-unit">
-                <div class="value" id="months">00</div>
+                <div class="value" id="months">
+                    <div class="flip-top" data-value="00"></div>
+                    <div class="flip-bottom" data-value="00"></div>
+                </div>
                 <div class="label">Monate</div>
             </div>
             <div class="time-unit">
-                <div class="value" id="weeks">00</div>
+                <div class="value" id="weeks">
+                    <div class="flip-top" data-value="00"></div>
+                    <div class="flip-bottom" data-value="00"></div>
+                </div>
                 <div class="label">Wochen</div>
             </div>
             <div class="time-unit">
-                <div class="value" id="days">00</div>
+                <div class="value" id="days">
+                    <div class="flip-top" data-value="00"></div>
+                    <div class="flip-bottom" data-value="00"></div>
+                </div>
                 <div class="label">Tage</div>
             </div>
             <div class="time-unit">
-                <div class="value" id="hours">00</div>
+                <div class="value" id="hours">
+                    <div class="flip-top" data-value="00"></div>
+                    <div class="flip-bottom" data-value="00"></div>
+                </div>
                 <div class="label">Stunden</div>
             </div>
             <div class="time-unit">
-                <div class="value" id="minutes">00</div>
+                <div class="value" id="minutes">
+                    <div class="flip-top" data-value="00"></div>
+                    <div class="flip-bottom" data-value="00"></div>
+                </div>
                 <div class="label">Minuten</div>
             </div>
             <div class="time-unit">
-                <div class="value" id="seconds">00</div>
+                <div class="value" id="seconds">
+                    <div class="flip-top" data-value="00"></div>
+                    <div class="flip-bottom" data-value="00"></div>
+                </div>
                 <div class="label">Sekunden</div>
             </div>
         </div>
@@ -113,10 +175,27 @@
             return daysInMonth[month];
         }
 
+        function animateFlip(element, newValue) {
+            const currentValue = element.querySelector('.flip-top').getAttribute('data-value');
+            if (currentValue !== newValue) {
+                element.querySelector('.flip-top').setAttribute('data-value', currentValue);
+                element.querySelector('.flip-bottom').setAttribute('data-value', newValue);
+                element.querySelector('.flip-top').classList.add('flip');
+                element.querySelector('.flip-bottom').classList.add('flip');
+
+                setTimeout(() => {
+                    element.querySelector('.flip-top').classList.remove('flip');
+                    element.querySelector('.flip-bottom').classList.remove('flip');
+                    element.querySelector('.flip-top').setAttribute('data-value', newValue);
+                    element.querySelector('.flip-bottom').setAttribute('data-value', newValue);
+                }, 300);
+            }
+        }
+
         function updateTimer() {
             const currentTime = new Date();
             let tempDate = new Date(startTime);
-            let years = 0, months = 0, days = 0, totalDays = -1; // Start at -1 to count the first day as day 0
+            let years = 0, months = 0, days = 0, totalDays = -1;
 
             while (tempDate < currentTime) {
                 const daysInCurrentMonth = getDaysInMonth(tempDate.getFullYear(), tempDate.getMonth());
@@ -141,13 +220,14 @@
             const weeksPassed = Math.floor((elapsedMilliseconds - (6 * 60 * 1000 + 12 * 1000)) / (7 * 24 * 60 * 60 * 1000));
             days = totalDays % 7;
 
-            document.getElementById('years').textContent = years.toString().padStart(2, '0');
-            document.getElementById('months').textContent = (months % 12).toString().padStart(2, '0');
-            document.getElementById('weeks').textContent = (weeksPassed % 4).toString().padStart(2, '0');
-            document.getElementById('days').textContent = days.toString().padStart(2, '0');
-            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            animateFlip(document.getElementById('years'), years.toString().padStart(2, '0'));
+            animateFlip(document.getElementById('months'), (months % 12).toString().padStart(2, '0'));
+            animateFlip(document.getElementById('weeks'), (weeksPassed % 4).toString().padStart(2, '0'));
+            animateFlip(document.getElementById('days'), days.toString().padStart(2, '0'));
+            animateFlip(document.getElementById('hours'), hours.toString().padStart(2, '0'));
+            animateFlip(document.getElementById('minutes'), minutes.toString().padStart(2, '0'));
+            animateFlip(document.getElementById('seconds'), seconds.toString().padStart(2, '0'));
+
             document.getElementById('weeks-passed').textContent = `Es ist die ${weeksPassed + 1}. Woche`;
             document.getElementById('days-passed').textContent = `Es ist der ${totalDays}. Tag`;
 
