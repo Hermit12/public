@@ -101,7 +101,61 @@
         <div class="days-passed" id="days-passed">Es ist der 0te Tag</div>
     </div>
     <script>
-        // Das JavaScript bleibt unverändert
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const startTime = new Date('2024-05-13T00:06:12');
+
+        function isLeapYear(year) {
+            return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        }
+
+        function getDaysInMonth(year, month) {
+            const daysInMonth = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            return daysInMonth[month];
+        }
+
+        function updateTimer() {
+            const currentTime = new Date();
+            let tempDate = new Date(startTime);
+            let years = 0, months = 0, days = 0, totalDays = -1; // Start at -1 to count the first day as day 0
+
+            while (tempDate < currentTime) {
+                const daysInCurrentMonth = getDaysInMonth(tempDate.getFullYear(), tempDate.getMonth());
+                if (tempDate.getDate() === daysInCurrentMonth) {
+                    tempDate.setMonth(tempDate.getMonth() + 1, 1);
+                    if (tempDate.getMonth() === 0) {
+                        years++;
+                    }
+                    months++;
+                } else {
+                    tempDate.setDate(tempDate.getDate() + 1);
+                }
+                totalDays++;
+            }
+
+            const elapsedMilliseconds = currentTime - startTime;
+            const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
+            const hours = Math.floor((elapsedSeconds % (24 * 3600)) / 3600);
+            const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+            const seconds = elapsedSeconds % 60;
+
+            const weeksPassed = Math.floor((elapsedMilliseconds - (6 * 60 * 1000 + 12 * 1000)) / (7 * 24 * 60 * 60 * 1000));
+            days = totalDays % 7;
+
+            document.getElementById('years').textContent = years.toString().padStart(2, '0');
+            document.getElementById('months').textContent = (months % 12).toString().padStart(2, '0');
+            document.getElementById('weeks').textContent = (weeksPassed % 4).toString().padStart(2, '0');
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            document.getElementById('weeks-passed').textContent = `Es ist die ${weeksPassed + 1}. Woche`;
+            document.getElementById('days-passed').textContent = `Es ist der ${totalDays}. Tag`;
+
+            requestAnimationFrame(updateTimer);
+        }
+
+        updateTimer();
+    });
     </script>
 </body>
 </html>
