@@ -44,7 +44,7 @@
             border-radius: 5px;
             position: relative;
             overflow: hidden;
-            height: 60px;
+            height: 80px;
             width: 60px;
             display: flex;
             justify-content: center;
@@ -57,29 +57,19 @@
             height: 50%;
             overflow: hidden;
             background: #303030;
-        }
-        .flip-top {
-            top: 0;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
-        .flip-bottom {
-            bottom: 0;
-            border-top: 1px solid rgba(255,255,255,0.2);
-        }
-        .flip-top::before, .flip-bottom::after {
-            content: attr(data-value);
-            position: absolute;
-            left: 0;
-            right: 0;
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        .flip-top::before {
-            bottom: 0;
+        .flip-top {
+            top: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            transform-origin: bottom;
         }
-        .flip-bottom::after {
-            top: -30px;
+        .flip-bottom {
+            bottom: 0;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            transform-origin: top;
         }
         .flip-top.flip {
             animation: flipTop 0.3s ease-in;
@@ -89,10 +79,10 @@
         }
         @keyframes flipTop {
             0% { transform: rotateX(0deg); }
-            100% { transform: rotateX(-90deg); }
+            100% { transform: rotateX(-180deg); }
         }
         @keyframes flipBottom {
-            0% { transform: rotateX(90deg); }
+            0% { transform: rotateX(180deg); }
             100% { transform: rotateX(0deg); }
         }
         .label {
@@ -111,50 +101,50 @@
         <div class="timer">
             <div class="time-unit">
                 <div class="value" id="years">
-                    <div class="flip-top" data-value="00"></div>
-                    <div class="flip-bottom" data-value="00"></div>
+                    <div class="flip-top">00</div>
+                    <div class="flip-bottom">00</div>
                 </div>
                 <div class="label">Jahre</div>
             </div>
             <div class="time-unit">
                 <div class="value" id="months">
-                    <div class="flip-top" data-value="00"></div>
-                    <div class="flip-bottom" data-value="00"></div>
+                    <div class="flip-top">00</div>
+                    <div class="flip-bottom">00</div>
                 </div>
                 <div class="label">Monate</div>
             </div>
             <div class="time-unit">
                 <div class="value" id="weeks">
-                    <div class="flip-top" data-value="00"></div>
-                    <div class="flip-bottom" data-value="00"></div>
+                    <div class="flip-top">00</div>
+                    <div class="flip-bottom">00</div>
                 </div>
                 <div class="label">Wochen</div>
             </div>
             <div class="time-unit">
                 <div class="value" id="days">
-                    <div class="flip-top" data-value="00"></div>
-                    <div class="flip-bottom" data-value="00"></div>
+                    <div class="flip-top">00</div>
+                    <div class="flip-bottom">00</div>
                 </div>
                 <div class="label">Tage</div>
             </div>
             <div class="time-unit">
                 <div class="value" id="hours">
-                    <div class="flip-top" data-value="00"></div>
-                    <div class="flip-bottom" data-value="00"></div>
+                    <div class="flip-top">00</div>
+                    <div class="flip-bottom">00</div>
                 </div>
                 <div class="label">Stunden</div>
             </div>
             <div class="time-unit">
                 <div class="value" id="minutes">
-                    <div class="flip-top" data-value="00"></div>
-                    <div class="flip-bottom" data-value="00"></div>
+                    <div class="flip-top">00</div>
+                    <div class="flip-bottom">00</div>
                 </div>
                 <div class="label">Minuten</div>
             </div>
             <div class="time-unit">
                 <div class="value" id="seconds">
-                    <div class="flip-top" data-value="00"></div>
-                    <div class="flip-bottom" data-value="00"></div>
+                    <div class="flip-top">00</div>
+                    <div class="flip-bottom">00</div>
                 </div>
                 <div class="label">Sekunden</div>
             </div>
@@ -176,18 +166,22 @@
         }
 
         function animateFlip(element, newValue) {
-            const currentValue = element.querySelector('.flip-top').getAttribute('data-value');
+            const currentValue = element.querySelector('.flip-top').textContent;
             if (currentValue !== newValue) {
-                element.querySelector('.flip-top').setAttribute('data-value', currentValue);
-                element.querySelector('.flip-bottom').setAttribute('data-value', newValue);
-                element.querySelector('.flip-top').classList.add('flip');
-                element.querySelector('.flip-bottom').classList.add('flip');
+                const flipTop = element.querySelector('.flip-top');
+                const flipBottom = element.querySelector('.flip-bottom');
+                
+                flipTop.textContent = currentValue;
+                flipBottom.textContent = newValue;
+                
+                flipTop.classList.add('flip');
+                flipBottom.classList.add('flip');
 
                 setTimeout(() => {
-                    element.querySelector('.flip-top').classList.remove('flip');
-                    element.querySelector('.flip-bottom').classList.remove('flip');
-                    element.querySelector('.flip-top').setAttribute('data-value', newValue);
-                    element.querySelector('.flip-bottom').setAttribute('data-value', newValue);
+                    flipTop.classList.remove('flip');
+                    flipBottom.classList.remove('flip');
+                    flipTop.textContent = newValue;
+                    flipBottom.textContent = newValue;
                 }, 300);
             }
         }
