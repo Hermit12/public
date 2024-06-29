@@ -54,7 +54,6 @@
             background: #333;
             color: #fff;
             text-align: center;
-            line-height: 45px;
             font-size: 40px;
         }
 
@@ -63,11 +62,12 @@
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             border-bottom: 1px solid #666;
+            line-height: 90px;
         }
 
         .bottom {
             bottom: 0;
-            line-height: 0;
+            line-height: 0px;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
         }
@@ -117,65 +117,65 @@
         <div class="timer">
             <div class="flip-clock">
                 <div class="flip-unit" id="years">
-                    <div class="top">0</div>
-                    <div class="bottom">0</div>
+                    <div class="top"></div>
+                    <div class="bottom"></div>
                     <div class="flip-card">
-                        <div class="top">0</div>
-                        <div class="bottom">0</div>
+                        <div class="top"></div>
+                        <div class="bottom"></div>
                     </div>
                     <div class="label">Jahre</div>
                 </div>
                 <div class="flip-unit" id="months">
-                    <div class="top">0</div>
-                    <div class="bottom">0</div>
+                    <div class="top"></div>
+                    <div class="bottom"></div>
                     <div class="flip-card">
-                        <div class="top">0</div>
-                        <div class="bottom">0</div>
+                        <div class="top"></div>
+                        <div class="bottom"></div>
                     </div>
                     <div class="label">Monate</div>
                 </div>
                 <div class="flip-unit" id="weeks">
-                    <div class="top">0</div>
-                    <div class="bottom">0</div>
+                    <div class="top"></div>
+                    <div class="bottom"></div>
                     <div class="flip-card">
-                        <div class="top">0</div>
-                        <div class="bottom">0</div>
+                        <div class="top"></div>
+                        <div class="bottom"></div>
                     </div>
                     <div class="label">Wochen</div>
                 </div>
                 <div class="flip-unit" id="days">
-                    <div class="top">0</div>
-                    <div class="bottom">0</div>
+                    <div class="top"></div>
+                    <div class="bottom"></div>
                     <div class="flip-card">
-                        <div class="top">0</div>
-                        <div class="bottom">0</div>
+                        <div class="top"></div>
+                        <div class="bottom"></div>
                     </div>
                     <div class="label">Tage</div>
                 </div>
                 <div class="flip-unit" id="hours">
-                    <div class="top">0</div>
-                    <div class="bottom">0</div>
+                    <div class="top"></div>
+                    <div class="bottom"></div>
                     <div class="flip-card">
-                        <div class="top">0</div>
-                        <div class="bottom">0</div>
+                        <div class="top"></div>
+                        <div class="bottom"></div>
                     </div>
                     <div class="label">Stunden</div>
                 </div>
                 <div class="flip-unit" id="minutes">
-                    <div class="top">0</div>
-                    <div class="bottom">0</div>
+                    <div class="top"></div>
+                    <div class="bottom"></div>
                     <div class="flip-card">
-                        <div class="top">0</div>
-                        <div class="bottom">0</div>
+                        <div class="top"></div>
+                        <div class="bottom"></div>
                     </div>
                     <div class="label">Minuten</div>
                 </div>
                 <div class="flip-unit" id="seconds">
-                    <div class="top">0</div>
-                    <div class="bottom">0</div>
+                    <div class="top"></div>
+                    <div class="bottom"></div>
                     <div class="flip-card">
-                        <div class="top">0</div>
-                        <div class="bottom">0</div>
+                        <div class="top"></div>
+                        <div class="bottom"></div>
                     </div>
                     <div class="label">Sekunden</div>
                 </div>
@@ -185,82 +185,85 @@
         <div class="days-passed" id="days-passed">Es ist der 0te Tag</div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const startTime = new Date('2024-05-13T00:06:12');
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const startTime = new Date('2024-05-13T00:06:12');
 
-            function isLeapYear(year) {
-                return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
-            }
+        function isLeapYear(year) {
+            return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        }
 
-            function getDaysInMonth(year, month) {
-                const daysInMonth = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-                return daysInMonth[month];
-            }
+        function getDaysInMonth(year, month) {
+            const daysInMonth = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            return daysInMonth[month];
+        }
 
-            function flip(element, newValue) {
-                const currentValue = element.querySelector('.top').textContent;
-                if (currentValue === newValue.toString()) return;
+        function flip(element, newValue) {
+            newValue = newValue.toString().padStart(2, '0');
+            const currentTop = element.querySelector('.top').textContent;
+            const currentBottom = element.querySelector('.bottom').textContent;
+            
+            if (currentTop === newValue.charAt(0) && currentBottom === newValue.charAt(1)) return;
 
-                const flipCard = element.querySelector('.flip-card');
-                const topHalf = flipCard.querySelector('.top');
-                const bottomHalf = flipCard.querySelector('.bottom');
+            const flipCard = element.querySelector('.flip-card');
+            const topHalf = flipCard.querySelector('.top');
+            const bottomHalf = flipCard.querySelector('.bottom');
 
-                topHalf.textContent = currentValue;
-                bottomHalf.textContent = newValue;
+            topHalf.textContent = newValue.charAt(0);
+            bottomHalf.textContent = newValue.charAt(1);
 
-                flipCard.classList.add('flipped');
+            flipCard.classList.add('flipped');
 
-                setTimeout(() => {
-                    element.querySelector('.top').textContent = newValue;
-                    element.querySelector('.bottom').textContent = newValue;
-                    flipCard.classList.remove('flipped');
-                }, 500);
-            }
+            setTimeout(() => {
+                element.querySelector('.top').textContent = newValue.charAt(0);
+                element.querySelector('.bottom').textContent = newValue.charAt(1);
+                flipCard.classList.remove('flipped');
+            }, 500);
+        }
 
-            function updateTimer() {
-                const currentTime = new Date();
-                let tempDate = new Date(startTime);
-                let years = 0, months = 0, days = 0, totalDays = -1;
+        function updateTimer() {
+            const currentTime = new Date();
+            let tempDate = new Date(startTime);
+            let years = 0, months = 0, days = 0, totalDays = -1;
 
-                while (tempDate < currentTime) {
-                    const daysInCurrentMonth = getDaysInMonth(tempDate.getFullYear(), tempDate.getMonth());
-                    if (tempDate.getDate() === daysInCurrentMonth) {
-                        tempDate.setMonth(tempDate.getMonth() + 1, 1);
-                        if (tempDate.getMonth() === 0) {
-                            years++;
-                        }
-                        months++;
-                    } else {
-                        tempDate.setDate(tempDate.getDate() + 1);
+            while (tempDate < currentTime) {
+                const daysInCurrentMonth = getDaysInMonth(tempDate.getFullYear(), tempDate.getMonth());
+                if (tempDate.getDate() === daysInCurrentMonth) {
+                    tempDate.setMonth(tempDate.getMonth() + 1, 1);
+                    if (tempDate.getMonth() === 0) {
+                        years++;
                     }
-                    totalDays++;
+                    months++;
+                } else {
+                    tempDate.setDate(tempDate.getDate() + 1);
                 }
-
-                const elapsedMilliseconds = currentTime - startTime;
-                const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
-                const hours = Math.floor((elapsedSeconds % (24 * 3600)) / 3600);
-                const minutes = Math.floor((elapsedSeconds % 3600) / 60);
-                const seconds = elapsedSeconds % 60;
-
-                const weeksPassed = Math.floor((elapsedMilliseconds - (6 * 60 * 1000 + 12 * 1000)) / (7 * 24 * 60 * 60 * 1000));
-                days = totalDays % 7;
-
-                flip(document.getElementById('years'), years);
-                flip(document.getElementById('months'), months % 12);
-                flip(document.getElementById('weeks'), weeksPassed % 4);
-                flip(document.getElementById('days'), days);
-                flip(document.getElementById('hours'), hours);
-                flip(document.getElementById('minutes'), minutes);
-                flip(document.getElementById('seconds'), seconds);
-
-                document.getElementById('weeks-passed').textContent = `Es ist die ${weeksPassed + 1}. Woche`;
-                document.getElementById('days-passed').textContent = `Es ist der ${totalDays}. Tag`;
-
-                requestAnimationFrame(updateTimer);
+                totalDays++;
             }
 
-            updateTimer();
-        });
+            const elapsedMilliseconds = currentTime - startTime;
+            const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
+            const hours = Math.floor((elapsedSeconds % (24 * 3600)) / 3600);
+            const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+            const seconds = elapsedSeconds % 60;
+
+            const weeksPassed = Math.floor((elapsedMilliseconds - (6 * 60 * 1000 + 12 * 1000)) / (7 * 24 * 60 * 60 * 1000));
+            days = totalDays % 7;
+
+            flip(document.getElementById('years'), years);
+            flip(document.getElementById('months'), months % 12);
+            flip(document.getElementById('weeks'), weeksPassed % 4);
+            flip(document.getElementById('days'), days);
+            flip(document.getElementById('hours'), hours);
+            flip(document.getElementById('minutes'), minutes);
+            flip(document.getElementById('seconds'), seconds);
+
+            document.getElementById('weeks-passed').textContent = `Es ist die ${weeksPassed + 1}. Woche`;
+            document.getElementById('days-passed').textContent = `Es ist der ${totalDays}. Tag`;
+
+            requestAnimationFrame(updateTimer);
+        }
+
+        updateTimer();
+    });
     </script>
 </body>
 </html>
