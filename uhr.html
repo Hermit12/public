@@ -39,27 +39,39 @@
             position: relative;
             overflow: hidden;
         }
-        .time-card::before, .time-card::after {
-            content: '';
+        .time-card-top,
+        .time-card-bottom {
             position: absolute;
             left: 0;
             right: 0;
             height: 50%;
-            background-color: #333;
-            z-index: 1;
+            overflow: hidden;
+            background-color: #222;
         }
-        .time-card::before {
+        .time-card-top {
+            top: 0;
+            border-bottom: 1px solid #333;
+        }
+        .time-card-bottom {
+            bottom: 0;
+            line-height: 0;
+        }
+        .time-card-flip {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background-color: #222;
+            overflow: hidden;
+        }
+        .time-card-flip-top {
             top: 0;
             transform-origin: bottom;
-        }
-        .time-card::after {
-            bottom: 0;
-            transform-origin: top;
-        }
-        .time-card.flip::before {
             animation: flipTop 0.3s ease-in;
         }
-        .time-card.flip::after {
+        .time-card-flip-bottom {
+            bottom: 0;
+            transform-origin: top;
             animation: flipBottom 0.3s ease-out 0.3s;
         }
         @keyframes flipTop {
@@ -82,15 +94,24 @@
     <div class="clock">
         <div class="time-container">
             <div class="time-section">
-                <div id="hours" class="time-card">00</div>
+                <div id="hours" class="time-card">
+                    <div class="time-card-top"></div>
+                    <div class="time-card-bottom"></div>
+                </div>
                 <div class="time-label">Stunden</div>
             </div>
             <div class="time-section">
-                <div id="minutes" class="time-card">00</div>
+                <div id="minutes" class="time-card">
+                    <div class="time-card-top"></div>
+                    <div class="time-card-bottom"></div>
+                </div>
                 <div class="time-label">Minuten</div>
             </div>
             <div class="time-section">
-                <div id="seconds" class="time-card">00</div>
+                <div id="seconds" class="time-card">
+                    <div class="time-card-top"></div>
+                    <div class="time-card-bottom"></div>
+                </div>
                 <div class="time-label">Sekunden</div>
             </div>
         </div>
@@ -107,11 +128,36 @@
         function updateTimeSection(id, value) {
             const element = document.getElementById(id);
             const newValue = String(value).padStart(2, '0');
-            if (element.textContent !== newValue) {
-                element.classList.add('flip');
-                element.textContent = newValue;
-                setTimeout(() => element.classList.remove('flip'), 600);
+            if (element.dataset.value !== newValue) {
+                flipCard(element, newValue);
+                element.dataset.value = newValue;
             }
+        }
+
+        function flipCard(element, newValue) {
+            const topHalf = element.querySelector('.time-card-top');
+            const bottomHalf = element.querySelector('.time-card-bottom');
+            
+            const flipTop = document.createElement('div');
+            flipTop.classList.add('time-card-flip', 'time-card-flip-top');
+            flipTop.textContent = element.dataset.value || '00';
+            
+            const flipBottom = document.createElement('div');
+            flipBottom.classList.add('time-card-flip', 'time-card-flip-bottom');
+            flipBottom.textContent = newValue;
+
+            element.appendChild(flipTop);
+            element.appendChild(flipBottom);
+
+            flipTop.addEventListener('animationend', () => {
+                topHalf.textContent = newValue;
+                element.removeChild(flipTop);
+            });
+
+            flipBottom.addEventListener('animationend', () => {
+                bottomHalf.textContent = newValue;
+                element.removeChild(flipBottom);
+            });
         }
 
         setInterval(updateTime, 1000);
