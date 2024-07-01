@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVG Flip-Wecker Uhr</title>
+    <title>Realistische Flip-Wecker Uhr</title>
     <style>
         body {
             display: flex;
@@ -33,6 +33,46 @@
         .time-card {
             width: 160px;
             height: 160px;
+            position: relative;
+            perspective: 1000px;
+            background-color: #222;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .flip-card {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            left: 0;
+            overflow: hidden;
+        }
+        .flip-card.top {
+            top: 0;
+            transform-origin: bottom;
+        }
+        .flip-card.bottom {
+            bottom: 0;
+        }
+        .flip-card-inner {
+            position: absolute;
+            width: 100%;
+            height: 200%;
+            left: 0;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            background-color: #222;
+            color: white;
+            font-size: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flip-card.top .flip-card-inner {
+            top: 0;
+        }
+        .flip-card.bottom .flip-card-inner {
+            bottom: 0;
         }
         .time-label {
             font-size: 24px;
@@ -46,130 +86,70 @@
     <div class="clock">
         <div class="time-container">
             <div class="time-section">
-                <svg id="hours" class="time-card" viewBox="0 0 160 160"></svg>
+                <div id="hours" class="time-card">
+                    <div class="flip-card top"><div class="flip-card-inner">00</div></div>
+                    <div class="flip-card bottom"><div class="flip-card-inner">00</div></div>
+                </div>
                 <div class="time-label">Stunden</div>
             </div>
             <div class="time-section">
-                <svg id="minutes" class="time-card" viewBox="0 0 160 160"></svg>
+                <div id="minutes" class="time-card">
+                    <div class="flip-card top"><div class="flip-card-inner">00</div></div>
+                    <div class="flip-card bottom"><div class="flip-card-inner">00</div></div>
+                </div>
                 <div class="time-label">Minuten</div>
             </div>
             <div class="time-section">
-                <svg id="seconds" class="time-card" viewBox="0 0 160 160"></svg>
+                <div id="seconds" class="time-card">
+                    <div class="flip-card top"><div class="flip-card-inner">00</div></div>
+                    <div class="flip-card bottom"><div class="flip-card-inner">00</div></div>
+                </div>
                 <div class="time-label">Sekunden</div>
             </div>
         </div>
     </div>
 
     <script>
-        function createFlipCard(svgElement) {
-            const ns = "http://www.w3.org/2000/svg";
-            
-            const backRect = document.createElementNS(ns, "rect");
-            backRect.setAttribute("width", "160");
-            backRect.setAttribute("height", "160");
-            backRect.setAttribute("fill", "#222");
-            svgElement.appendChild(backRect);
+        function flipCard(cardElement, newValue) {
+            const topFlip = cardElement.querySelector('.flip-card.top');
+            const bottomFlip = cardElement.querySelector('.flip-card.bottom');
+            const topInner = topFlip.querySelector('.flip-card-inner');
+            const bottomInner = bottomFlip.querySelector('.flip-card-inner');
 
-            const topHalf = document.createElementNS(ns, "g");
-            const bottomHalf = document.createElementNS(ns, "g");
-            
-            const topClip = document.createElementNS(ns, "clipPath");
-            topClip.id = `${svgElement.id}-top-clip`;
-            const topClipRect = document.createElementNS(ns, "rect");
-            topClipRect.setAttribute("width", "160");
-            topClipRect.setAttribute("height", "80");
-            topClip.appendChild(topClipRect);
-            svgElement.appendChild(topClip);
+            // Set the new value to the bottom card (which will become visible)
+            bottomInner.textContent = newValue;
 
-            const bottomClip = document.createElementNS(ns, "clipPath");
-            bottomClip.id = `${svgElement.id}-bottom-clip`;
-            const bottomClipRect = document.createElementNS(ns, "rect");
-            bottomClipRect.setAttribute("y", "80");
-            bottomClipRect.setAttribute("width", "160");
-            bottomClipRect.setAttribute("height", "80");
-            bottomClip.appendChild(bottomClipRect);
-            svgElement.appendChild(bottomClip);
+            // Animate the flip
+            topFlip.style.transform = 'rotateX(-180deg)';
+            topFlip.style.transition = 'transform 0.3s ease-in';
 
-            topHalf.setAttribute("clip-path", `url(#${svgElement.id}-top-clip)`);
-            bottomHalf.setAttribute("clip-path", `url(#${svgElement.id}-bottom-clip)`);
+            // After the flip animation completes
+            setTimeout(() => {
+                topFlip.style.transition = 'none';
+                topFlip.style.transform = 'rotateX(0deg)';
+                topInner.textContent = newValue;
+                bottomInner.textContent = newValue;
 
-            const topRect = document.createElementNS(ns, "rect");
-            topRect.setAttribute("width", "160");
-            topRect.setAttribute("height", "160");
-            topRect.setAttribute("fill", "#333");
-            topHalf.appendChild(topRect);
-
-            const bottomRect = document.createElementNS(ns, "rect");
-            bottomRect.setAttribute("width", "160");
-            bottomRect.setAttribute("height", "160");
-            bottomRect.setAttribute("fill", "#333");
-            bottomHalf.appendChild(bottomRect);
-
-            const topText = document.createElementNS(ns, "text");
-            topText.setAttribute("x", "80");
-            topText.setAttribute("y", "100");
-            topText.setAttribute("text-anchor", "middle");
-            topText.setAttribute("font-size", "120");
-            topText.setAttribute("fill", "white");
-            topHalf.appendChild(topText);
-
-            const bottomText = document.createElementNS(ns, "text");
-            bottomText.setAttribute("x", "80");
-            bottomText.setAttribute("y", "100");
-            bottomText.setAttribute("text-anchor", "middle");
-            bottomText.setAttribute("font-size", "120");
-            bottomText.setAttribute("fill", "white");
-            bottomHalf.appendChild(bottomText);
-
-            svgElement.appendChild(bottomHalf);
-            svgElement.appendChild(topHalf);
-
-            return { topHalf, bottomHalf, topText, bottomText };
+                // Prepare for the next flip
+                setTimeout(() => {
+                    topFlip.style.transition = 'transform 0.3s ease-in';
+                }, 20);
+            }, 300);
         }
-
-        function flipCard(card, newValue) {
-            const { topHalf, bottomHalf, topText, bottomText } = card;
-            const oldValue = topText.textContent;
-
-            if (oldValue === newValue) return;
-
-            bottomText.textContent = newValue;
-
-            const flipAnimation = topHalf.animate([
-                { transform: 'rotateX(0deg)', transformOrigin: 'bottom' },
-                { transform: 'rotateX(-90deg)', transformOrigin: 'bottom' }
-            ], {
-                duration: 300,
-                easing: 'ease-in'
-            });
-
-            flipAnimation.onfinish = () => {
-                topText.textContent = newValue;
-                const flipBackAnimation = topHalf.animate([
-                    { transform: 'rotateX(-90deg)', transformOrigin: 'bottom' },
-                    { transform: 'rotateX(0deg)', transformOrigin: 'bottom' }
-                ], {
-                    duration: 300,
-                    easing: 'ease-out'
-                });
-            };
-        }
-
-        const cards = {
-            hours: createFlipCard(document.getElementById('hours')),
-            minutes: createFlipCard(document.getElementById('minutes')),
-            seconds: createFlipCard(document.getElementById('seconds'))
-        };
 
         function updateTime() {
             const now = new Date();
-            flipCard(cards.hours, String(now.getHours()).padStart(2, '0'));
-            flipCard(cards.minutes, String(now.getMinutes()).padStart(2, '0'));
-            flipCard(cards.seconds, String(now.getSeconds()).padStart(2, '0'));
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            flipCard(document.getElementById('hours'), hours);
+            flipCard(document.getElementById('minutes'), minutes);
+            flipCard(document.getElementById('seconds'), seconds);
         }
 
         setInterval(updateTime, 1000);
-        updateTime();
+        updateTime(); // Initial call
     </script>
 </body>
 </html>
