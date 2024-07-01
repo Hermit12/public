@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flip-Wecker Uhr</title>
+    <title>Flip Clock</title>
     <style>
         body {
             display: flex;
@@ -14,73 +14,100 @@
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
         }
-        .clock {
-            background-color: #ffa500;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.2);
-        }
-        .time-container {
-            background-color: #333;
-            border-radius: 10px;
+        .flip-clock {
+            display: flex;
+            background-color: #ffd700;
             padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-        .time-section {
-            margin: 0 10px;
-        }
-        .time-card {
-            width: 120px;
-            height: 160px;
-            background-color: #222;
             border-radius: 10px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
-        .time-card-half {
-            height: 50%;
+        .flip-unit-container {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 80px;
+            position: relative;
+            width: 140px;
+            height: 120px;
+            perspective: 300px;
+            margin: 0 5px;
+        }
+        .flip-unit {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            font-size: 5em;
+            background: #333;
             color: white;
-        }
-        .time-card-half:first-child {
-            border-bottom: 1px solid #333;
-        }
-        .time-label {
-            font-size: 24px;
-            color: #fff;
+            line-height: 115px;
             text-align: center;
-            margin-top: 10px;
+        }
+        .upper {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            overflow: hidden;
+        }
+        .lower {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50%;
+            overflow: hidden;
+        }
+        .flip-animation {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            overflow: hidden;
+            backface-visibility: hidden;
+            transform-origin: 50% 100%;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg);
+            transition: transform 0.5s ease-in-out;
+        }
+        .flip-animation.flipped {
+            transform: rotateX(-180deg);
+        }
+        .flip-content {
+            position: absolute;
+            width: 100%;
+            height: 200%;
         }
     </style>
 </head>
 <body>
-    <div class="clock">
-        <div class="time-container">
-            <div class="time-section">
-                <div id="hours" class="time-card">
-                    <div class="time-card-half">00</div>
-                    <div class="time-card-half">00</div>
+    <div class="flip-clock">
+        <div class="flip-unit-container" id="hours">
+            <div class="flip-unit">
+                <div class="upper">00</div>
+                <div class="lower">00</div>
+                <div class="flip-animation">
+                    <div class="flip-content">
+                        <div class="upper">00</div>
+                        <div class="lower">00</div>
+                    </div>
                 </div>
-                <div class="time-label">Stunden</div>
             </div>
-            <div class="time-section">
-                <div id="minutes" class="time-card">
-                    <div class="time-card-half">00</div>
-                    <div class="time-card-half">00</div>
+        </div>
+        <div class="flip-unit-container" id="minutes">
+            <div class="flip-unit">
+                <div class="upper">00</div>
+                <div class="lower">00</div>
+                <div class="flip-animation">
+                    <div class="flip-content">
+                        <div class="upper">00</div>
+                        <div class="lower">00</div>
+                    </div>
                 </div>
-                <div class="time-label">Minuten</div>
             </div>
-            <div class="time-section">
-                <div id="seconds" class="time-card">
-                    <div class="time-card-half">00</div>
-                    <div class="time-card-half">00</div>
+        </div>
+        <div class="flip-unit-container" id="seconds">
+            <div class="flip-unit">
+                <div class="upper">00</div>
+                <div class="lower">00</div>
+                <div class="flip-animation">
+                    <div class="flip-content">
+                        <div class="upper">00</div>
+                        <div class="lower">00</div>
+                    </div>
                 </div>
-                <div class="time-label">Sekunden</div>
             </div>
         </div>
     </div>
@@ -88,17 +115,35 @@
     <script>
         function updateTime() {
             const now = new Date();
-            updateTimeSection('hours', now.getHours());
-            updateTimeSection('minutes', now.getMinutes());
-            updateTimeSection('seconds', now.getSeconds());
+            updateUnit('hours', now.getHours());
+            updateUnit('minutes', now.getMinutes());
+            updateUnit('seconds', now.getSeconds());
         }
 
-        function updateTimeSection(id, value) {
-            const element = document.getElementById(id);
-            const newValue = String(value).padStart(2, '0');
-            const halves = element.querySelectorAll('.time-card-half');
-            halves[0].textContent = newValue[0];
-            halves[1].textContent = newValue[1];
+        function updateUnit(unitId, value) {
+            value = value.toString().padStart(2, '0');
+            const unit = document.getElementById(unitId);
+            const currentValue = unit.querySelector('.upper').textContent;
+            
+            if (currentValue !== value) {
+                const upper = unit.querySelector('.upper');
+                const lower = unit.querySelector('.lower');
+                const flipAnimation = unit.querySelector('.flip-animation');
+                const flipContent = flipAnimation.querySelector('.flip-content');
+
+                upper.textContent = currentValue;
+                lower.textContent = currentValue;
+                flipContent.querySelector('.upper').textContent = value;
+                flipContent.querySelector('.lower').textContent = value;
+
+                flipAnimation.classList.add('flipped');
+
+                setTimeout(() => {
+                    upper.textContent = value;
+                    lower.textContent = value;
+                    flipAnimation.classList.remove('flipped');
+                }, 500);
+            }
         }
 
         setInterval(updateTime, 1000);
