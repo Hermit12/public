@@ -44,11 +44,6 @@
             font-size: 0.8em;
             color: #666;
         }
-        .weeks-passed, .days-passed {
-            font-size: 1.5em;
-            margin-top: 20px;
-            color: #333;
-        }
     </style>
 </head>
 <body>
@@ -143,11 +138,12 @@
 
         const totalDays = Math.floor((endTime - currentTime) / (1000 * 60 * 60 * 24));
         const weeks = Math.floor(totalDays / 7);
+        const remainingDays = totalDays % 7;
 
         document.getElementById('years').textContent = years;
         document.getElementById('months').textContent = months;
         document.getElementById('weeks').textContent = weeks;
-        document.getElementById('days').textContent = days % 7;
+        document.getElementById('days').textContent = remainingDays;
         document.getElementById('hours').textContent = hours;
         document.getElementById('minutes').textContent = minutes;
         document.getElementById('seconds').textContent = seconds;
