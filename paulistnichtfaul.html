@@ -59,10 +59,6 @@
                 <div class="label">Monate</div>
             </div>
             <div class="time-unit">
-                <div class="value" id="weeks">0</div>
-                <div class="label">Wochen</div>
-            </div>
-            <div class="time-unit">
                 <div class="value" id="days">0</div>
                 <div class="label">Tage</div>
             </div>
@@ -89,61 +85,42 @@
             }
 
             function getDaysInMonth(year, month) {
-                const daysInMonth = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-                return daysInMonth[month];
+                return new Date(year, month + 1, 0).getDate();
             }
 
             function updateTimer() {
                 const currentTime = new Date();
                 if (currentTime >= endTime) {
-                    document.getElementById('years').textContent = 0;
-                    document.getElementById('months').textContent = 0;
-                    document.getElementById('weeks').textContent = 0;
-                    document.getElementById('days').textContent = 0;
-                    document.getElementById('hours').textContent = 0;
-                    document.getElementById('minutes').textContent = 0;
-                    document.getElementById('seconds').textContent = 0;
+                    document.querySelectorAll('.value').forEach(el => el.textContent = '0');
                     return;
                 }
 
-                let tempDate = new Date(currentTime);
-                let years = endTime.getFullYear() - tempDate.getFullYear();
-                let months = endTime.getMonth() - tempDate.getMonth();
-                let days = endTime.getDate() - tempDate.getDate();
-                let hours = endTime.getHours() - tempDate.getHours();
-                let minutes = endTime.getMinutes() - tempDate.getMinutes();
-                let seconds = endTime.getSeconds() - tempDate.getSeconds();
-
-                if (seconds < 0) {
-                    seconds += 60;
-                    minutes--;
-                }
-                if (minutes < 0) {
-                    minutes += 60;
-                    hours--;
-                }
-                if (hours < 0) {
-                    hours += 24;
-                    days--;
-                }
-                if (days < 0) {
-                    months--;
-                    tempDate.setMonth(tempDate.getMonth() + 1, 0); // Set to last day of the previous month
-                    days += getDaysInMonth(tempDate.getFullYear(), tempDate.getMonth());
-                }
+                let remaining = endTime - currentTime;
+                
+                const years = endTime.getFullYear() - currentTime.getFullYear();
+                let months = endTime.getMonth() - currentTime.getMonth();
                 if (months < 0) {
                     months += 12;
-                    years--;
                 }
 
-                let totalDays = Math.floor((endTime - currentTime) / (1000 * 60 * 60 * 24));
-                const totalWeeks = Math.floor(totalDays / 7);
-                totalDays %= 7;
+                let tempDate = new Date(currentTime);
+                tempDate.setFullYear(tempDate.getFullYear() + years);
+                tempDate.setMonth(tempDate.getMonth() + months);
+
+                let days = 0;
+                while (tempDate < endTime) {
+                    days++;
+                    tempDate.setDate(tempDate.getDate() + 1);
+                }
+                days--;
+
+                const hours = Math.floor(remaining / (1000 * 60 * 60)) % 24;
+                const minutes = Math.floor(remaining / (1000 * 60)) % 60;
+                const seconds = Math.floor(remaining / 1000) % 60;
 
                 document.getElementById('years').textContent = years;
                 document.getElementById('months').textContent = months;
-                document.getElementById('weeks').textContent = totalWeeks;
-                document.getElementById('days').textContent = totalDays;
+                document.getElementById('days').textContent = days;
                 document.getElementById('hours').textContent = hours;
                 document.getElementById('minutes').textContent = minutes;
                 document.getElementById('seconds').textContent = seconds;
