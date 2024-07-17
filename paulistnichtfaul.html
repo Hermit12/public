@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background: #f0f0f0;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        .title {
+            font-size: 2em;
+            margin-bottom: 40px;
+            color: #333;
+        }
+        .timer {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .time-unit {
+            margin: 10px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .value {
+            font-size: 2em;
+        }
+        .label {
+            font-size: 0.8em;
+            color: #666;
+        }
+        .weeks-passed, .days-passed {
+            font-size: 1.5em;
+            margin-top: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Countdown bis zum 1. September 2030</div>
+        <div class="timer">
+            <div class="time-unit">
+                <div class="value" id="years">0</div>
+                <div class="label">Jahre</div>
+            </div>
+            <div class="time-unit">
+                <div class="value" id="months">0</div>
+                <div class="label">Monate</div>
+            </div>
+            <div class="time-unit">
+                <div class="value" id="weeks">0</div>
+                <div class="label">Wochen</div>
+            </div>
+            <div class="time-unit">
+                <div class="value" id="days">0</div>
+                <div class="label">Tage</div>
+            </div>
+            <div class="time-unit">
+                <div class="value" id="hours">0</div>
+                <div class="label">Stunden</div>
+            </div>
+            <div class="time-unit">
+                <div class="value" id="minutes">0</div>
+                <div class="label">Minuten</div>
+            </div>
+            <div class="time-unit">
+                <div class="value" id="seconds">0</div>
+                <div class="label">Sekunden</div>
+            </div>
+        </div>
+    </div>
+    <script>
+       document.addEventListener('DOMContentLoaded', (event) => {
+    const endTime = new Date('2030-09-01T00:00:00');
+
+    function isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+    }
+
+    function getDaysInMonth(year, month) {
+        const daysInMonth = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        return daysInMonth[month];
+    }
+
+    function updateTimer() {
+        const currentTime = new Date();
+        if (currentTime >= endTime) {
+            document.getElementById('years').textContent = 0;
+            document.getElementById('months').textContent = 0;
+            document.getElementById('weeks').textContent = 0;
+            document.getElementById('days').textContent = 0;
+            document.getElementById('hours').textContent = 0;
+            document.getElementById('minutes').textContent = 0;
+            document.getElementById('seconds').textContent = 0;
+            return;
+        }
+
+        let tempDate = new Date(currentTime);
+        let years = endTime.getFullYear() - tempDate.getFullYear();
+        let months = endTime.getMonth() - tempDate.getMonth();
+        let days = endTime.getDate() - tempDate.getDate();
+        let hours = endTime.getHours() - tempDate.getHours();
+        let minutes = endTime.getMinutes() - tempDate.getMinutes();
+        let seconds = endTime.getSeconds() - tempDate.getSeconds();
+
+        if (seconds < 0) {
+            seconds += 60;
+            minutes--;
+        }
+        if (minutes < 0) {
+            minutes += 60;
+            hours--;
+        }
+        if (hours < 0) {
+            hours += 24;
+            days--;
+        }
+        if (days < 0) {
+            months--;
+            tempDate.setMonth(tempDate.getMonth() + 1, 0); // Set to last day of the previous month
+            days += getDaysInMonth(tempDate.getFullYear(), tempDate.getMonth());
+        }
+        if (months < 0) {
+            months += 12;
+            years--;
+        }
+
+        const totalDays = Math.floor((endTime - currentTime) / (1000 * 60 * 60 * 24));
+        const weeks = Math.floor(totalDays / 7);
+
+        document.getElementById('years').textContent = years;
+        document.getElementById('months').textContent = months;
+        document.getElementById('weeks').textContent = weeks;
+        document.getElementById('days').textContent = days % 7;
+        document.getElementById('hours').textContent = hours;
+        document.getElementById('minutes').textContent = minutes;
+        document.getElementById('seconds').textContent = seconds;
+
+        requestAnimationFrame(updateTimer);
+    }
+
+    updateTimer();
+});
+    </script>
+</body>
+</html>
