@@ -44,6 +44,19 @@
             font-size: 0.8em;
             color: #666;
         }
+        .total-days {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .motivation {
+            margin-top: 25px;
+            font-size: 1.8em;
+            color: #4a4a4a;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
@@ -75,6 +88,8 @@
                 <div class="label">Sekunden</div>
             </div>
         </div>
+        <div class="total-days" id="totalDays"></div>
+        <div class="motivation">Du schaffst das!</div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
@@ -92,6 +107,7 @@
                 const currentTime = new Date();
                 if (currentTime >= endTime) {
                     document.querySelectorAll('.value').forEach(el => el.textContent = '0');
+                    document.getElementById('totalDays').textContent = 'Das sind noch 0 Tage';
                     return;
                 }
 
@@ -118,12 +134,15 @@
                 const minutes = Math.floor(remaining / (1000 * 60)) % 60;
                 const seconds = Math.floor(remaining / 1000) % 60;
 
+                const totalDays = Math.ceil(remaining / (1000 * 60 * 60 * 24));
+
                 document.getElementById('years').textContent = years;
                 document.getElementById('months').textContent = months;
                 document.getElementById('days').textContent = days;
                 document.getElementById('hours').textContent = hours;
                 document.getElementById('minutes').textContent = minutes;
                 document.getElementById('seconds').textContent = seconds;
+                document.getElementById('totalDays').textContent = `Das sind noch ${totalDays} Tage`;
 
                 requestAnimationFrame(updateTimer);
             }
