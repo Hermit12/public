@@ -81,78 +81,78 @@
         </div>
     </div>
     <script>
-       document.addEventListener('DOMContentLoaded', (event) => {
-    const endTime = new Date('2030-09-01T00:00:00');
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const endTime = new Date('2030-09-30T00:00:00');
 
-    function isLeapYear(year) {
-        return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
-    }
+            function isLeapYear(year) {
+                return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+            }
 
-    function getDaysInMonth(year, month) {
-        const daysInMonth = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        return daysInMonth[month];
-    }
+            function getDaysInMonth(year, month) {
+                const daysInMonth = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+                return daysInMonth[month];
+            }
 
-    function updateTimer() {
-        const currentTime = new Date();
-        if (currentTime >= endTime) {
-            document.getElementById('years').textContent = 0;
-            document.getElementById('months').textContent = 0;
-            document.getElementById('weeks').textContent = 0;
-            document.getElementById('days').textContent = 0;
-            document.getElementById('hours').textContent = 0;
-            document.getElementById('minutes').textContent = 0;
-            document.getElementById('seconds').textContent = 0;
-            return;
-        }
+            function updateTimer() {
+                const currentTime = new Date();
+                if (currentTime >= endTime) {
+                    document.getElementById('years').textContent = 0;
+                    document.getElementById('months').textContent = 0;
+                    document.getElementById('weeks').textContent = 0;
+                    document.getElementById('days').textContent = 0;
+                    document.getElementById('hours').textContent = 0;
+                    document.getElementById('minutes').textContent = 0;
+                    document.getElementById('seconds').textContent = 0;
+                    return;
+                }
 
-        let tempDate = new Date(currentTime);
-        let years = endTime.getFullYear() - tempDate.getFullYear();
-        let months = endTime.getMonth() - tempDate.getMonth();
-        let days = endTime.getDate() - tempDate.getDate();
-        let hours = endTime.getHours() - tempDate.getHours();
-        let minutes = endTime.getMinutes() - tempDate.getMinutes();
-        let seconds = endTime.getSeconds() - tempDate.getSeconds();
+                let tempDate = new Date(currentTime);
+                let years = endTime.getFullYear() - tempDate.getFullYear();
+                let months = endTime.getMonth() - tempDate.getMonth();
+                let days = endTime.getDate() - tempDate.getDate();
+                let hours = endTime.getHours() - tempDate.getHours();
+                let minutes = endTime.getMinutes() - tempDate.getMinutes();
+                let seconds = endTime.getSeconds() - tempDate.getSeconds();
 
-        if (seconds < 0) {
-            seconds += 60;
-            minutes--;
-        }
-        if (minutes < 0) {
-            minutes += 60;
-            hours--;
-        }
-        if (hours < 0) {
-            hours += 24;
-            days--;
-        }
-        if (days < 0) {
-            months--;
-            tempDate.setMonth(tempDate.getMonth() + 1, 0); // Set to last day of the previous month
-            days += getDaysInMonth(tempDate.getFullYear(), tempDate.getMonth());
-        }
-        if (months < 0) {
-            months += 12;
-            years--;
-        }
+                if (seconds < 0) {
+                    seconds += 60;
+                    minutes--;
+                }
+                if (minutes < 0) {
+                    minutes += 60;
+                    hours--;
+                }
+                if (hours < 0) {
+                    hours += 24;
+                    days--;
+                }
+                if (days < 0) {
+                    months--;
+                    tempDate.setMonth(tempDate.getMonth() + 1, 0); // Set to last day of the previous month
+                    days += getDaysInMonth(tempDate.getFullYear(), tempDate.getMonth());
+                }
+                if (months < 0) {
+                    months += 12;
+                    years--;
+                }
 
-        const totalDays = Math.floor((endTime - currentTime) / (1000 * 60 * 60 * 24));
-        const weeks = Math.floor(totalDays / 7);
-        const remainingDays = totalDays % 7;
+                const totalDays = Math.floor((endTime - currentTime) / (1000 * 60 * 60 * 24));
+                const weeks = Math.floor(totalDays / 7);
+                const remainingDays = totalDays % 7;
 
-        document.getElementById('years').textContent = years;
-        document.getElementById('months').textContent = months;
-        document.getElementById('weeks').textContent = weeks;
-        document.getElementById('days').textContent = remainingDays;
-        document.getElementById('hours').textContent = hours;
-        document.getElementById('minutes').textContent = minutes;
-        document.getElementById('seconds').textContent = seconds;
+                document.getElementById('years').textContent = years;
+                document.getElementById('months').textContent = months;
+                document.getElementById('weeks').textContent = weeks;
+                document.getElementById('days').textContent = remainingDays;
+                document.getElementById('hours').textContent = hours;
+                document.getElementById('minutes').textContent = minutes;
+                document.getElementById('seconds').textContent = seconds;
 
-        requestAnimationFrame(updateTimer);
-    }
+                requestAnimationFrame(updateTimer);
+            }
 
-    updateTimer();
-});
+            updateTimer();
+        });
     </script>
 </body>
 </html>
