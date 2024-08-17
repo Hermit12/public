@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erweiterte Schraubenberechnung nach Eurocode</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        label, select, input { display: block; margin-bottom: 10px; }
+        button { margin-top: 20px; }
+        #result, #edgeDistanceInfo, #holeDiameterInfo { margin-top: 20px; border: 1px solid #ccc; padding: 10px; }
+        .info-icon { cursor: pointer; color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Erweiterte Schraubenberechnung nach Eurocode</h1>
+    
+    <label for="quality">Schraubenqualität:</label>
+    <select id="quality">
+        <option value="4.6">4.6</option>
+        <option value="5.6">5.6</option>
+        <option value="8.8">8.8</option>
+        <option value="10.9">10.9</option>
+    </select>
+
+    <label for="thread">Metrisches Gewinde:</label>
+    <select id="thread">
+        <option value="M8">M8</option>
+        <option value="M10">M10</option>
+        <option value="M12">M12</option>
+        <option value="M16">M16</option>
+        <option value="M20">M20</option>
+    </select>
+
+    <div id="holeDiameterInfo"></div>
+
+    <label for="tensileForce">Zug-/Druckkraft (kN):</label>
+    <input type="number" id="tensileForce" step="0.1">
+
+    <label for="shearForceX">Querkraft in X-Richtung (kN):</label>
+    <input type="number" id="shearForceX" step="0.1">
+
+    <label for="shearForceY">Querkraft in Y-Richtung (kN):</label>
+    <input type="number" id="shearForceY" step="0.1">
+
+    <label for="shearPlanes">Anzahl der Scherflächen:</label>
+    <input type="number" id="shearPlanes" min="1" value="1">
+
+    <label for="edgeDistance">Randabstand (mm): <span class="info-icon" onclick="toggleEdgeDistanceInfo()">ℹ️</span></label>
+    <input type="number" id="edgeDistance" step="1">
+    <div id="edgeDistanceInfo" style="display: none;">
+        <h3>Randabstand</h3>
+        <p>Der Randabstand ist der Abstand zwischen dem Mittelpunkt des Schraubenlochs und dem nächstgelegenen Rand des Bauteils. Er ist wichtig für:</p>
+        <ul>
+            <li>Die Vermeidung von Ausreißen oder Spalten des Materials</li>
+            <li>Die Gewährleistung ausreichender Lochleibungsfestigkeit</li>
+            <li>Die Ermöglichung einer effektiven Lastverteilung</li>
+        </ul>
+        <p>Nach Eurocode 3 sollte der minimale Randabstand in der Regel 1,2 mal der Lochdurchmesser betragen. Der empfohlene Wert liegt oft zwischen 1,5 und 3 mal dem Lochdurchmesser, abhängig von der Belastungsart und -richtung.</p>
+    </div>
+
+    <label for="plateThickness">Blechdicke (mm):</label>
+    <input type="number" id="plateThickness" step="0.1">
+
+    <button onclick="calculate()">Berechnen</button>
+
+    <div id="result"></div>
+
+    <script src="material_data.js"></script>
+    <script src="screw_calculation.js"></script>
+    <script src="bearing_calculation.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
