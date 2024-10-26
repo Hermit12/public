@@ -3,57 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Count Up Timer</title>
+    <title>Impact Timer</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Space+Grotesk:wght@300;400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
-            height: 100vh;
-            background: #f0f0f0;
-            margin: 0;
-        }
-        .container {
-            text-align: center;
-        }
-        .title {
-            font-size: 2em;
-            margin-bottom: 40px;
-            color: #333;
-        }
-        .timer {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            font-size: 1.2em;
-            color: #333;
-        }
-        .time-unit {
-            margin: 10px;
-            background: #fff;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .title {
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: #e0e0e0;
+            text-transform: uppercase;
+        }
+
+        .title span {
+            display: block;
+            font-size: 0.4em;
+            color: #888;
+            margin-top: 10px;
+            font-weight: 400;
+        }
+
+        .timer {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 0 auto;
+            max-width: 1000px;
+            padding: 20px;
+        }
+
+        .time-unit {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .time-unit:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
         .value {
-            font-size: 2em;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 3em;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            margin-bottom: 10px;
         }
+
         .label {
-            font-size: 0.8em;
-            color: #666;
+            font-size: 0.9em;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
+
         .days-passed {
+            margin-top: 40px;
             font-size: 1.5em;
-            margin-top: 20px;
-            color: #333;
+            color: #666;
+            font-weight: 300;
+            letter-spacing: 1px;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2em;
+            }
+            
+            .timer {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .value {
+                font-size: 2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timer {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="title">Time since The Impact</div>
+        <div class="title">
+            The Impact
+            <span>13. Mai 2024 • 00:06:12</span>
+        </div>
         <div class="timer">
             <div class="time-unit">
                 <div class="value" id="years">0</div>
@@ -91,40 +177,32 @@
                 const currentDate = new Date(currentTime);
                 const startDate = new Date(startTime);
 
-                // Berechnung der kompletten Monate
                 let years = 0;
                 let months = 0;
                 
-                // Berechne vergangene komplette Monate
                 let tempDate = new Date(startTime);
                 while (true) {
-                    // Prüfe nächsten 13. des Monats
                     tempDate.setMonth(tempDate.getMonth() + 1);
                     if (tempDate > currentTime) {
                         break;
                     }
                     months++;
-                    // Nach 12 Monaten ein Jahr hinzufügen
                     if (months === 12) {
                         years++;
                         months = 0;
                     }
                 }
 
-                // Setze tempDate zurück auf den letzten kompletten Monat
                 tempDate.setMonth(tempDate.getMonth() - 1);
                 
-                // Berechne die restlichen Tage
                 const remainingTime = currentTime - tempDate;
                 const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
                 
-                // Berechne Stunden, Minuten, Sekunden aus der Restzeit
                 const totalSeconds = Math.floor(diffTime / 1000);
                 const hours = Math.floor((totalSeconds % (24 * 3600)) / 3600);
                 const minutes = Math.floor((totalSeconds % 3600) / 60);
                 const seconds = totalSeconds % 60;
 
-                // Berechne Gesamttage seit Start
                 const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
                 return {
@@ -138,22 +216,37 @@
                 };
             }
 
+            function padNumber(num) {
+                return num.toString().padStart(2, '0');
+            }
+
             function updateTimer() {
                 const currentTime = new Date();
                 const timeDiff = calculateTimeDifference(currentTime);
 
-                document.getElementById('years').textContent = timeDiff.years;
-                document.getElementById('months').textContent = timeDiff.months;
-                document.getElementById('days').textContent = timeDiff.days;
-                document.getElementById('hours').textContent = timeDiff.hours;
-                document.getElementById('minutes').textContent = timeDiff.minutes;
-                document.getElementById('seconds').textContent = timeDiff.seconds;
+                document.getElementById('years').textContent = padNumber(timeDiff.years);
+                document.getElementById('months').textContent = padNumber(timeDiff.months);
+                document.getElementById('days').textContent = padNumber(timeDiff.days);
+                document.getElementById('hours').textContent = padNumber(timeDiff.hours);
+                document.getElementById('minutes').textContent = padNumber(timeDiff.minutes);
+                document.getElementById('seconds').textContent = padNumber(timeDiff.seconds);
                 document.getElementById('days-passed').textContent = `Tag ${timeDiff.totalDays}`;
 
                 requestAnimationFrame(updateTimer);
             }
 
             updateTimer();
+
+            // Add hover effect for time units
+            const timeUnits = document.querySelectorAll('.time-unit');
+            timeUnits.forEach(unit => {
+                unit.addEventListener('mouseover', () => {
+                    unit.style.transform = 'translateY(-5px)';
+                });
+                unit.addEventListener('mouseout', () => {
+                    unit.style.transform = 'translateY(0)';
+                });
+            });
         });
     </script>
 </body>
