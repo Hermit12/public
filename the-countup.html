@@ -71,11 +71,17 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             flex: 1;
             min-width: 0;
+            cursor: pointer;
         }
 
         .time-unit:hover {
             transform: translateY(-5px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .time-unit.active {
+            border-color: #FFD700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
 
         .value {
@@ -105,6 +111,19 @@
             background: rgba(255, 255, 255, 0.05);
             border-radius: 30px;
             display: inline-block;
+        }
+
+        #game-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
 
         @media (max-width: 768px) {
@@ -189,36 +208,41 @@
             <span>13. Mai 2024 • 00:06:12</span>
         </div>
         <div class="timer">
-            <div class="time-unit">
+            <div class="time-unit" data-unit="years">
                 <div class="value" id="years">00</div>
                 <div class="label">Jahre</div>
             </div>
-            <div class="time-unit">
+            <div class="time-unit" data-unit="months">
                 <div class="value" id="months">00</div>
                 <div class="label">Monate</div>
             </div>
-            <div class="time-unit">
+            <div class="time-unit" data-unit="days">
                 <div class="value" id="days">00</div>
                 <div class="label">Tage</div>
             </div>
-            <div class="time-unit">
+            <div class="time-unit" data-unit="hours">
                 <div class="value" id="hours">00</div>
                 <div class="label">Std</div>
             </div>
-            <div class="time-unit">
+            <div class="time-unit" data-unit="minutes">
                 <div class="value" id="minutes">00</div>
                 <div class="label">Min</div>
             </div>
-            <div class="time-unit">
+            <div class="time-unit" data-unit="seconds">
                 <div class="value" id="seconds">00</div>
                 <div class="label">Sek</div>
             </div>
         </div>
         <div class="days-passed" id="days-passed">Tag 0</div>
     </div>
+    <div id="game-container"></div>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const startTime = new Date('2024-05-13T00:06:12');
+            const correctSequence = ['years', 'months', 'days', 'hours', 'minutes', 'seconds'];
+            let currentSequence = [];
+            let lastClickTime = 0;
+            const SEQUENCE_TIMEOUT = 3000; // 3 seconds timeout
 
             function calculateTimeDifference(currentTime) {
                 const diffTime = currentTime - startTime;
@@ -282,6 +306,53 @@
 
                 requestAnimationFrame(updateTimer);
             }
+
+            function startSnakeGame() {
+                const gameContainer = document.getElementById('game-container');
+                gameContainer.style.display = 'flex';
+                
+                // Laden und Starten des Snake-Spiels
+                const script = document.createElement('script');
+                script.src = 'snake.js';
+                document.body.appendChild(script);
+            }
+
+            function resetSequence() {
+                currentSequence = [];
+                document.querySelectorAll('.time-unit').forEach(unit => {
+                    unit.classList.remove('active');
+                });
+            }
+
+            document.querySelectorAll('.time-unit').forEach(unit => {
+                unit.addEventListener('click', (e) => {
+                    const currentTime = Date.now();
+                    
+                    // Reset sequence if too much time has passed
+                    if (currentSequence.length > 0 && currentTime - lastClickTime > SEQUENCE_TIMEOUT) {
+                        resetSequence();
+                    }
+                    
+                    lastClickTime = currentTime;
+                    const clickedUnit = e.currentTarget.dataset.unit;
+                    
+                    // Check if this is the next correct unit in sequence
+                    if (clickedUnit === correctSequence[currentSequence.length]) {
+                        currentSequence.push(clickedUnit);
+                        e.currentTarget.classList.add('active');
+                        
+                        // Check if complete sequence is entered
+                        if (currentSequence.length === correctSequence.length) {
+                            setTimeout(() => {
+                                startSnakeGame();
+                                resetSequence();
+                            }, 500);
+                        }
+                    } else {
+                        resetSequence();
+                    }
+                });
+            });
 
             updateTimer();
         });
