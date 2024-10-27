@@ -315,20 +315,21 @@ function startSnakeGame() {
     gameContainer.style.gap = '20px';
     
     const canvas = document.createElement('canvas');
-    canvas.width = Math.min(600, window.innerWidth - 40);
-    canvas.height = Math.min(600, window.innerHeight - 40);
+    // Reduzierte Spielfeldgröße
+    canvas.width = Math.min(400, window.innerWidth - 40);
+    canvas.height = Math.min(400, window.innerHeight - 40);
     canvas.style.border = '1px solid rgba(255, 215, 0, 0.3)';
     canvas.style.borderRadius = '15px';
     canvas.style.background = 'rgba(26, 26, 26, 0.95)';
     gameContainer.appendChild(canvas);
 
-    // Touch Controls Container
+    // Touch Controls Container - jetzt weiter oben
     const touchControls = document.createElement('div');
-    touchControls.style.display = 'none'; // Standardmäßig ausgeblendet
+    touchControls.style.display = 'none';
     touchControls.style.width = '180px';
     touchControls.style.height = '180px';
     touchControls.style.position = 'relative';
-    touchControls.style.marginTop = '20px';
+    touchControls.style.marginTop = '10px'; // Verringerte Margin
     gameContainer.appendChild(touchControls);
 
     // Steuerungstasten erstellen
@@ -352,6 +353,7 @@ function startSnakeGame() {
         button.style.justifyContent = 'center';
         button.style.userSelect = 'none';
         button.style.touchAction = 'manipulation';
+        button.style.zIndex = '1000'; // Erhöhter z-index
         return button;
     };
 
@@ -367,29 +369,6 @@ function startSnakeGame() {
     touchControls.appendChild(downButton);
     touchControls.appendChild(leftButton);
 
-    // Touch-Events für die Steuerung
-    upButton.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        if (direction !== 'down') nextDirection = 'up';
-    });
-    rightButton.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        if (direction !== 'left') nextDirection = 'right';
-    });
-    downButton.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        if (direction !== 'up') nextDirection = 'down';
-    });
-    leftButton.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        if (direction !== 'right') nextDirection = 'left';
-    });
-
-    // Prüfen ob Touch-Device und Controls anzeigen
-    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-        touchControls.style.display = 'block';
-    }
-
     const ctx = canvas.getContext('2d');
     const gridSize = 20;
     let snake = [{x: 5, y: 5}];
@@ -403,16 +382,14 @@ function startSnakeGame() {
     let gameStarted = false;
     let fruitCount = 0;
 
+    // Score Display anpassen
     const scoreDisplay = document.createElement('div');
-    scoreDisplay.style.position = 'absolute';
-    scoreDisplay.style.top = '20px';
-    scoreDisplay.style.left = '50%';
-    scoreDisplay.style.transform = 'translateX(-50%)';
     scoreDisplay.style.color = '#FFD700';
     scoreDisplay.style.fontFamily = "'Space Grotesk', sans-serif";
     scoreDisplay.style.fontSize = '24px';
     scoreDisplay.style.textShadow = '0 0 10px rgba(255, 215, 0, 0.3)';
-    gameContainer.appendChild(scoreDisplay);
+    scoreDisplay.style.marginBottom = '10px';
+    gameContainer.insertBefore(scoreDisplay, canvas); // Score über dem Canvas
 
     const closeButton = document.createElement('button');
     closeButton.innerHTML = '×';
@@ -427,7 +404,35 @@ function startSnakeGame() {
     closeButton.style.padding = '10px';
     closeButton.style.lineHeight = '1';
     closeButton.style.textShadow = '0 0 10px rgba(255, 215, 0, 0.3)';
+    closeButton.style.zIndex = '1000';
     gameContainer.appendChild(closeButton);
+
+    // Touch-Events für die Steuerung
+    upButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (!gameStarted) startGame();
+        if (direction !== 'down') nextDirection = 'up';
+    });
+    rightButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (!gameStarted) startGame();
+        if (direction !== 'left') nextDirection = 'right';
+    });
+    downButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (!gameStarted) startGame();
+        if (direction !== 'up') nextDirection = 'down';
+    });
+    leftButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (!gameStarted) startGame();
+        if (direction !== 'right') nextDirection = 'left';
+    });
+
+    // Prüfen ob Touch-Device und Controls anzeigen
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+        touchControls.style.display = 'block';
+    }
 
     closeButton.addEventListener('click', () => {
         endGame();
@@ -467,6 +472,7 @@ function startSnakeGame() {
 
     function startGame() {
         if (gameLoop) return;
+        gameStarted = true;
         gameLoop = setInterval(gameStep, 100);
     }
 
