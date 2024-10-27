@@ -310,6 +310,9 @@
 function startSnakeGame() {
     const gameContainer = document.getElementById('game-container');
     gameContainer.style.display = 'flex';
+    gameContainer.style.flexDirection = 'column';
+    gameContainer.style.alignItems = 'center';
+    gameContainer.style.gap = '20px';
     
     const canvas = document.createElement('canvas');
     canvas.width = Math.min(600, window.innerWidth - 40);
@@ -318,6 +321,74 @@ function startSnakeGame() {
     canvas.style.borderRadius = '15px';
     canvas.style.background = 'rgba(26, 26, 26, 0.95)';
     gameContainer.appendChild(canvas);
+
+    // Touch Controls Container
+    const touchControls = document.createElement('div');
+    touchControls.style.display = 'none'; // Standardmäßig ausgeblendet
+    touchControls.style.width = '180px';
+    touchControls.style.height = '180px';
+    touchControls.style.position = 'relative';
+    touchControls.style.marginTop = '20px';
+    gameContainer.appendChild(touchControls);
+
+    // Steuerungstasten erstellen
+    const createButton = (text, top, left, rotation) => {
+        const button = document.createElement('button');
+        button.innerHTML = text;
+        button.style.position = 'absolute';
+        button.style.width = '60px';
+        button.style.height = '60px';
+        button.style.top = top;
+        button.style.left = left;
+        button.style.backgroundColor = 'rgba(26, 26, 26, 0.95)';
+        button.style.border = '1px solid rgba(255, 215, 0, 0.3)';
+        button.style.borderRadius = '10px';
+        button.style.color = '#FFD700';
+        button.style.fontSize = '24px';
+        button.style.cursor = 'pointer';
+        button.style.transform = `rotate(${rotation}deg)`;
+        button.style.display = 'flex';
+        button.style.alignItems = 'center';
+        button.style.justifyContent = 'center';
+        button.style.userSelect = 'none';
+        button.style.touchAction = 'manipulation';
+        return button;
+    };
+
+    // Pfeiltasten erstellen
+    const upButton = createButton('⌃', '0', '60px', 0);
+    const rightButton = createButton('⌃', '60px', '120px', 90);
+    const downButton = createButton('⌃', '120px', '60px', 180);
+    const leftButton = createButton('⌃', '60px', '0', 270);
+
+    // Tasten zum Container hinzufügen
+    touchControls.appendChild(upButton);
+    touchControls.appendChild(rightButton);
+    touchControls.appendChild(downButton);
+    touchControls.appendChild(leftButton);
+
+    // Touch-Events für die Steuerung
+    upButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (direction !== 'down') nextDirection = 'up';
+    });
+    rightButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (direction !== 'left') nextDirection = 'right';
+    });
+    downButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (direction !== 'up') nextDirection = 'down';
+    });
+    leftButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (direction !== 'right') nextDirection = 'left';
+    });
+
+    // Prüfen ob Touch-Device und Controls anzeigen
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+        touchControls.style.display = 'block';
+    }
 
     const ctx = canvas.getContext('2d');
     const gridSize = 20;
@@ -441,7 +512,6 @@ function startSnakeGame() {
             };
         }
         
-        // Nach 5 Sekunden verschwindet die spezielle Frucht
         specialFoodTimer = setTimeout(() => {
             specialFood = null;
             specialFoodTimer = null;
@@ -465,7 +535,6 @@ function startSnakeGame() {
             case 'right': head.x++; break;
         }
         
-        // Durch Wände gehen
         head.x = wrapPosition(head.x, canvas.width / gridSize);
         head.y = wrapPosition(head.y, canvas.height / gridSize);
         
@@ -478,20 +547,17 @@ function startSnakeGame() {
         
         let foodEaten = false;
         
-        // Normale Frucht
         if (head.x === food.x && head.y === food.y) {
             score++;
             fruitCount++;
             foodEaten = true;
             generateFood();
             
-            // Prüfen ob spezielle Frucht erscheinen soll
-            if (fruitCount % Math.floor(Math.random() * 6 + 10) === 0) { // Zufällig zwischen 10-15 Früchten
+            if (fruitCount % Math.floor(Math.random() * 6 + 10) === 0) {
                 generateSpecialFood();
             }
         }
         
-        // Spezielle Frucht
         if (specialFood && head.x === specialFood.x && head.y === specialFood.y) {
             score += 10;
             foodEaten = true;
@@ -504,21 +570,17 @@ function startSnakeGame() {
             snake.pop();
         }
         
-        // Zeichnen
         ctx.fillStyle = 'rgba(26, 26, 26, 0.95)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // Schlange zeichnen
         snake.forEach((segment, index) => {
             ctx.fillStyle = index === 0 ? '#FFD700' : 'rgba(255, 215, 0, 0.5)';
             ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize - 2, gridSize - 2);
         });
         
-        // Normale Frucht in gedämpftem Rot
         ctx.fillStyle = '#8B0000';
         ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
         
-        // Spezielle Frucht in Regenbogenfarben
         if (specialFood) {
             const hue = (Date.now() / 20) % 360;
             ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
