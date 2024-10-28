@@ -315,7 +315,6 @@ function startSnakeGame() {
     gameContainer.style.gap = '20px';
     
     const canvas = document.createElement('canvas');
-    // Reduzierte Spielfeldgröße
     canvas.width = Math.min(400, window.innerWidth - 40);
     canvas.height = Math.min(400, window.innerHeight - 40);
     canvas.style.border = '1px solid rgba(255, 215, 0, 0.3)';
@@ -323,51 +322,29 @@ function startSnakeGame() {
     canvas.style.background = 'rgba(26, 26, 26, 0.95)';
     gameContainer.appendChild(canvas);
 
-    // Touch Controls Container - jetzt weiter oben
-    const touchControls = document.createElement('div');
-    touchControls.style.display = 'none';
-    touchControls.style.width = '180px';
-    touchControls.style.height = '180px';
-    touchControls.style.position = 'relative';
-    touchControls.style.marginTop = '10px'; // Verringerte Margin
-    gameContainer.appendChild(touchControls);
+    // Joystick Container
+    const joystickContainer = document.createElement('div');
+    joystickContainer.style.display = 'none';
+    joystickContainer.style.width = '150px';
+    joystickContainer.style.height = '150px';
+    joystickContainer.style.position = 'relative';
+    joystickContainer.style.marginTop = '20px';
+    joystickContainer.style.border = '2px solid rgba(255, 215, 0, 0.3)';
+    joystickContainer.style.borderRadius = '50%';
+    gameContainer.appendChild(joystickContainer);
 
-    // Steuerungstasten erstellen
-    const createButton = (text, top, left, rotation) => {
-        const button = document.createElement('button');
-        button.innerHTML = text;
-        button.style.position = 'absolute';
-        button.style.width = '60px';
-        button.style.height = '60px';
-        button.style.top = top;
-        button.style.left = left;
-        button.style.backgroundColor = 'rgba(26, 26, 26, 0.95)';
-        button.style.border = '1px solid rgba(255, 215, 0, 0.3)';
-        button.style.borderRadius = '10px';
-        button.style.color = '#FFD700';
-        button.style.fontSize = '24px';
-        button.style.cursor = 'pointer';
-        button.style.transform = `rotate(${rotation}deg)`;
-        button.style.display = 'flex';
-        button.style.alignItems = 'center';
-        button.style.justifyContent = 'center';
-        button.style.userSelect = 'none';
-        button.style.touchAction = 'manipulation';
-        button.style.zIndex = '1000'; // Erhöhter z-index
-        return button;
-    };
-
-    // Pfeiltasten erstellen
-    const upButton = createButton('⌃', '0', '60px', 0);
-    const rightButton = createButton('⌃', '60px', '120px', 90);
-    const downButton = createButton('⌃', '120px', '60px', 180);
-    const leftButton = createButton('⌃', '60px', '0', 270);
-
-    // Tasten zum Container hinzufügen
-    touchControls.appendChild(upButton);
-    touchControls.appendChild(rightButton);
-    touchControls.appendChild(downButton);
-    touchControls.appendChild(leftButton);
+    // Joystick Knob
+    const joystick = document.createElement('div');
+    joystick.style.width = '50px';
+    joystick.style.height = '50px';
+    joystick.style.background = 'rgba(255, 215, 0, 0.5)';
+    joystick.style.borderRadius = '50%';
+    joystick.style.position = 'absolute';
+    joystick.style.top = '50%';
+    joystick.style.left = '50%';
+    joystick.style.transform = 'translate(-50%, -50%)';
+    joystick.style.cursor = 'pointer';
+    joystickContainer.appendChild(joystick);
 
     const ctx = canvas.getContext('2d');
     const gridSize = 20;
@@ -382,15 +359,16 @@ function startSnakeGame() {
     let gameStarted = false;
     let fruitCount = 0;
 
-    // Score Display anpassen
+    // Score Display
     const scoreDisplay = document.createElement('div');
     scoreDisplay.style.color = '#FFD700';
     scoreDisplay.style.fontFamily = "'Space Grotesk', sans-serif";
     scoreDisplay.style.fontSize = '24px';
     scoreDisplay.style.textShadow = '0 0 10px rgba(255, 215, 0, 0.3)';
     scoreDisplay.style.marginBottom = '10px';
-    gameContainer.insertBefore(scoreDisplay, canvas); // Score über dem Canvas
+    gameContainer.insertBefore(scoreDisplay, canvas);
 
+    // Close Button
     const closeButton = document.createElement('button');
     closeButton.innerHTML = '×';
     closeButton.style.position = 'absolute';
@@ -407,31 +385,75 @@ function startSnakeGame() {
     closeButton.style.zIndex = '1000';
     gameContainer.appendChild(closeButton);
 
-    // Touch-Events für die Steuerung
-    upButton.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        if (!gameStarted) startGame();
-        if (direction !== 'down') nextDirection = 'up';
-    });
-    rightButton.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        if (!gameStarted) startGame();
-        if (direction !== 'left') nextDirection = 'right';
-    });
-    downButton.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        if (!gameStarted) startGame();
-        if (direction !== 'up') nextDirection = 'down';
-    });
-    leftButton.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        if (!gameStarted) startGame();
-        if (direction !== 'right') nextDirection = 'left';
-    });
+    // Joystick Logik
+    let isDragging = false;
+    let startX, startY;
+    const joystickBounds = 50; // Maximale Auslenkung des Joysticks
 
-    // Prüfen ob Touch-Device und Controls anzeigen
+    function handleJoystickStart(e) {
+        isDragging = true;
+        const touch = e.type === 'mousedown' ? e : e.touches[0];
+        startX = touch.clientX - joystick.offsetLeft;
+        startY = touch.clientY - joystick.offsetTop;
+        if (!gameStarted) startGame();
+        e.preventDefault();
+    }
+
+    function handleJoystickMove(e) {
+        if (!isDragging) return;
+        const touch = e.type === 'mousemove' ? e : e.touches[0];
+        
+        const containerRect = joystickContainer.getBoundingClientRect();
+        const containerCenterX = containerRect.left + containerRect.width / 2;
+        const containerCenterY = containerRect.top + containerRect.height / 2;
+        
+        let deltaX = touch.clientX - containerCenterX;
+        let deltaY = touch.clientY - containerCenterY;
+        
+        // Berechne Distanz vom Zentrum
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        if (distance > joystickBounds) {
+            deltaX = (deltaX / distance) * joystickBounds;
+            deltaY = (deltaY / distance) * joystickBounds;
+        }
+        
+        // Setze Joystick Position
+        joystick.style.left = `${50 + (deltaX / joystickContainer.offsetWidth * 100)}%`;
+        joystick.style.top = `${50 + (deltaY / joystickContainer.offsetHeight * 100)}%`;
+        
+        // Bestimme Richtung basierend auf Joystick Position
+        const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+        
+        // Konvertiere Winkel in Richtung
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            if (deltaX > 0 && direction !== 'left') nextDirection = 'right';
+            else if (deltaX < 0 && direction !== 'right') nextDirection = 'left';
+        } else {
+            if (deltaY > 0 && direction !== 'up') nextDirection = 'down';
+            else if (deltaY < 0 && direction !== 'down') nextDirection = 'up';
+        }
+        
+        e.preventDefault();
+    }
+
+    function handleJoystickEnd() {
+        isDragging = false;
+        // Reset Joystick Position
+        joystick.style.left = '50%';
+        joystick.style.top = '50%';
+    }
+
+    // Touch Event Listener für Joystick
+    joystick.addEventListener('mousedown', handleJoystickStart);
+    joystick.addEventListener('touchstart', handleJoystickStart);
+    document.addEventListener('mousemove', handleJoystickMove);
+    document.addEventListener('touchmove', handleJoystickMove, { passive: false });
+    document.addEventListener('mouseup', handleJoystickEnd);
+    document.addEventListener('touchend', handleJoystickEnd);
+
+    // Prüfen ob Touch-Device und Joystick anzeigen
     if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-        touchControls.style.display = 'block';
+        joystickContainer.style.display = 'block';
     }
 
     closeButton.addEventListener('click', () => {
@@ -598,7 +620,6 @@ function startSnakeGame() {
 
     generateFood();
 }
-
             function resetSequence() {
                 currentSequence = [];
                 document.querySelectorAll('.time-unit').forEach(unit => {
