@@ -136,7 +136,9 @@
     </style>
 </head>
 <body>
-    <button class="theme-toggle" onclick="toggleTheme()" title="Theme wechseln">🌓</button>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Theme wechseln">
+        <span id="theme-icon">&#x2600;</span>
+    </button>
     <div class="container">
         <h1>Mein Süßigkeiten-Tracker</h1>
         <div id="counter" class="counter">0</div>
@@ -234,6 +236,9 @@
         function setTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             localStorage.setItem('theme', theme);
+            // Update icon
+            const icon = document.getElementById('theme-icon');
+            icon.innerHTML = theme === 'light' ? '&#x2600;' : '&#x263E;';
         }
 
         function toggleTheme() {
