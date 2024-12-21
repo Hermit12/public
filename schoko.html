@@ -61,31 +61,36 @@
             margin-bottom: 2rem;
         }
 
-        .input-group {
-            margin: 1rem 0;
-            padding: 1rem;
-            background-color: var(--input-group-bg);
-            border-radius: 5px;
-        }
+.input-group {
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: var(--input-group-bg);
+    border-radius: 5px;
+}
 
-        @media (max-width: 480px) {
-            .input-group > div {
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .input-group label {
-                display: flex;
-                flex-direction: column;
-                gap: 0.5rem;
-                align-items: flex-start;
-            }
-            
-            .input-group input[type="date"] {
-                width: 100%;
-            }
-        }
+@media (max-width: 480px) {
+    .input-group > div {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .input-group label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+        width: 100%;
+    }
+    
+    .input-group input[type="date"] {
+        width: calc(100% - 1rem);  /* Breite minus Padding */
+        max-width: 280px;          /* maximale Breite */
+        padding: 0.5rem;
+        margin: 0 auto;            /* zentrieren */
+        box-sizing: border-box;    /* Padding wird in Breite eingerechnet */
+    }
+}
 
         input[type="date"] {
             padding: 0.5rem;
