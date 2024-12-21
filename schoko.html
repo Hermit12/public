@@ -93,6 +93,44 @@
             background-color: var(--accent-hover);
         }
 
+        /* Mobile Datepicker Buttons */
+        .mobile-date-button {
+            display: none;
+            width: calc(100% - 2rem);
+            margin: 0.5rem 1rem;
+            padding: 0.75rem;
+            text-align: left;
+            background-color: var(--container-background);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+        .mobile-date-button:hover {
+            background-color: var(--input-group-bg);
+        }
+
+        /* Desktop/Mobile Unterscheidung */
+        .desktop-date-inputs {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 600px) {
+            .desktop-date-inputs {
+                display: none;
+            }
+
+            .mobile-date-button {
+                display: block;
+            }
+
+            .input-group {
+                padding: 0.5rem;
+            }
+        }
+
         #exceptionsList {
             text-align: left;
             margin-top: 1rem;
@@ -185,11 +223,22 @@
         
         <div class="input-group">
             <h3>Ausnahme eintragen:</h3>
-            <div>
+            <!-- Desktop Ansicht -->
+            <div class="desktop-date-inputs">
                 <label>Von: <input type="date" id="exceptionStart"></label>
                 <label>Bis: <input type="date" id="exceptionEnd"></label>
                 <button onclick="addException()">Hinzufügen</button>
             </div>
+            <!-- Mobile Ansicht -->
+            <button class="mobile-date-button" onclick="document.getElementById('exceptionStart').click()">
+                Startdatum auswählen
+            </button>
+            <button class="mobile-date-button" onclick="document.getElementById('exceptionEnd').click()">
+                Enddatum auswählen
+            </button>
+            <button class="mobile-date-button" onclick="addException()" style="text-align: center;">
+                Ausnahme hinzufügen
+            </button>
             <div id="exceptionsList">
                 <h4>Eingetragene Ausnahmen:</h4>
             </div>
@@ -205,6 +254,26 @@
             'https://dxapwklmmvzziggxhmyr.supabase.co',
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4YXB3a2xtbXZ6emlnZ3hobXlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ4MTYwNjIsImV4cCI6MjA1MDM5MjA2Mn0.umt5m3uiAGSteKp1n8z1AyYsKuKl7DKNOni2onlNOTE'
         );
+
+        // Event Listener für Datumsänderungen
+        document.getElementById('exceptionStart').addEventListener('change', function() {
+            updateMobileDateButton(this, 'Startdatum');
+        });
+
+        document.getElementById('exceptionEnd').addEventListener('change', function() {
+            updateMobileDateButton(this, 'Enddatum');
+        });
+
+        function updateMobileDateButton(input, type) {
+            const buttons = document.querySelectorAll('.mobile-date-button');
+            const button = type === 'Startdatum' ? buttons[0] : buttons[1];
+            if (input.value) {
+                const date = new Date(input.value);
+                button.textContent = `${type}: ${date.toLocaleDateString()}`;
+            } else {
+                button.textContent = `${type} auswählen`;
+            }
+        }
 
         // Funktion zum Anzeigen des Sync-Status
         function showSyncStatus(message) {
@@ -332,37 +401,4 @@
         function initializeTheme() {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme) {
-                setTheme(savedTheme);
-                return;
-            }
-
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                setTheme('dark');
-            } else {
-                setTheme('light');
-            }
-
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-                if (!localStorage.getItem('theme')) {
-                    setTheme(e.matches ? 'dark' : 'light');
-                }
-            });
-        }
-
-        // Initialisierung
-        window.onload = function() {
-            initializeTheme();
-            loadExceptions();
-            
-            // Real-time Updates aktivieren
-            supabase
-                .channel('exceptions_changes')
-                .on('postgres_changes', 
-                    { event: '*', schema: 'public', table: 'exceptions' },
-                    loadExceptions
-                )
-                .subscribe();
-        };
-    </script>
-</body>
-</html>
+                setTh
