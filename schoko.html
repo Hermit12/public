@@ -225,16 +225,25 @@
         
         <div class="input-group">
             <h3>Ausnahme eintragen:</h3>
-            <div class="date-input-group">
-                <div class="date-input-wrapper">
-                    <label for="exceptionStart">Von</label>
-                    <input type="date" id="exceptionStart">
-                </div>
-                <div class="date-input-wrapper">
-                    <label for="exceptionEnd">Bis</label>
-                    <input type="date" id="exceptionEnd">
-                </div>
+            <!-- Desktop Ansicht -->
+            <div class="desktop-date-input">
+                <label>Von: <input type="date" id="exceptionStart"></label>
+                <label>Bis: <input type="date" id="exceptionEnd"></label>
                 <button onclick="addException()">Hinzufügen</button>
+            </div>
+            <!-- Mobile Ansicht -->
+            <div class="mobile-date-input">
+                <div class="calendar-buttons">
+                    <button class="calendar-btn" onclick="openCalendar('start')">
+                        <span class="calendar-icon">📅</span>
+                        <span class="selected-date" id="selectedStartDate">Startdatum</span>
+                    </button>
+                    <button class="calendar-btn" onclick="openCalendar('end')">
+                        <span class="calendar-icon">📅</span>
+                        <span class="selected-date" id="selectedEndDate">Enddatum</span>
+                    </button>
+                </div>
+                <button onclick="addException()" class="add-btn">Hinzufügen</button>
             </div>
             <div id="exceptionsList">
                 <h4>Eingetragene Ausnahmen:</h4>
@@ -395,9 +404,31 @@
             });
         }
 
+        function openCalendar(type) {
+            // Simuliere einen Klick auf das versteckte Datums-Input
+            const inputId = type === 'start' ? 'exceptionStart' : 'exceptionEnd';
+            document.getElementById(inputId).showPicker();
+        }
+
+        function updateSelectedDateDisplay() {
+            const startInput = document.getElementById('exceptionStart');
+            const endInput = document.getElementById('exceptionEnd');
+            const startDisplay = document.getElementById('selectedStartDate');
+            const endDisplay = document.getElementById('selectedEndDate');
+
+            startInput.addEventListener('change', function() {
+                startDisplay.textContent = this.value ? new Date(this.value).toLocaleDateString() : 'Startdatum';
+            });
+
+            endInput.addEventListener('change', function() {
+                endDisplay.textContent = this.value ? new Date(this.value).toLocaleDateString() : 'Enddatum';
+            });
+        }
+
         // Initialisierung
         window.onload = function() {
             initializeTheme();
+            updateSelectedDateDisplay();
             loadExceptions();
             
             // Real-time Updates aktivieren
