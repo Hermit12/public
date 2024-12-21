@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Süßigkeiten-Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
             --background-color: #f5f5f5;
@@ -72,6 +73,8 @@
             margin: 0 0.5rem;
             border: 1px solid var(--border-color);
             border-radius: 4px;
+            background-color: var(--container-background);
+            color: var(--text-color);
         }
 
         button {
@@ -107,11 +110,17 @@
             align-items: center;
             padding: 0.5rem;
             border-bottom: 1px solid var(--border-color);
+            background-color: var(--container-background);
+            margin: 0.5rem 0;
+            border-radius: 4px;
+        }
+
+        [data-theme="dark"] .exception-item {
+            background-color: var(--input-group-bg);
         }
 
         .delete-btn {
             background-color: #dc3545;
-            padding: 0.25rem 0.5rem;
         }
 
         .delete-btn:hover {
@@ -122,7 +131,7 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 10px;
+            padding: 8px;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -131,14 +140,36 @@
             justify-content: center;
             cursor: pointer;
             background-color: var(--container-background);
-            border: 1px solid var(--border-color);
+            border: none;
             color: var(--text-color);
-            font-size: 1.2rem;
+            font-size: 24px;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .theme-toggle:hover {
             transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        [data-theme="light"] .theme-toggle {
+            background-color: #ffffff;
+        }
+
+        [data-theme="dark"] .theme-toggle {
+            background-color: #424242;
+        }
+
+        #syncStatus {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: var(--container-background);
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: none;
         }
     </style>
 </head>
@@ -146,6 +177,7 @@
     <button class="theme-toggle" onclick="toggleTheme()" title="Theme wechseln">
         <span id="theme-icon">&#x2600;</span>
     </button>
+    <div id="syncStatus">Synchronisierung...</div>
     <div class="container">
         <h1>Mein Süßigkeiten-Tracker</h1>
         <div id="counter" class="counter">0</div>
@@ -168,11 +200,51 @@
         const startDate = new Date('2024-10-05');
         let exceptions = [];
 
+        // Supabase Konfiguration
+        const supabase = supabase.createClient(
+            'https://dxapwklmmvzziggxhmyr.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4YXB3a2xtbXZ6emlnZ3hobXlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ4MTYwNjIsImV4cCI6MjA1MDM5MjA2Mn0.umt5m3uiAGSteKp1n8z1AyYsKuKl7DKNOni2onlNOTE'
+        );
+
+        // Funktion zum Anzeigen des Sync-Status
+        function showSyncStatus(message) {
+            const status = document.getElementById('syncStatus');
+            status.textContent = message;
+            status.style.display = 'block';
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 3000);
+        }
+
+        async function loadExceptions() {
+            try {
+                showSyncStatus('Lade Ausnahmen...');
+                const { data, error } = await supabase
+                    .from('exceptions')
+                    .select('*')
+                    .order('start_date', { ascending: true });
+                
+                if (error) throw error;
+                
+                exceptions = data.map(row => ({
+                    id: row.id,
+                    start: row.start_date,
+                    end: row.end_date
+                }));
+                
+                updateExceptionsList();
+                updateCounter();
+                showSyncStatus('Ausnahmen erfolgreich geladen');
+            } catch (error) {
+                console.error('Fehler beim Laden der Ausnahmen:', error);
+                showSyncStatus('Fehler beim Laden');
+            }
+        }
+
         function updateCounter() {
             const today = new Date();
             let totalDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
             
-            // Subtract exception days
             exceptions.forEach(exception => {
                 const start = new Date(exception.start);
                 const end = new Date(exception.end);
@@ -183,7 +255,7 @@
             document.getElementById('counter').textContent = Math.max(0, totalDays);
         }
 
-        function addException() {
+        async function addException() {
             const start = document.getElementById('exceptionStart').value;
             const end = document.getElementById('exceptionEnd').value;
 
@@ -197,53 +269,56 @@
                 return;
             }
 
-            const exception = { start, end };
-            exceptions.push(exception);
-            
-            // Save to localStorage
-            localStorage.setItem('candyExceptions', JSON.stringify(exceptions));
-            
-            updateExceptionsList();
-            updateCounter();
+            try {
+                const { error } = await supabase
+                    .from('exceptions')
+                    .insert([{
+                        start_date: start,
+                        end_date: end
+                    }]);
+
+                if (error) throw error;
+                
+                await loadExceptions();
+                showSyncStatus('Ausnahme hinzugefügt');
+            } catch (error) {
+                console.error('Fehler beim Speichern:', error);
+                alert('Fehler beim Speichern der Ausnahme');
+            }
         }
 
-        function deleteException(index) {
-            exceptions.splice(index, 1);
-            localStorage.setItem('candyExceptions', JSON.stringify(exceptions));
-            updateExceptionsList();
-            updateCounter();
+        async function deleteException(id) {
+            try {
+                const { error } = await supabase
+                    .from('exceptions')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+                
+                await loadExceptions();
+                showSyncStatus('Ausnahme gelöscht');
+            } catch (error) {
+                console.error('Fehler beim Löschen:', error);
+                alert('Fehler beim Löschen der Ausnahme');
+            }
         }
 
         function updateExceptionsList() {
             const list = document.getElementById('exceptionsList');
             const header = '<h4>Eingetragene Ausnahmen:</h4>';
-            const items = exceptions.map((exception, index) => `
+            const items = exceptions.map(exception => `
                 <div class="exception-item">
                     <span>${new Date(exception.start).toLocaleDateString()} bis ${new Date(exception.end).toLocaleDateString()}</span>
-                    <button class="delete-btn" onclick="deleteException(${index})">Löschen</button>
+                    <button class="delete-btn" onclick="deleteException(${exception.id})">Löschen</button>
                 </div>
             `).join('');
             list.innerHTML = header + items;
         }
 
-        // Load saved exceptions on page load
-        window.onload = function() {
-            const saved = localStorage.getItem('candyExceptions');
-            if (saved) {
-                exceptions = JSON.parse(saved);
-                updateExceptionsList();
-            }
-            updateCounter();
-        };
-
-        // Update counter every day
-        setInterval(updateCounter, 1000 * 60 * 60 * 24);
-
-        // Theme handling
         function setTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             localStorage.setItem('theme', theme);
-            // Update icon
             const icon = document.getElementById('theme-icon');
             icon.innerHTML = theme === 'light' ? '&#x2600;' : '&#x263E;';
         }
@@ -254,31 +329,40 @@
             setTheme(newTheme);
         }
 
-        // Initialize theme
         function initializeTheme() {
-            // Check if user has a saved preference
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme) {
                 setTheme(savedTheme);
                 return;
             }
 
-            // Check system preference
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 setTheme('dark');
             } else {
                 setTheme('light');
             }
 
-            // Listen for system theme changes
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-                if (!localStorage.getItem('theme')) { // Only if user hasn't manually set a theme
+                if (!localStorage.getItem('theme')) {
                     setTheme(e.matches ? 'dark' : 'light');
                 }
             });
         }
 
-        initializeTheme();
+        // Initialisierung
+        window.onload = function() {
+            initializeTheme();
+            loadExceptions();
+            
+            // Real-time Updates aktivieren
+            supabase
+                .channel('exceptions_changes')
+                .on('postgres_changes', 
+                    { event: '*', schema: 'public', table: 'exceptions' },
+                    loadExceptions
+                )
+                .subscribe();
+        };
     </script>
 </body>
 </html>
