@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Süßigkeiten-Tracker</title>
+    <style>
+        :root {
+            --background-color: #f5f5f5;
+            --container-background: white;
+            --text-color: #333;
+            --subtitle-color: #666;
+            --input-group-bg: #f8f9fa;
+            --border-color: #ddd;
+        }
+
+        [data-theme="dark"] {
+            --background-color: #1a1a1a;
+            --container-background: #2d2d2d;
+            --text-color: #e0e0e0;
+            --subtitle-color: #bbbbbb;
+            --input-group-bg: #3d3d3d;
+            --border-color: #404040;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            background-color: var(--container-background);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+
+        .counter {
+            font-size: 5rem;
+            font-weight: bold;
+            color: #2ecc71;
+            margin: 1rem 0;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--subtitle-color);
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            margin: 1rem 0;
+            padding: 1rem;
+            background-color: var(--input-group-bg);
+            border-radius: 5px;
+        }
+
+        input[type="date"] {
+            padding: 0.5rem;
+            margin: 0 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #27ae60;
+        }
+
+        #exceptionsList {
+            text-align: left;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .exception-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background-color: var(--container-background);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Theme wechseln">🌓</button>
+    <div class="container">
+        <h1>Mein Süßigkeiten-Tracker</h1>
+        <div id="counter" class="counter">0</div>
+        <div class="subtitle">Tage ohne Süßigkeiten</div>
+        
+        <div class="input-group">
+            <h3>Ausnahme eintragen:</h3>
+            <div>
+                <label>Von: <input type="date" id="exceptionStart"></label>
+                <label>Bis: <input type="date" id="exceptionEnd"></label>
+                <button onclick="addException()">Hinzufügen</button>
+            </div>
+            <div id="exceptionsList">
+                <h4>Eingetragene Ausnahmen:</h4>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const startDate = new Date('2024-10-05');
+        let exceptions = [];
+
+        function updateCounter() {
+            const today = new Date();
+            let totalDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+            
+            // Subtract exception days
+            exceptions.forEach(exception => {
+                const start = new Date(exception.start);
+                const end = new Date(exception.end);
+                const exceptionDays = Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                totalDays -= exceptionDays;
+            });
+
+            document.getElementById('counter').textContent = Math.max(0, totalDays);
+        }
+
+        function addException() {
+            const start = document.getElementById('exceptionStart').value;
+            const end = document.getElementById('exceptionEnd').value;
+
+            if (!start || !end) {
+                alert('Bitte beide Daten auswählen');
+                return;
+            }
+
+            if (new Date(start) > new Date(end)) {
+                alert('Das Startdatum muss vor dem Enddatum liegen');
+                return;
+            }
+
+            const exception = { start, end };
+            exceptions.push(exception);
+            
+            // Save to localStorage
+            localStorage.setItem('candyExceptions', JSON.stringify(exceptions));
+            
+            updateExceptionsList();
+            updateCounter();
+        }
+
+        function deleteException(index) {
+            exceptions.splice(index, 1);
+            localStorage.setItem('candyExceptions', JSON.stringify(exceptions));
+            updateExceptionsList();
+            updateCounter();
+        }
+
+        function updateExceptionsList() {
+            const list = document.getElementById('exceptionsList');
+            const header = '<h4>Eingetragene Ausnahmen:</h4>';
+            const items = exceptions.map((exception, index) => `
+                <div class="exception-item">
+                    <span>${new Date(exception.start).toLocaleDateString()} bis ${new Date(exception.end).toLocaleDateString()}</span>
+                    <button class="delete-btn" onclick="deleteException(${index})">Löschen</button>
+                </div>
+            `).join('');
+            list.innerHTML = header + items;
+        }
+
+        // Load saved exceptions on page load
+        window.onload = function() {
+            const saved = localStorage.getItem('candyExceptions');
+            if (saved) {
+                exceptions = JSON.parse(saved);
+                updateExceptionsList();
+            }
+            updateCounter();
+        };
+
+        // Update counter every day
+        setInterval(updateCounter, 1000 * 60 * 60 * 24);
+
+        // Theme handling
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        }
+
+        // Initialize theme
+        function initializeTheme() {
+            // Check if user has a saved preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                setTheme(savedTheme);
+                return;
+            }
+
+            // Check system preference
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                setTheme('dark');
+            } else {
+                setTheme('light');
+            }
+
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                if (!localStorage.getItem('theme')) { // Only if user hasn't manually set a theme
+                    setTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+        }
+
+        initializeTheme();
+    </script>
+</body>
+</html>
