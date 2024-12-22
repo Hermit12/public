@@ -1,0 +1,327 @@
+import React, { useState } from 'react';
+import { Alert } from '@/components/ui/alert';
+import { jsPDF } from 'jspdf';
+
+const screwSizes = [
+  "M8", "M10", "M12", "M16", "M20", "M24", "M30"
+];
+
+const screwProperties = {
+  "M8": { As: 36.6, A: 50.3, d: 8 },
+  "M10": { As: 58.0, A: 78.5, d: 10 },
+  "M12": { As: 84.3, A: 113.1, d: 12 },
+  "M16": { As: 157.0, A: 201.1, d: 16 },
+  "M20": { As: 245.0, A: 314.2, d: 20 },
+  "M24": { As: 353.0, A: 452.4, d: 24 },
+  "M30": { As: 561.0, A: 706.9, d: 30 }
+};
+
+const strengthClasses = {
+  "4.6": { fub: 400, fyb: 240 },
+  "5.6": { fub: 500, fyb: 300 },
+  "8.8": { fub: 800, fyb: 640 },
+  "10.9": { fub: 1000, fyb: 900 }
+};
+
+const ScrewCalculator = () => {
+  const [selectedSize, setSelectedSize] = useState("M16");
+  const [selectedClass, setSelectedClass] = useState("8.8");
+  const [tensileForce, setTensileForce] = useState(0);
+  const [shearForce, setShearForce] = useState(0);
+  const [plateThickness, setPlateThickness] = useState(10);
+  const [plateStrength, setPlateStrength] = useState(235);
+  const [edgeDistance, setEdgeDistance] = useState(30);
+  const [results, setResults] = useState(null);
+  
+  const calculate = () => {
+    const { fub } = strengthClasses[selectedClass];
+    const { As, A, d } = screwProperties[selectedSize];
+    const gammaM2 = 1.25;
+    
+    // Zugnachweis
+    const FtRd = (0.9 * fub * As) / gammaM2;
+    const tensileUtilization = tensileForce / FtRd;
+    
+    // Abschernachweis
+    const FvRd = (0.6 * fub * A) / gammaM2;
+    const shearUtilization = shearForce / FvRd;
+    
+    // Kombinierter Nachweis
+    const combinedUtilization = shearUtilization + tensileForce / (1.4 * FtRd);
+    
+    // Lochleibungsnachweis
+    const k1 = Math.min(2.8 * edgeDistance / d - 1.7, 2.5);
+    const alphab = Math.min(edgeDistance / (3 * d), fub / plateStrength, 1.0);
+    const FbRd = (k1 * alphab * plateStrength * d * plateThickness) / gammaM2;
+    const bearingUtilization = shearForce / FbRd;
+    
+    // Durchstanznachweis
+    const dm = (d + 4) / 2; // Mittelwert aus Schlüsselweite und Kopfdurchmesser
+    const BpRd = (0.6 * Math.PI * dm * plateThickness * plateStrength) / gammaM2;
+    const punchingUtilization = tensileForce / BpRd;
+    
+    setResults({
+      tensileUtilization,
+      shearUtilization,
+      combinedUtilization,
+      bearingUtilization,
+      punchingUtilization,
+      FtRd,
+      FvRd,
+      FbRd,
+      BpRd
+    });
+  };
+
+  const exportPDF = () => {
+    if (!results) return;
+    
+    const doc = new jsPDF();
+    doc.setFont("helvetica");
+    let yPos = 20;
+    const lineHeight = 7;
+    
+    // Titel
+    doc.setFontSize(16);
+    doc.text("Schraubenberechnung nach EC3", 20, yPos);
+    yPos += lineHeight * 2;
+    
+    // Eingabedaten
+    doc.setFontSize(12);
+    doc.text("Eingabedaten:", 20, yPos);
+    yPos += lineHeight;
+    doc.text([
+      `Schraubengröße: ${selectedSize}`,
+      `Festigkeitsklasse: ${selectedClass}`,
+      `Zugkraft FtEd: ${tensileForce} kN`,
+      `Scherkraft FvEd: ${shearForce} kN`,
+      `Blechdicke t: ${plateThickness} mm`,
+      `Randabstand e1: ${edgeDistance} mm`,
+      `Blechfestigkeit fu: ${plateStrength} N/mm²`
+    ], 20, yPos);
+    yPos += lineHeight * 8;
+
+    // Schraubenkennwerte
+    const { fub } = strengthClasses[selectedClass];
+    const { As, A, d } = screwProperties[selectedSize];
+    doc.text([
+      "Schraubenkennwerte:",
+      `Zugspannungsquerschnitt As: ${As} mm²`,
+      `Schaftquerschnitt A: ${A} mm²`,
+      `Zugfestigkeit fub: ${fub} N/mm²`
+    ], 20, yPos);
+    yPos += lineHeight * 5;
+
+    // Zugnachweis
+    doc.text("1. Zugnachweis:", 20, yPos);
+    yPos += lineHeight;
+    doc.text([
+      "Formel:",
+      "FtRd = (0.9 × fub × As) / γM2",
+      "Eingesetzt:",
+      `FtRd = (0.9 × ${fub} × ${As}) / 1.25 = ${results.FtRd.toFixed(1)} kN`,
+      `Auslastung = ${tensileForce} / ${results.FtRd.toFixed(1)} = ${(results.tensileUtilization * 100).toFixed(1)}%`
+    ], 30, yPos);
+    yPos += lineHeight * 6;
+
+    // Abschernachweis
+    doc.text("2. Abschernachweis:", 20, yPos);
+    yPos += lineHeight;
+    doc.text([
+      "Formel:",
+      "FvRd = (0.6 × fub × A) / γM2",
+      "Eingesetzt:",
+      `FvRd = (0.6 × ${fub} × ${A}) / 1.25 = ${results.FvRd.toFixed(1)} kN`,
+      `Auslastung = ${shearForce} / ${results.FvRd.toFixed(1)} = ${(results.shearUtilization * 100).toFixed(1)}%`
+    ], 30, yPos);
+    yPos += lineHeight * 6;
+
+    // Kombinierter Nachweis
+    doc.text("3. Kombinierter Nachweis:", 20, yPos);
+    yPos += lineHeight;
+    doc.text([
+      "Formel:",
+      "FvEd/FvRd + FtEd/(1.4×FtRd) ≤ 1.0",
+      "Eingesetzt:",
+      `${shearForce}/${results.FvRd.toFixed(1)} + ${tensileForce}/(1.4×${results.FtRd.toFixed(1)}) = ${(results.combinedUtilization * 100).toFixed(1)}%`
+    ], 30, yPos);
+    yPos += lineHeight * 5;
+
+    // Neue Seite für weitere Nachweise
+    doc.addPage();
+    yPos = 20;
+
+    // Lochleibungsnachweis
+    const k1 = Math.min(2.8 * edgeDistance / d - 1.7, 2.5);
+    const alphab = Math.min(edgeDistance / (3 * d), fub / plateStrength, 1.0);
+    
+    doc.text("4. Lochleibungsnachweis:", 20, yPos);
+    yPos += lineHeight;
+    doc.text([
+      "Formeln:",
+      "FbRd = (k1 × αb × fu × d × t) / γM2",
+      "k1 = min(2.8 × e1/d - 1.7; 2.5)",
+      "αb = min(e1/(3×d); fub/fu; 1.0)",
+      "",
+      "Eingesetzt:",
+      `k1 = min(2.8 × ${edgeDistance}/${d} - 1.7; 2.5) = ${k1.toFixed(3)}`,
+      `αb = min(${edgeDistance}/(3×${d}); ${fub}/${plateStrength}; 1.0) = ${alphab.toFixed(3)}`,
+      `FbRd = (${k1.toFixed(3)} × ${alphab.toFixed(3)} × ${plateStrength} × ${d} × ${plateThickness}) / 1.25 = ${results.FbRd.toFixed(1)} kN`,
+      `Auslastung = ${shearForce} / ${results.FbRd.toFixed(1)} = ${(results.bearingUtilization * 100).toFixed(1)}%`
+    ], 30, yPos);
+    yPos += lineHeight * 11;
+
+    // Durchstanznachweis
+    const dm = (d + 4) / 2;
+    doc.text("5. Durchstanznachweis:", 20, yPos);
+    yPos += lineHeight;
+    doc.text([
+      "Formel:",
+      "BpRd = (0.6 × π × dm × t × fu) / γM2",
+      "dm = (d + 4) / 2",
+      "",
+      "Eingesetzt:",
+      `dm = (${d} + 4) / 2 = ${dm.toFixed(1)} mm`,
+      `BpRd = (0.6 × π × ${dm.toFixed(1)} × ${plateThickness} × ${plateStrength}) / 1.25 = ${results.BpRd.toFixed(1)} kN`,
+      `Auslastung = ${tensileForce} / ${results.BpRd.toFixed(1)} = ${(results.punchingUtilization * 100).toFixed(1)}%`
+    ], 30, yPos);
+    
+    doc.save("schraubenberechnung.pdf");
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <h1 className="text-2xl font-bold mb-6">Schraubenberechnung nach EC3</h1>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium mb-2">Schraubengröße</label>
+          <select 
+            value={selectedSize}
+            onChange={(e) => setSelectedSize(e.target.value)}
+            className="w-full p-2 border rounded"
+          >
+            {screwSizes.map(size => (
+              <option key={size} value={size}>{size}</option>
+            ))}
+          </select>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium mb-2">Festigkeitsklasse</label>
+          <select 
+            value={selectedClass}
+            onChange={(e) => setSelectedClass(e.target.value)}
+            className="w-full p-2 border rounded"
+          >
+            {Object.keys(strengthClasses).map(cls => (
+              <option key={cls} value={cls}>{cls}</option>
+            ))}
+          </select>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium mb-2">Zugkraft FtEd [kN]</label>
+          <input
+            type="number"
+            value={tensileForce}
+            onChange={(e) => setTensileForce(Number(e.target.value))}
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium mb-2">Scherkraft FvEd [kN]</label>
+          <input
+            type="number"
+            value={shearForce}
+            onChange={(e) => setShearForce(Number(e.target.value))}
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium mb-2">Blechdicke t [mm]</label>
+          <input
+            type="number"
+            value={plateThickness}
+            onChange={(e) => setPlateThickness(Number(e.target.value))}
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium mb-2">Randabstand e1 [mm]</label>
+          <input
+            type="number"
+            value={edgeDistance}
+            onChange={(e) => setEdgeDistance(Number(e.target.value))}
+            className="w-full p-2 border rounded"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium mb-2">Blechfestigkeit fu [N/mm²]</label>
+          <input
+            type="number"
+            value={plateStrength}
+            onChange={(e) => setPlateStrength(Number(e.target.value))}
+            className="w-full p-2 border rounded"
+          />
+        </div>
+      </div>
+      
+      <div className="flex gap-4">
+        <button
+          onClick={calculate}
+          className="flex-1 bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+        >
+          Berechnen
+        </button>
+        
+        {results && (
+          <button
+            onClick={exportPDF}
+            className="flex-1 bg-green-600 text-white p-2 rounded hover:bg-green-700"
+          >
+            Als PDF exportieren
+          </button>
+        )}
+      </div>
+      
+      {results && (
+        <div className="mt-6 space-y-4">
+          <h2 className="text-xl font-semibold">Ergebnisse</h2>
+          
+          <div className="space-y-2">
+            <Alert className={results.tensileUtilization <= 1 ? 'bg-green-100' : 'bg-red-100'}>
+              <p>Zugnachweis: {(results.tensileUtilization * 100).toFixed(1)}% ausgenutzt</p>
+              <p className="text-sm">FtRd = {results.FtRd.toFixed(1)} kN</p>
+            </Alert>
+            
+            <Alert className={results.shearUtilization <= 1 ? 'bg-green-100' : 'bg-red-100'}>
+              <p>Abschernachweis: {(results.shearUtilization * 100).toFixed(1)}% ausgenutzt</p>
+              <p className="text-sm">FvRd = {results.FvRd.toFixed(1)} kN</p>
+            </Alert>
+            
+            <Alert className={results.combinedUtilization <= 1 ? 'bg-green-100' : 'bg-red-100'}>
+              <p>Kombinierter Nachweis: {(results.combinedUtilization * 100).toFixed(1)}% ausgenutzt</p>
+            </Alert>
+            
+            <Alert className={results.bearingUtilization <= 1 ? 'bg-green-100' : 'bg-red-100'}>
+              <p>Lochleibungsnachweis: {(results.bearingUtilization * 100).toFixed(1)}% ausgenutzt</p>
+              <p className="text-sm">FbRd = {results.FbRd.toFixed(1)} kN</p>
+            </Alert>
+            
+            <Alert className={results.punchingUtilization <= 1 ? 'bg-green-100' : 'bg-red-100'}>
+              <p>Durchstanznachweis: {(results.punchingUtilization * 100).toFixed(1)}% ausgenutzt</p>
+              <p className="text-sm">BpRd = {results.BpRd.toFixed(1)} kN</p>
+            </Alert>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ScrewCalculator;
