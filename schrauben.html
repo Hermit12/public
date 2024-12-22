@@ -6,12 +6,14 @@
     <title>Schraubenberechnung nach EC3</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
     <style>
-        .container { max-width: 800px; margin: 20px auto; }
+        .container { max-width: 1000px; margin: 20px auto; }
         .card { padding: 20px; }
         .result-row { margin: 10px 0; }
         .valid { color: green; }
         .invalid { color: red; }
         .results { margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px; }
+        .input-field { margin-top: 1rem; }
+        .section-title { margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -19,8 +21,9 @@
         <div class="card">
             <h4>Schraubenberechnung nach EC3</h4>
             
+            <!-- Grundlegende Schraubenparameter -->
             <div class="row">
-                <div class="input-field col s12">
+                <div class="input-field col s6">
                     <select id="screwSize">
                         <option value="M12">M12</option>
                         <option value="M16">M16</option>
@@ -30,8 +33,19 @@
                     </select>
                     <label>Schraubengröße</label>
                 </div>
+                <div class="input-field col s6">
+                    <select id="screwClass">
+                        <option value="4.6">4.6</option>
+                        <option value="5.6">5.6</option>
+                        <option value="8.8" selected>8.8</option>
+                        <option value="10.9">10.9</option>
+                    </select>
+                    <label>Festigkeitsklasse</label>
+                </div>
             </div>
 
+            <!-- Einwirkende Kräfte -->
+            <h5 class="section-title">Einwirkende Kräfte</h5>
             <div class="row">
                 <div class="input-field col s6">
                     <input id="tensionForce" type="number" step="0.1">
@@ -40,6 +54,46 @@
                 <div class="input-field col s6">
                     <input id="shearForce" type="number" step="0.1">
                     <label for="shearForce">Scherkraft F_v,Ed [kN]</label>
+                </div>
+            </div>
+
+            <!-- Lochleibungsparameter -->
+            <h5 class="section-title">Lochleibungsparameter</h5>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="plateThickness" type="number" step="0.1">
+                    <label for="plateThickness">Blechdicke t [mm]</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="plateFu" type="number" step="10" value="360">
+                    <label for="plateFu">Zugfestigkeit Blech f_u [N/mm²]</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s4">
+                    <input id="e1" type="number" step="1">
+                    <label for="e1">Randabstand e1 [mm]</label>
+                </div>
+                <div class="input-field col s4">
+                    <input id="p1" type="number" step="1">
+                    <label for="p1">Lochabstand p1 [mm]</label>
+                </div>
+                <div class="input-field col s4">
+                    <input id="e2" type="number" step="1">
+                    <label for="e2">Randabstand e2 [mm]</label>
+                </div>
+            </div>
+
+            <!-- Unterlegscheiben -->
+            <h5 class="section-title">Unterlegscheiben</h5>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="washerDm" type="number" step="1">
+                    <label for="washerDm">Durchmesser Unterlegscheibe d_m [mm]</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="washerTp" type="number" step="0.1">
+                    <label for="washerTp">Dicke der Kopfplatte t_p [mm]</label>
                 </div>
             </div>
 
@@ -58,15 +112,22 @@
     <script>
         // Schraubendaten
         const screwData = {
-            'M12': { As: 84.3, A: 113.1 },
-            'M16': { As: 157, A: 201.1 },
-            'M20': { As: 245, A: 314.2 },
-            'M24': { As: 353, A: 452.4 },
-            'M30': { As: 561, A: 706.9 }
+            'M12': { As: 84.3, A: 113.1, d: 12, d0: 13 },
+            'M16': { As: 157, A: 201.1, d: 16, d0: 17 },
+            'M20': { As: 245, A: 314.2, d: 20, d0: 21 },
+            'M24': { As: 353, A: 452.4, d: 24, d0: 25 },
+            'M30': { As: 561, A: 706.9, d: 30, d0: 31 }
+        };
+
+        // Festigkeitsklassen
+        const strengthClasses = {
+            '4.6': { fyb: 240, fub: 400 },
+            '5.6': { fyb: 300, fub: 500 },
+            '8.8': { fyb: 640, fub: 800 },
+            '10.9': { fyb: 900, fub: 1000 }
         };
 
         // Materialkonstanten
-        const fub = 800; // N/mm² für 8.8 Schrauben
         const gammaM2 = 1.25;
 
         // Initialize Materialize components
@@ -77,19 +138,58 @@
 
         function calculate() {
             const selectedScrew = document.getElementById('screwSize').value;
-            const tensionForce = parseFloat(document.getElementById('tensionForce').value) || 0;
-            const shearForce = parseFloat(document.getElementById('shearForce').value) || 0;
+            const selectedClass = document.getElementById('screwClass').value;
+            const tensionForce = (parseFloat(document.getElementById('tensionForce').value) || 0) * 1000;
+            const shearForce = (parseFloat(document.getElementById('shearForce').value) || 0) * 1000;
+            
+            const plateThickness = parseFloat(document.getElementById('plateThickness').value) || 0;
+            const plateFu = parseFloat(document.getElementById('plateFu').value) || 0;
+            const e1 = parseFloat(document.getElementById('e1').value) || 0;
+            const p1 = parseFloat(document.getElementById('p1').value) || 0;
+            const e2 = parseFloat(document.getElementById('e2').value) || 0;
+            
+            // Neue Parameter für Durchstanznachweis
+            const washerDm = parseFloat(document.getElementById('washerDm').value) || 0;
+            const washerTp = parseFloat(document.getElementById('washerTp').value) || 0;
 
             const screw = screwData[selectedScrew];
+            const strengthClass = strengthClasses[selectedClass];
             
-            // Grenzwerte berechnen
-            const FtRd = (0.9 * fub * screw.As) / gammaM2;
-            const FvRd = (0.6 * fub * screw.A) / gammaM2;
+            // Zug- und Schernachweis
+            const FtRd = (0.9 * strengthClass.fub * screw.As) / gammaM2;
+            const FvRd = (0.6 * strengthClass.fub * screw.A) / gammaM2;
             
-            // Ausnutzungsgrade
             const tensionUtilization = tensionForce / FtRd;
             const shearUtilization = shearForce / FvRd;
             const combinedUtilization = (shearForce / FvRd) + (tensionForce / (1.4 * FtRd));
+
+            // Lochleibungsnachweis
+            let FbRd = 0;
+            let bearingUtilization = 0;
+            
+            if (plateThickness && e1 && e2) {
+                // Berechnung der Beiwerte k1 und αb
+                const k1 = Math.min(2.8 * e2/screw.d - 1.7, 2.5);
+                const αb = Math.min(
+                    e1/(3 * screw.d),
+                    p1/(3 * screw.d) - 0.25,
+                    strengthClass.fub/plateFu,
+                    1.0
+                );
+                
+                FbRd = (k1 * αb * plateFu * screw.d * plateThickness) / gammaM2;
+                bearingUtilization = shearForce / FbRd;
+            }
+
+            // Durchstanznachweis
+            let BpRd = 0;
+            let punchingUtilization = 0;
+
+            if (washerDm && washerTp) {
+                const dm = washerDm;  // Durchmesser der Unterlegscheibe
+                BpRd = (0.6 * Math.PI * dm * washerTp * plateFu) / gammaM2;
+                punchingUtilization = tensionForce / BpRd;
+            }
 
             // Ergebnisse anzeigen
             const resultsDiv = document.getElementById('results');
@@ -97,15 +197,44 @@
             
             resultsDiv.style.display = 'block';
             resultsContent.innerHTML = `
-                <div class="result-row">Zug-Grenztragfähigkeit F_t,Rd: ${FtRd.toFixed(2)} kN</div>
-                <div class="result-row">Scher-Grenztragfähigkeit F_v,Rd: ${FvRd.toFixed(2)} kN</div>
+                <h6>Zugnachweis</h6>
+                <div class="result-row">Zug-Grenztragfähigkeit F_t,Rd: ${(FtRd/1000).toFixed(2)} kN</div>
                 <div class="result-row">Ausnutzung Zug: ${(tensionUtilization * 100).toFixed(1)}%</div>
+                
+                <h6>Schernachweis</h6>
+                <div class="result-row">Scher-Grenztragfähigkeit F_v,Rd: ${(FvRd/1000).toFixed(2)} kN</div>
                 <div class="result-row">Ausnutzung Schub: ${(shearUtilization * 100).toFixed(1)}%</div>
+                
+                <h6>Kombinierter Nachweis</h6>
                 <div class="result-row">Kombinierte Ausnutzung: ${(combinedUtilization * 100).toFixed(1)}%</div>
                 <div class="result-row ${combinedUtilization <= 1.0 ? 'valid' : 'invalid'}">
                     <strong>${combinedUtilization <= 1.0 ? 'Nachweis erfüllt' : 'Nachweis nicht erfüllt'}</strong>
                 </div>
             `;
+
+            // Lochleibungsnachweis nur anzeigen wenn Daten eingegeben wurden
+            if (plateThickness && e1 && e2) {
+                resultsContent.innerHTML += `
+                    <h6>Lochleibungsnachweis</h6>
+                    <div class="result-row">Lochleibungs-Grenztragfähigkeit F_b,Rd: ${(FbRd/1000).toFixed(2)} kN</div>
+                    <div class="result-row">Ausnutzung Lochleibung: ${(bearingUtilization * 100).toFixed(1)}%</div>
+                    <div class="result-row ${bearingUtilization <= 1.0 ? 'valid' : 'invalid'}">
+                        <strong>${bearingUtilization <= 1.0 ? 'Nachweis erfüllt' : 'Nachweis nicht erfüllt'}</strong>
+                    </div>
+                `;
+            }
+
+            // Durchstanznachweis nur anzeigen wenn Daten eingegeben wurden
+            if (washerDm && washerTp) {
+                resultsContent.innerHTML += `
+                    <h6>Durchstanznachweis</h6>
+                    <div class="result-row">Durchstanz-Grenztragfähigkeit B_p,Rd: ${(BpRd/1000).toFixed(2)} kN</div>
+                    <div class="result-row">Ausnutzung Durchstanzen: ${(punchingUtilization * 100).toFixed(1)}%</div>
+                    <div class="result-row ${punchingUtilization <= 1.0 ? 'valid' : 'invalid'}">
+                        <strong>${punchingUtilization <= 1.0 ? 'Nachweis erfüllt' : 'Nachweis nicht erfüllt'}</strong>
+                    </div>
+                `;
+            }
         }
     </script>
 </body>
