@@ -257,6 +257,8 @@ const ExtendedScrewCalculator = () => {
             </div>
           </TabsContent>
 
+          // [Previous code remains the same until detailed TabsContent]
+
           <TabsContent value="detailed">
             <div className="space-y-6">
               <div>
@@ -303,6 +305,13 @@ const ExtendedScrewCalculator = () => {
                 
                 <p className="font-medium mt-4">Zulässige Flächenpressung:</p>
                 <LatexFormula formula={`p_{F,zul} = ${results.p_F_allowed}\\text{ N/mm²}`} />
+                
+                <div className="bg-gray-50 p-4 rounded-lg mt-4">
+                  <p className="mt-2">
+                    <span className="font-medium">Auslastung: </span>
+                    {(results.utilization.surface * 100).toFixed(1)}%
+                  </p>
+                </div>
               </div>
 
               <div>
@@ -313,6 +322,13 @@ const ExtendedScrewCalculator = () => {
                 
                 <p className="font-medium mt-4">Erforderliche Gleitsicherheit:</p>
                 <LatexFormula formula={`S_{G,erf} = 1,2`} />
+                
+                <div className="bg-gray-50 p-4 rounded-lg mt-4">
+                  <p className="mt-2">
+                    <span className="font-medium">Auslastung: </span>
+                    {(results.utilization.slip * 100).toFixed(1)}%
+                  </p>
+                </div>
               </div>
 
               <div>
@@ -324,9 +340,18 @@ const ExtendedScrewCalculator = () => {
                 <p className="font-medium mt-4">Zulässige Scherspannung:</p>
                 <LatexFormula formula={`\\tau_{a,S,zul} = 0,6\\cdot R_{p0,2}`} />
                 <LatexFormula formula={`\\tau_{a,S,zul} = 0,6\\cdot ${strengthClasses[inputs.screwClass].Rp02}\\text{ N/mm²} = ${results.tau_a_S_allowed.toFixed(1)}\\text{ N/mm²}`} />
+                
+                <div className="bg-gray-50 p-4 rounded-lg mt-4">
+                  <p className="mt-2">
+                    <span className="font-medium">Auslastung: </span>
+                    {(results.utilization.thread * 100).toFixed(1)}%
+                  </p>
+                </div>
               </div>
             </div>
           </TabsContent>
+
+// [Rest of the code remains the same]
         </Tabs>
       </CardContent>
     </Card>
