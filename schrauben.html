@@ -295,7 +295,10 @@ MathJax.Hub.Config({
     const d1 = gewinde.d - 1.0825 * gewinde.P;
     const A_innengewinde = Math.PI * m_eff * d1 * lastverteilungsfaktor;
     const FMzul_innengewinde = 0.4 * Rm_innengewinde * A_innengewinde;
-    
+
+    // Berechnung der minimalen Einschraubtiefe nach VDI 2230
+    const mef_min = FM_erf / (0.4 * Rm_innengewinde * Math.PI * d1);
+            
     // Warnungen generieren
     const warnings = [];
     if (m_tat < m_min) {
@@ -315,14 +318,14 @@ MathJax.Hub.Config({
     const resultContent = document.getElementById('resultContent');
     resultContent.innerHTML = `
         resultContent.innerHTML = '';
-        if (warnings.length > 0) {
-            resultContent.innerHTML += `
-                <div style="color: red; margin-top: 10px;">
-                    ${warnings.map(w => `<p>${w}</p>`).join('')}
-                </div>
-            `;
-        }
-        resultContent.innerHTML += `
+    if (warnings.length > 0) {
+        resultContent.innerHTML = `
+            <div style="color: red; margin-top: 10px;">
+                ${warnings.map(w => `<p>${w}</p>`).join('')}
+            </div>
+        `;
+    }
+    resultContent.innerHTML += `
         <p>Spannungsquerschnitt AS: ${AS.toFixed(2)} mm²</p>
         <p>Erforderliche Mindestklemmkraft FM,erf: ${(FM_erf/1000).toFixed(2)} kN</p>
         <p>Minimale Einschraubtiefe mef,min: ${mef_min.toFixed(2)} mm</p>
