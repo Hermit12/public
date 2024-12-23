@@ -279,12 +279,6 @@ MathJax.Hub.Config({
     const sigma_zul = 0.9 * material.Rp02;  // Korrigiert nach VDI 2230
     const FMzul_schraube = sigma_zul * AS;
     
-    // Setzverhalten nach VDI 2230
-    const FM_erf_basis = FA * kA;
-    const fZ = 0.01; // Setzbetrag [mm] - typischer Wert
-    const fP = (FM_erf_basis * gewinde.d) / (AS * material.Rp02); // elastische Dehnung
-    const FM_erf = FM_erf_basis * (1 / (1 - fZ/(fZ + fP))); // Korrigierte Mindestklemmkraft
-    
     // Berechnung Anzugsmoment
     const mu_g = parseFloat(document.getElementById('mu_g').value);
     const mu_k = parseFloat(document.getElementById('mu_k').value);
