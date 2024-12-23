@@ -144,6 +144,16 @@ MathJax.Hub.Config({
         </div>
 
         <div class="input-group">
+            <label for="schmierzustand">Schmierzustand:</label>
+            <select id="schmierzustand">
+                <option value="trocken">Trocken (μ ≈ 0.12)</option>
+                <option value="oelig">Geölt (μ ≈ 0.08)</option>
+                <option value="gefettet">Gefettet (μ ≈ 0.06)</option>
+                <option value="paste">Montagepaste (μ ≈ 0.10)</option>
+            </select>
+        </div>
+        
+        <div class="input-group">
             <label for="innengewinde_material">Material Innengewinde:</label>
             <select id="innengewinde_material">
                 <option value="custom">Benutzerdefiniert</option>
@@ -240,6 +250,12 @@ MathJax.Hub.Config({
             'M30': { d: 30, P: 3.5, d2: 27.727, d3: 25.706, dw: 56, dh: 46 },
             'M36': { d: 36, P: 4.0, d2: 33.402, d3: 31.093, dw: 66, dh: 55 }
         };
+        const reibwertBereiche = {
+            'trocken': { mu_g: 0.12, mu_k: 0.12, k: 0.16 },
+            'oelig': { mu_g: 0.08, mu_k: 0.08, k: 0.14 },
+            'gefettet': { mu_g: 0.06, mu_k: 0.06, k: 0.13 },
+            'paste': { mu_g: 0.10, mu_k: 0.10, k: 0.15 }
+        };
 
         // Event Listener für Material-Auswahl
         document.getElementById('innengewinde_material').addEventListener('change', function() {
@@ -308,10 +324,20 @@ MathJax.Hub.Config({
     const sigma_zul = 0.9 * material.Rp02;  // Korrigiert nach VDI 2230
     const FMzul_schraube = sigma_zul * AS;
     
-    // Erforderliche Mindestklemmkraft nach VDI 2230
-    const mu_min = 0.2; // Mindestreibwert
-    const FKQ = FQ / mu_min; // Klemmkraft aus Querkraft
-    const FM_erf_basis = Math.max(FA * kA, FKQ);
+    // Verbesserter Lastfaktor nach VDI 2230
+    const alpha_A = (() => {
+        if (belastungsart === 'statisch') {
+            return 1.5;
+        }
+        // Für dynamische Last
+        const sigma_red = sigma_v / material.Rp02;
+        if (sigma_red <= 0.3) return 1.6;
+        if (sigma_red <= 0.5) return 1.8;
+        return 2.0;
+    })();
+    
+    // Erforderliche Mindestklemmkraft
+    const FM_erf_basis = Math.max(FA * alpha_A, FKQ);
     
     // Setzverhalten
     const fZ = 0.01; // Setzbetrag [mm] - typischer Wert
@@ -340,11 +366,23 @@ MathJax.Hub.Config({
     // Mittlerer Kopfreibungsdurchmesser
     const d_Km = (gewinde.dw + gewinde.dh) / 2;
     
-    // Anzugsmoment
-    const MA = FM_erf * (
+    // Anzugsmoment nach VDI 2230 mit Streubereich
+    const schmierzustand = document.getElementById('schmierzustand').value;
+    const reibwerte = reibwertBereiche[schmierzustand];
+    const k = reibwerte.k;
+    
+    // Basisanzugsmoment
+    const MA_basis = FM_erf * gewinde.d * k / 1000;  // in Nm
+    
+    // Streubereich des Anzugsmoments
+    const MA_min = MA_basis * 0.9;
+    const MA_max = MA_basis * 1.1;
+    
+    // Exakte Berechnung für Vergleich
+    const MA_exakt = FM_erf * (
         (gewinde.d2/2 * Math.tan(rho + phi)) + 
         (mu_k * d_Km/2)
-    );
+    ) / 1000;
 
     // Berechnung Mindesteinschraubtiefe basierend auf Belastungsart und Festigkeitsklasse
     let m_min_factor;
@@ -414,6 +452,16 @@ MathJax.Hub.Config({
         warnings.push(`Warnung: Einschraubtiefe (${m_tat.toFixed(2)} mm) ist kleiner als die erforderliche Mindesteinschraubtiefe von ${mef_min.toFixed(2)} mm`);
     }
 
+    // Montagegrenzwerte nach VDI 2230
+    const alpha_M = material.Rp02 / material.Rm;
+    const FM_max = AS * (0.9 * material.Rp02);
+    const FM_min = FM_erf * 0.9;
+    
+    // Prüfung der Montagegrenzwerte
+    if (FM_erf > FM_max) {
+        warnings.push(`Warnung: Erforderliche Vorspannkraft (${(FM_erf/1000).toFixed(2)} kN) überschreitet maximal zulässige Montagevorspannkraft (${(FM_max/1000).toFixed(2)} kN)`);
+    }    
+        
     // Bestimmung der maßgebenden zulässigen Kraft
     const FMzul = Math.min(FMzul_schraube, FMzul_innengewinde);
     const auslastung = (FM_erf / FMzul) * 100;
@@ -445,8 +493,11 @@ MathJax.Hub.Config({
         <p>Zulässige Vorspannkraft Schraube: ${(FMzul_schraube/1000).toFixed(2)} kN</p>
         <p>Zulässige Vorspannkraft Innengewinde: ${(FMzul_innengewinde/1000).toFixed(2)} kN</p>
         <p>Maßgebende zulässige Vorspannkraft FM,zul: ${(FMzul/1000).toFixed(2)} kN</p>
-        <p>Auslastung: ${auslastung.toFixed(1)}%</p>
+        <p>Anzugsmoment MA: ${MA_basis.toFixed(2)} Nm</p>
+        <p>Streubereich: ${MA_min.toFixed(2)} - ${MA_max.toFixed(2)} Nm</p>
+        <p>Exakte Berechnung: ${MA_exakt.toFixed(2)} Nm</p>
         <p>Erforderliches Anzugsmoment MA: ${(MA/1000).toFixed(2)} Nm</p>
+        <p>Auslastung: ${auslastung.toFixed(1)}%</p>
         <div class="progress-bar">
             <div class="progress ${auslastung > 90 ? 'danger' : auslastung > 75 ? 'warning' : ''}" 
                  style="width: ${Math.min(auslastung, 100)}%">
