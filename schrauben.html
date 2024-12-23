@@ -171,6 +171,14 @@ MathJax.Hub.Config({
             <label for="mtat">Tatsächliche Einschraubtiefe [mm]:</label>
             <input type="number" id="mtat" step="0.1" value="10">
         </div>
+
+        <div class="input-group">
+            <label for="belastungsart">Art der Belastung:</label>
+            <select id="belastungsart">
+            <option value="statisch">Statisch</option>
+            <option value="dynamisch">Dynamisch</option>
+            </select>
+        </div>
         
         <button onclick="berechnen()">Berechnen</button>
 
@@ -246,7 +254,8 @@ MathJax.Hub.Config({
     const kA = parseFloat(document.getElementById('kA').value);
     const Rm_innengewinde = parseFloat(document.getElementById('custom_strength').value);
     const m_tat = parseFloat(document.getElementById('mtat').value);
-
+    const belastungsart = document.getElementById('belastungsart').value;
+            
     // Materialkennwerte Schraube
     const festigkeitswerte = {
         '8.8': { Rp02: 640, Rm: 800 },
@@ -262,7 +271,41 @@ MathJax.Hub.Config({
     const FMzul_schraube = sigma_zul * AS;
 
     // Berechnung Innengewinde
-    const d1 = gewinde.d - 1.0825 * gewinde.P; // Kerndurchmesser Innengewinde
+    
+
+
+    // Mindesteinschraubtiefe basierend auf Belastungsart und Festigkeitsklasse
+    let m_min_factor;
+    if (festigkeitsklasse === '8.8') {
+        m_min_factor = belastungsart === 'statisch' ? 0.8 : 1.0;
+    } else {
+        // Für 10.9 und 12.9
+        m_min_factor = belastungsart === 'statisch' ? 1.0 : 1.2;
+    }
+    
+    // Berechnung der minimalen und maximalen Einschraubtiefe
+    const m_min = m_min_factor * gewinde.d;
+    const m_max = 2.5 * gewinde.d;
+    const max_tragende_gaenge = 6;
+    const max_tragende_laenge = max_tragende_gaenge * gewinde.P;
+    
+    // Effektive Einschraubtiefe
+    const m_eff = Math.min(m_tat, max_tragende_laenge);
+    
+    // Berechnung mit Lastverteilungsfaktor
+    const lastverteilungsfaktor = 0.8; // 80% der Last auf die ersten Gewindegänge
+    const d1 = gewinde.d - 1.0825 * gewinde.P;
+    const A_innengewinde = Math.PI * m_eff * d1 * lastverteilungsfaktor;
+    const FMzul_innengewinde = 0.4 * Rm_innengewinde * A_innengewinde;
+    
+    // Warnungen generieren
+    const warnings = [];
+    if (m_tat < m_min) {
+        warnings.push(`Warnung: Einschraubtiefe (${m_tat.toFixed(2)} mm) unterschreitet Minimum von ${m_min.toFixed(2)} mm`);
+    }
+    if (m_tat > m_max) {
+        warnings.push(`Warnung: Einschraubtiefe (${m_tat.toFixed(2)} mm) überschreitet Maximum von ${m_max.toFixed(2)} mm`);
+    }
     
     // Berechnung der minimalen Einschraubtiefe nach VDI 2230
     const mef_min = FM_erf / (0.4 * Rm_innengewinde * Math.PI * d1);
@@ -279,6 +322,15 @@ MathJax.Hub.Config({
     // Ergebnisse ausgeben
     const resultContent = document.getElementById('resultContent');
     resultContent.innerHTML = `
+    
+        // Warnungen ausgeben
+        if (warnings.length > 0) {
+            resultContent.innerHTML += `
+                <div style="color: red; margin-top: 10px;">
+                    ${warnings.map(w => `<p>${w}</p>`).join('')}
+                </div>
+            `;
+        }
         <p>Spannungsquerschnitt AS: ${AS.toFixed(2)} mm²</p>
         <p>Erforderliche Mindestklemmkraft FM,erf: ${(FM_erf/1000).toFixed(2)} kN</p>
         <p>Minimale Einschraubtiefe mef,min: ${mef_min.toFixed(2)} mm</p>
@@ -300,6 +352,15 @@ MathJax.Hub.Config({
     // Detailierte Berechnungen
     const detailContent = document.getElementById('detailContent');
     detailContent.innerHTML = `
+        <div class="formula-box">
+            <h3>Gewindeeingriffslänge</h3>
+            <p>Mindesteinschraubtiefe: \\[m_{min} = ${m_min_factor} \\cdot d = ${m_min.toFixed(2)} \\text{ mm}\\]</p>
+            <p>Maximale Einschraubtiefe: \\[m_{max} = 2,5 \\cdot d = ${m_max.toFixed(2)} \\text{ mm}\\]</p>
+            <p>Maximale tragende Länge: \\[m_{trag} = 6 \\cdot P = ${(max_tragende_laenge).toFixed(2)} \\text{ mm}\\]</p>
+            <p>Effektive Einschraubtiefe: \\[m_{eff} = ${m_eff.toFixed(2)} \\text{ mm}\\]</p>
+            <p>Lastverteilungsfaktor: \\[f_{Last} = ${lastverteilungsfaktor}\\]</p>
+        </div>
+        
         <div class="formula-box">
             <h3>Spannungsquerschnitt</h3>
             <p>Formel: \\[A_S = \\frac{\\pi}{4} \\cdot d_3^2\\]</p>
