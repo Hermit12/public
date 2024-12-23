@@ -436,6 +436,12 @@ MathJax.Hub.Config({
         </div>
 
         <div class="formula-box">
+            <h3>Zulässige Vorspannkraft Schraube</h3>
+            <p>\\[\\sigma_{zul} = 0,9 \\cdot R_{p0,2} = ${sigma_zul.toFixed(2)} \\text{ N/mm}^2\\]</p>
+            <p>\\[F_{M,zul,S} = \\sigma_{zul} \\cdot A_S = ${FMzul_schraube.toFixed(2)} \\text{ N}\\]</p>
+        </div>
+
+        <div class="formula-box">
             <h3>Tragfähigkeit Innengewinde</h3>
             <p>Kern-Durchmesser: \\[d_1 = ${gewinde.d} - 1,0825 \\cdot ${gewinde.P} = ${d1.toFixed(3)} \\text{ mm}\\]</p>
             <p>Effektive tragende Fläche: \\[A_{Innengewinde} = \\pi \\cdot ${m_eff.toFixed(3)} \\cdot ${d1.toFixed(3)} = ${A_innengewinde.toFixed(2)} \\text{ mm}^2\\]</p>
@@ -450,12 +456,6 @@ MathJax.Hub.Config({
         <div class="formula-box">
             <h3>Auslastung</h3>
             <p>\\[\\text{Auslastung} = \\frac{F_{M,erf}}{F_{M,zul}} \\cdot 100\\% = ${auslastung.toFixed(1)}\\%\\]</p>
-        </div>
-
-        <div class="formula-box">
-            <h3>Zulässige Vorspannkraft Schraube</h3>
-            <p>\\[\\sigma_{zul} = 0,9 \\cdot R_{p0,2} = ${sigma_zul.toFixed(2)} \\text{ N/mm}^2\\]</p>
-            <p>\\[F_{M,zul,S} = \\sigma_{zul} \\cdot A_S = ${FMzul_schraube.toFixed(2)} \\text{ N}\\]</p>
         </div>
         
         <div class="formula-box">
