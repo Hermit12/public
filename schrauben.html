@@ -269,14 +269,13 @@ MathJax.Hub.Config({
     const sigma_zul = 0.9 * material.Rp02;  // Korrigiert nach VDI 2230
     const FMzul_schraube = sigma_zul * AS;
    
-    // Setzverhalten nach VDI 2230 - korrigierte Reihenfolge
+    // Setzverhalten nach VDI 2230
     const FM_erf_basis = FA * kA;
     const fZ = 0.01; // Setzbetrag [mm] - typischer Wert
     const fP = (FM_erf_basis * gewinde.d) / (AS * material.Rp02); // elastische Dehnung
     const FM_erf = FM_erf_basis * (1 / (1 - fZ/(fZ + fP))); // Korrigierte Mindestklemmkraft
 
-    // Berechnung Innengewinde
-    // Mindesteinschraubtiefe basierend auf Belastungsart und Festigkeitsklasse
+    // Berechnung Mindesteinschraubtiefe basierend auf Belastungsart und Festigkeitsklasse
     let m_min_factor;
     if (festigkeitsklasse === '8.8') {
         m_min_factor = belastungsart === 'statisch' ? 0.8 : 1.0;
@@ -287,13 +286,27 @@ MathJax.Hub.Config({
     
     // Berechnung der minimalen und maximalen Einschraubtiefe
     const m_min = m_min_factor * gewinde.d;
-    const m_max = 2.5 * gewinde.d;
-    const max_tragende_gaenge = 6;
+    
+    // Korrigierte Berechnung der maximalen Einschraubtiefe nach VDI 2230
+    let m_max;
+    const innengewinde_material = document.getElementById('innengewinde_material').value;
+    const Rm_schraube = material.Rm;
+    
+    if (innengewinde_material === 'steel') {
+        m_max = 3.0 * gewinde.d;
+    } else {
+        // Für andere Werkstoffe (z.B. Aluminium)
+        m_max = 2.0 * (Rm_innengewinde/Rm_schraube) * gewinde.d;
+    }
+    
+    // Maximale tragende Gänge und Länge
+    const max_tragende_gaenge = 8;  // Korrigiert nach VDI 2230
     const max_tragende_laenge = max_tragende_gaenge * gewinde.P;
     
     // Effektive Einschraubtiefe mit Lastverteilung
     const anzahl_gänge = Math.min(Math.floor(m_tat / gewinde.P), max_tragende_gaenge);
-    const lastverteilung = [0.33, 0.27, 0.2, 0.1, 0.07, 0.03]; // VDI 2230 Lastverteilung
+    // Korrigierte Lastverteilung nach VDI 2230 für 8 Gänge
+    const lastverteilung = [0.33, 0.27, 0.2, 0.1, 0.05, 0.03, 0.01, 0.01];
     let effektive_last = 0;
     for(let i = 0; i < anzahl_gänge; i++) {
         effektive_last += lastverteilung[i] || 0;
@@ -307,11 +320,14 @@ MathJax.Hub.Config({
     // Lastverteilungsfaktor abhängig von der Einschraubtiefe
     const m_grenz = 0.8 * gewinde.d; // Grenzeinschraubtiefe
     const k_l = m_tat <= m_grenz ? 0.8 : 0.9; // erhöhter Faktor bei längerer Einschraubtiefe
-    const FMzul_innengewinde = 0.4 * Rm_innengewinde * A_innengewinde * k_l;
+    
+    // Korrigierte Berechnung der zulässigen Kraft im Innengewinde
+    const k_A = 0.4; // Flächenfaktor nach VDI 2230
+    const FMzul_innengewinde = k_A * Rm_innengewinde * A_innengewinde * k_l;
 
     // Berechnung der minimalen Einschraubtiefe nach VDI 2230
     const sicherheitsfaktor = belastungsart === 'dynamisch' ? 1.2 : 1.0;
-    const mef_min = (FM_erf * sicherheitsfaktor) / (0.4 * Rm_innengewinde * Math.PI * d1);
+    const mef_min = (FM_erf * sicherheitsfaktor) / (k_A * Rm_innengewinde * Math.PI * d1);
     
     // Warnungen generieren
     const warnings = [];
@@ -319,7 +335,10 @@ MathJax.Hub.Config({
         warnings.push(`Warnung: Einschraubtiefe (${m_tat.toFixed(2)} mm) unterschreitet Minimum von ${m_min.toFixed(2)} mm`);
     }
     if (m_tat > m_max) {
-        warnings.push(`Warnung: Einschraubtiefe (${m_tat.toFixed(2)} mm) überschreitet Maximum von ${m_max.toFixed(2)} mm`);
+        warnings.push(`Warnung: Einschraubtiefe (${m_tat.toFixed(2)} mm) überschreitet Maximum von ${m_max.toFixed(2)} mm (Werkstoffabhängiger Grenzwert)`);
+    }
+    if (m_tat < mef_min) {
+        warnings.push(`Warnung: Einschraubtiefe (${m_tat.toFixed(2)} mm) ist kleiner als die erforderliche Mindesteinschraubtiefe von ${mef_min.toFixed(2)} mm`);
     }
 
     // Bestimmung der maßgebenden zulässigen Kraft
@@ -341,6 +360,7 @@ MathJax.Hub.Config({
         <p>Erforderliche Mindestklemmkraft FM,erf: ${(FM_erf/1000).toFixed(2)} kN</p>
         <p>Minimale Einschraubtiefe mef,min: ${mef_min.toFixed(2)} mm</p>
         <p>Tatsächliche Einschraubtiefe m_tat: ${m_tat.toFixed(2)} mm</p>
+        <p>Maximale Einschraubtiefe m_max: ${m_max.toFixed(2)} mm</p>
         <p style="color: ${m_tat < mef_min ? 'red' : 'green'}">
             ${m_tat < mef_min ? 'WARNUNG: Tatsächliche Einschraubtiefe zu gering!' : 'Einschraubtiefe ausreichend'}
         </p>
@@ -361,8 +381,8 @@ MathJax.Hub.Config({
         <div class="formula-box">
             <h3>Gewindeeingriffslänge</h3>
             <p>Mindesteinschraubtiefe: \\[m_{min} = ${m_min_factor} \\cdot d = ${m_min.toFixed(2)} \\text{ mm}\\]</p>
-            <p>Maximale Einschraubtiefe: \\[m_{max} = 2,5 \\cdot d = ${m_max.toFixed(2)} \\text{ mm}\\]</p>
-            <p>Maximale tragende Länge: \\[m_{trag} = 6 \\cdot P = ${(max_tragende_laenge).toFixed(2)} \\text{ mm}\\]</p>
+            <p>Maximale Einschraubtiefe: \\[m_{max} = ${innengewinde_material === 'steel' ? '3,0' : '2,0 \\cdot R_m/R_{m,M}'} \\cdot d = ${m_max.toFixed(2)} \\text{ mm}\\]</p>
+            <p>Maximale tragende Länge: \\[m_{trag} = ${max_tragende_gaenge} \\cdot P = ${(max_tragende_laenge).toFixed(2)} \\text{ mm}\\]</p>
             <p>Effektive Einschraubtiefe: \\[m_{eff} = ${m_eff.toFixed(2)} \\text{ mm}\\]</p>
             <p>Lastverteilungsfaktor k_l: \\[k_l = ${k_l}\\]</p>
         </div>
@@ -390,7 +410,7 @@ MathJax.Hub.Config({
             <h3>Tragfähigkeit Innengewinde</h3>
             <p>Kern-Durchmesser: \\[d_1 = ${gewinde.d} - 1,0825 \\cdot ${gewinde.P} = ${d1.toFixed(3)} \\text{ mm}\\]</p>
             <p>Effektive tragende Fläche: \\[A_{Innengewinde} = \\pi \\cdot ${m_eff.toFixed(3)} \\cdot ${d1.toFixed(3)} = ${A_innengewinde.toFixed(2)} \\text{ mm}^2\\]</p>
-            <p>Zulässige Kraft: \\[F_{M,zul,I} = 0,4 \\cdot ${Rm_innengewinde} \\cdot ${A_innengewinde.toFixed(2)} \\cdot ${k_l} = ${FMzul_innengewinde.toFixed(2)} \\text{ N}\\]</p>
+            <p>Zulässige Kraft: \\[F_{M,zul,I} = ${k_A} \\cdot ${Rm_innengewinde} \\cdot ${A_innengewinde.toFixed(2)} \\cdot ${k_l} = ${FMzul_innengewinde.toFixed(2)} \\text{ N}\\]</p>
         </div>
 
         <div class="formula-box">
