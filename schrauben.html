@@ -324,13 +324,26 @@ MathJax.Hub.Config({
     const sigma_zul = 0.9 * material.Rp02;  // Korrigiert nach VDI 2230
     const FMzul_schraube = sigma_zul * AS;
     
+    // Erforderliche Mindestklemmkraft aus Querkraft
+    const mu_min = 0.2; // Mindestreibwert
+    const FKQ = FQ / mu_min; // Klemmkraft aus Querkraft
+    
+    // Widerstandsmomente
+    const Wb = Math.PI * Math.pow(gewinde.d3, 3) / 32; // Widerstandsmoment
+    const Wt = Math.PI * Math.pow(gewinde.d3, 3) / 16; // Polares Widerstandsmoment
+    
+    // Spannungen berechnen
+    const sigma_b = (Mb * 1000) / Wb; // Biegespannung (Mb in Nmm)
+    const tau_t = (Mt * 1000) / Wt; // Torsionsspannung (Mt in Nmm)
+    
     // Verbesserter Lastfaktor nach VDI 2230
     const alpha_A = (() => {
         if (belastungsart === 'statisch') {
             return 1.5;
         }
         // Für dynamische Last
-        const sigma_red = sigma_v / material.Rp02;
+        const sigma_stat = sigma_b + sigma_zul;  // statische Grundspannung
+        const sigma_red = sigma_stat / material.Rp02;
         if (sigma_red <= 0.3) return 1.6;
         if (sigma_red <= 0.5) return 1.8;
         return 2.0;
@@ -344,11 +357,7 @@ MathJax.Hub.Config({
     const fP = (FM_erf_basis * gewinde.d) / (AS * material.Rp02); // elastische Dehnung
     const FM_erf = FM_erf_basis * (1 / (1 - fZ/(fZ + fP))); // Korrigierte Mindestklemmkraft
     
-    // Zusätzliche Spannungen
-    const Wb = Math.PI * Math.pow(gewinde.d3, 3) / 32; // Widerstandsmoment
-    const sigma_b = (Mb * 1000) / Wb; // Biegespannung (Mb in Nmm)
-    const Wt = Math.PI * Math.pow(gewinde.d3, 3) / 16; // Polares Widerstandsmoment
-    const tau_t = (Mt * 1000) / Wt; // Torsionsspannung (Mt in Nmm)
+    // Spannungen aus Vorspannung und dynamischer Last
     const sigma_zug = FM_erf / AS; // Zugspannung aus Vorspannung
     const sigma_a = FDA / AS; // Spannungsamplitude aus dynamischer Last
     
@@ -496,7 +505,6 @@ MathJax.Hub.Config({
         <p>Anzugsmoment MA: ${MA_basis.toFixed(2)} Nm</p>
         <p>Streubereich: ${MA_min.toFixed(2)} - ${MA_max.toFixed(2)} Nm</p>
         <p>Exakte Berechnung: ${MA_exakt.toFixed(2)} Nm</p>
-        <p>Erforderliches Anzugsmoment MA: ${(MA/1000).toFixed(2)} Nm</p>
         <p>Auslastung: ${auslastung.toFixed(1)}%</p>
         <div class="progress-bar">
             <div class="progress ${auslastung > 90 ? 'danger' : auslastung > 75 ? 'warning' : ''}" 
