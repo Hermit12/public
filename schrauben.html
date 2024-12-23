@@ -538,8 +538,10 @@ MathJax.Hub.Config({
 
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
-        window.addEventListener('load', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             berechnen();
+            // Initial MathJax render
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         });
     </script>
 </body>
