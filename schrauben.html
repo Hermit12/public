@@ -276,16 +276,22 @@ MathJax.Hub.Config({
         }
 
         function berechnen() {
-    // Eingabewerte auslesen
-    const gewindeTyp = document.getElementById('gewinde').value;
-    const gewinde = gewindeParams[gewindeTyp];
-    const festigkeitsklasse = document.getElementById('festigkeitsklasse').value;
-    const FA = parseFloat(document.getElementById('FA').value) * 1000; // Umrechnung in N
-    const FQ = parseFloat(document.getElementById('FQ').value) * 1000; // Umrechnung in N
-    const Mt = parseFloat(document.getElementById('Mt').value); // in Nm
-    const Mb = parseFloat(document.getElementById('Mb').value); // in Nm
-    const FDA = parseFloat(document.getElementById('FDA').value) * 1000; // Umrechnung in N
-    const kA = parseFloat(document.getElementById('kA').value);
+        
+        // Eingabewerte auslesen
+        const gewindeTyp = document.getElementById('gewinde').value;
+        const gewinde = gewindeParams[gewindeTyp];
+        const festigkeitsklasse = document.getElementById('festigkeitsklasse').value;
+        const FA = parseFloat(document.getElementById('FA').value) * 1000; // Umrechnung in N
+        const FQ = parseFloat(document.getElementById('FQ').value) * 1000; // Umrechnung in N
+        const Mt = parseFloat(document.getElementById('Mt').value); // in Nm
+        const Mb = parseFloat(document.getElementById('Mb').value); // in Nm
+        const FDA = parseFloat(document.getElementById('FDA').value) * 1000; // Umrechnung in N
+        const kA = parseFloat(document.getElementById('kA').value);
+        const Rm_innengewinde = parseFloat(document.getElementById('custom_strength').value);
+        const m_tat = parseFloat(document.getElementById('mtat').value);
+        const belastungsart = document.getElementById('belastungsart').value;
+        const mu_g = parseFloat(document.getElementById('mu_g').value);
+        const mu_k = parseFloat(document.getElementById('mu_k').value);
             
     // Materialkennwerte Schraube
     const festigkeitswerte = {
