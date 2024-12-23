@@ -189,6 +189,26 @@ MathJax.Hub.Config({
             <label for="mu_k">Reibungszahl Kopf μK:</label>
             <input type="number" id="mu_k" step="0.01" value="0.12">
         </div>
+
+        <div class="input-group">
+            <label for="FQ">Querkraft FQ [kN]:</label>
+            <input type="number" id="FQ" step="0.1" value="0">
+        </div>
+        
+        <div class="input-group">
+            <label for="Mt">Torsionsmoment Mt [Nm]:</label>
+            <input type="number" id="Mt" step="0.1" value="0">
+        </div>
+        
+        <div class="input-group">
+            <label for="Mb">Biegemoment Mb [Nm]:</label>
+            <input type="number" id="Mb" step="0.1" value="0">
+        </div>
+        
+        <div class="input-group">
+            <label for="FDA">Dynamische Axialkraft FDA [kN]:</label>
+            <input type="number" id="FDA" step="0.1" value="0">
+        </div>
         
         <button onclick="berechnen()">Berechnen</button>
 
@@ -261,10 +281,11 @@ MathJax.Hub.Config({
     const gewinde = gewindeParams[gewindeTyp];
     const festigkeitsklasse = document.getElementById('festigkeitsklasse').value;
     const FA = parseFloat(document.getElementById('FA').value) * 1000; // Umrechnung in N
+    const FQ = parseFloat(document.getElementById('FQ').value) * 1000; // Umrechnung in N
+    const Mt = parseFloat(document.getElementById('Mt').value); // in Nm
+    const Mb = parseFloat(document.getElementById('Mb').value); // in Nm
+    const FDA = parseFloat(document.getElementById('FDA').value) * 1000; // Umrechnung in N
     const kA = parseFloat(document.getElementById('kA').value);
-    const Rm_innengewinde = parseFloat(document.getElementById('custom_strength').value);
-    const m_tat = parseFloat(document.getElementById('mtat').value);
-    const belastungsart = document.getElementById('belastungsart').value;
             
     // Materialkennwerte Schraube
     const festigkeitswerte = {
@@ -279,11 +300,29 @@ MathJax.Hub.Config({
     const sigma_zul = 0.9 * material.Rp02;  // Korrigiert nach VDI 2230
     const FMzul_schraube = sigma_zul * AS;
     
-    // Setzverhalten nach VDI 2230
-    const FM_erf_basis = FA * kA;
+    // Erforderliche Mindestklemmkraft nach VDI 2230
+    const mu_min = 0.2; // Mindestreibwert
+    const FKQ = FQ / mu_min; // Klemmkraft aus Querkraft
+    const FM_erf_basis = Math.max(FA * kA, FKQ);
+    
+    // Setzverhalten
     const fZ = 0.01; // Setzbetrag [mm] - typischer Wert
     const fP = (FM_erf_basis * gewinde.d) / (AS * material.Rp02); // elastische Dehnung
     const FM_erf = FM_erf_basis * (1 / (1 - fZ/(fZ + fP))); // Korrigierte Mindestklemmkraft
+    
+    // Zusätzliche Spannungen
+    const Wb = Math.PI * Math.pow(gewinde.d3, 3) / 32; // Widerstandsmoment
+    const sigma_b = (Mb * 1000) / Wb; // Biegespannung (Mb in Nmm)
+    const Wt = Math.PI * Math.pow(gewinde.d3, 3) / 16; // Polares Widerstandsmoment
+    const tau_t = (Mt * 1000) / Wt; // Torsionsspannung (Mt in Nmm)
+    const sigma_zug = FM_erf / AS; // Zugspannung aus Vorspannung
+    const sigma_a = FDA / AS; // Spannungsamplitude aus dynamischer Last
+    
+    // Vergleichsspannung nach von Mises
+    const sigma_v = Math.sqrt(Math.pow(sigma_zug + sigma_b, 2) + 3 * Math.pow(tau_t, 2));
+    
+    // Zulässige Wechselfestigkeit (vereinfacht)
+    const sigma_W = material.Rm * 0.4;
     
     // Berechnung Anzugsmoment
     const mu_g = parseFloat(document.getElementById('mu_g').value);
@@ -388,6 +427,11 @@ MathJax.Hub.Config({
     resultContent.innerHTML += `
         <p>Spannungsquerschnitt AS: ${AS.toFixed(2)} mm²</p>
         <p>Erforderliche Mindestklemmkraft FM,erf: ${(FM_erf/1000).toFixed(2)} kN</p>
+        <p>Erforderliche Klemmkraft aus Querkraft: ${(FKQ/1000).toFixed(2)} kN</p>
+        <p>Vergleichsspannung: ${(sigma_v).toFixed(1)} N/mm²</p>
+        <p>Biegespannung: ${(sigma_b).toFixed(1)} N/mm²</p>
+        <p>Torsionsspannung: ${(tau_t).toFixed(1)} N/mm²</p>
+        <p>Spannungsamplitude (dynamisch): ${(sigma_a).toFixed(1)} N/mm²</p>
         <p>Minimale Einschraubtiefe mef,min: ${mef_min.toFixed(2)} mm</p>
         <p>Tatsächliche Einschraubtiefe m_tat: ${m_tat.toFixed(2)} mm</p>
         <p>Maximale Einschraubtiefe m_max: ${m_max.toFixed(2)} mm</p>
@@ -466,6 +510,25 @@ MathJax.Hub.Config({
             <p>Steigungswinkel: \\[\\phi = \\arctan(\\frac{P}{\\pi \\cdot d_2}) = ${(phi * 180/Math.PI).toFixed(2)}°\\]</p>
             <p>Mittlerer Kopfreibungsdurchmesser: \\[d_{Km} = \\frac{d_w + d_h}{2} = ${d_Km.toFixed(2)} \\text{ mm}\\]</p>
             <p>Anzugsmoment: \\[M_A = F_M \\cdot (\\frac{d_2}{2} \\cdot \\tan(\\rho' + \\phi) + \\mu_K \\cdot \\frac{d_{Km}}{2}) = ${(MA/1000).toFixed(2)} \\text{ Nm}\\]</p>
+        </div>
+
+        <div class="formula-box">
+            <h3>Zusätzliche Spannungen</h3>
+            <p>Biegespannung: \\[\\sigma_b = \\frac{M_b}{W_b} = \\frac{${Mb*1000}}{${Wb.toFixed(2)}} = ${sigma_b.toFixed(2)} \\text{ N/mm}^2\\]</p>
+            <p>Torsionsspannung: \\[\\tau_t = \\frac{M_t}{W_t} = \\frac{${Mt*1000}}{${Wt.toFixed(2)}} = ${tau_t.toFixed(2)} \\text{ N/mm}^2\\]</p>
+            <p>Spannungsamplitude: \\[\\sigma_a = \\frac{F_{DA}}{A_S} = ${sigma_a.toFixed(2)} \\text{ N/mm}^2\\]</p>
+        </div>
+        
+        <div class="formula-box">
+            <h3>Vergleichsspannung</h3>
+            <p>Nach von Mises: \\[\\sigma_v = \\sqrt{(\\sigma_{zug} + \\sigma_b)^2 + 3\\tau_t^2} = ${sigma_v.toFixed(2)} \\text{ N/mm}^2\\]</p>
+            <p>Zulässige Wechselfestigkeit: \\[\\sigma_W = 0,4 \\cdot R_m = ${sigma_W.toFixed(2)} \\text{ N/mm}^2\\]</p>
+        </div>
+        
+        <div class="formula-box">
+            <h3>Erforderliche Klemmkraft aus Querkraft</h3>
+            <p>Mindestreibwert: \\[\\mu_{min} = ${mu_min}\\]</p>
+            <p>Klemmkraft: \\[F_{KQ} = \\frac{F_Q}{\\mu_{min}} = ${FKQ.toFixed(2)} \\text{ N}\\]</p>
         </div>
     `;
 
