@@ -1,361 +1,340 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VDI 2230 Schraubenberechnung</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 200px;
+            padding: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            margin-bottom: 20px;
+        }
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            color: black;
+            margin: 0;
+        }
+        .tab button:hover {
+            background-color: #ddd;
+        }
+        .tab button.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+        .formula-box {
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #e9ecef;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+        .progress {
+            height: 20px;
+            background-color: #4CAF50;
+            border-radius: 4px;
+            transition: width 0.5s ease-in-out;
+        }
+        .progress.warning {
+            background-color: #ff9800;
+        }
+        .progress.danger {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <h1>VDI 2230 Schraubenberechnung</h1>
+    
+    <div class="tab">
+        <button class="tablinks active" onclick="openTab(event, 'Eingabe')">Eingabe</button>
+        <button class="tablinks" onclick="openTab(event, 'Details')">Details</button>
+    </div>
 
-// LaTeX-Formel-Komponente
-const LatexFormula = ({ formula }) => {
-  const containerId = `formula-${Math.random().toString(36).substr(2, 9)}`;
-  
-  useEffect(() => {
-    // Load KaTeX if not already loaded
-    if (!document.getElementById('katex-css')) {
-      const link = document.createElement('link');
-      link.id = 'katex-css';
-      link.rel = 'stylesheet';
-      link.href = 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.15.3/katex.min.css';
-      document.head.appendChild(link);
-    }
+    <div id="Eingabe" class="tabcontent" style="display: block;">
+        <div class="input-group">
+            <label for="gewinde">Gewinde:</label>
+            <select id="gewinde">
+                <option value="M3">M3</option>
+                <option value="M4">M4</option>
+                <option value="M5">M5</option>
+                <option value="M6">M6</option>
+                <option value="M8">M8</option>
+                <option value="M10" selected>M10</option>
+                <option value="M12">M12</option>
+                <option value="M14">M14</option>
+                <option value="M16">M16</option>
+                <option value="M20">M20</option>
+                <option value="M24">M24</option>
+                <option value="M30">M30</option>
+                <option value="M36">M36</option>
+            </select>
+        </div>
 
-    if (!window.katex && !document.getElementById('katex-js')) {
-      const script = document.createElement('script');
-      script.id = 'katex-js';
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.15.3/katex.min.js';
-      script.onload = () => renderFormula();
-      document.head.appendChild(script);
-    } else if (window.katex) {
-      renderFormula();
-    }
+        <div class="input-group">
+            <label for="festigkeitsklasse">Festigkeitsklasse Schraube:</label>
+            <select id="festigkeitsklasse">
+                <option value="8.8">8.8</option>
+                <option value="10.9">10.9</option>
+                <option value="12.9">12.9</option>
+            </select>
+        </div>
 
-    function renderFormula() {
-      const element = document.getElementById(containerId);
-      if (element) {
-        window.katex.render(formula, element, {
-          throwOnError: false,
-          displayMode: true
+        <div class="input-group">
+            <label for="innengewinde_material">Material Innengewinde:</label>
+            <select id="innengewinde_material">
+                <option value="custom">Benutzerdefiniert</option>
+                <option value="steel">Stahl (Rm = 400 N/mm²)</option>
+                <option value="alu">Aluminium (Rm = 200 N/mm²)</option>
+            </select>
+        </div>
+
+        <div class="input-group" id="custom_strength_group">
+            <label for="custom_strength">Zugfestigkeit Innengewinde Rm [N/mm²]:</label>
+            <input type="number" id="custom_strength" step="1" value="400">
+        </div>
+
+        <div class="input-group">
+            <label for="FA">Axiale Betriebskraft FA [kN]:</label>
+            <input type="number" id="FA" step="0.1" value="10">
+        </div>
+
+        <div class="input-group">
+            <label for="kA">Klemmkraftfaktor kA:</label>
+            <input type="number" id="kA" step="0.1" value="1.5">
+        </div>
+
+        <button onclick="berechnen()">Berechnen</button>
+
+        <div class="results" id="results">
+            <h2>Ergebnisse</h2>
+            <div id="resultContent"></div>
+        </div>
+    </div>
+
+    <div id="Details" class="tabcontent">
+        <h2>Berechnungsdetails</h2>
+        <div id="detailContent"></div>
+    </div>
+
+    <script>
+        // Gewindedaten
+        const gewindeParams = {
+            'M3': { d: 3, P: 0.5, d2: 2.675, d3: 2.387 },
+            'M4': { d: 4, P: 0.7, d2: 3.545, d3: 3.141 },
+            'M5': { d: 5, P: 0.8, d2: 4.480, d3: 4.019 },
+            'M6': { d: 6, P: 1.0, d2: 5.350, d3: 4.773 },
+            'M8': { d: 8, P: 1.25, d2: 7.188, d3: 6.466 },
+            'M10': { d: 10, P: 1.5, d2: 9.026, d3: 8.160 },
+            'M12': { d: 12, P: 1.75, d2: 10.863, d3: 9.853 },
+            'M14': { d: 14, P: 2.0, d2: 12.701, d3: 11.546 },
+            'M16': { d: 16, P: 2.0, d2: 14.701, d3: 13.546 },
+            'M20': { d: 20, P: 2.5, d2: 18.376, d3: 16.933 },
+            'M24': { d: 24, P: 3.0, d2: 22.051, d3: 20.319 },
+            'M30': { d: 30, P: 3.5, d2: 27.727, d3: 25.706 },
+            'M36': { d: 36, P: 4.0, d2: 33.402, d3: 31.093 }
+        };
+
+        // Event Listener für Material-Auswahl
+        document.getElementById('innengewinde_material').addEventListener('change', function() {
+            const customGroup = document.getElementById('custom_strength_group');
+            const customInput = document.getElementById('custom_strength');
+            
+            if (this.value === 'custom') {
+                customGroup.style.display = 'block';
+            } else {
+                customGroup.style.display = 'none';
+                if (this.value === 'steel') {
+                    customInput.value = 400;
+                } else if (this.value === 'alu') {
+                    customInput.value = 200;
+                }
+            }
         });
-      }
-    }
-  }, [formula, containerId]);
 
-  return <div id={containerId} className="my-2" />;
-};
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+            if (tabName === "Details") {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            }
+        }
 
-const ExtendedScrewCalculator = () => {
-  // Schraubenparameter
-  const screwParams = {
-    'M8': { d: 8, As: 36.6, d2: 7.188, P: 1.25, d1: 6.647, dK: 13 },
-    'M10': { d: 10, As: 58.0, d2: 9.026, P: 1.5, d1: 8.376, dK: 16 },
-    'M12': { d: 12, As: 84.3, d2: 10.863, P: 1.75, d1: 10.106, dK: 18 },
-    'M16': { d: 16, As: 157, d2: 14.701, P: 2.0, d1: 13.835, dK: 24 },
-  };
+        function berechnen() {
+            // Eingabewerte auslesen
+            const gewindeTyp = document.getElementById('gewinde').value;
+            const gewinde = gewindeParams[gewindeTyp];
+            const festigkeitsklasse = document.getElementById('festigkeitsklasse').value;
+            const FA = parseFloat(document.getElementById('FA').value) * 1000; // Umrechnung in N
+            const kA = parseFloat(document.getElementById('kA').value);
+            const Rm_innengewinde = parseFloat(document.getElementById('custom_strength').value);
 
-  // Festigkeitsklassen
-  const strengthClasses = {
-    '8.8': { Rp02: 640, Rm: 800 },
-    '10.9': { Rp02: 900, Rm: 1000 },
-    '12.9': { Rp02: 1080, Rm: 1200 },
-  };
+            // Materialkennwerte Schraube
+            const festigkeitswerte = {
+                '8.8': { Rp02: 640, Rm: 800 },
+                '10.9': { Rp02: 900, Rm: 1000 },
+                '12.9': { Rp02: 1080, Rm: 1200 }
+            };
 
-  const [inputs, setInputs] = useState({
-    axialForce: 10,
-    shearForce: 5,
-    screwSize: 'M10',
-    screwClass: '8.8',
-    frictionCoeff: 0.14,
-    materialStrength: 300, // MPa
-    threadLength: 20, // mm
-  });
+            const material = festigkeitswerte[festigkeitsklasse];
 
-  const handleInputChange = (key, value) => {
-    setInputs(prev => ({
-      ...prev,
-      [key]: value
-    }));
-  };
+            // Berechnungen Schraube
+            const AS = Math.PI * Math.pow(gewinde.d3, 2) / 4;
+            const FM_erf = FA * kA;
+            const sigma_zul = 0.9 * material.Rp02;
+            const FMzul_schraube = sigma_zul * AS;
 
-  const calculateResults = () => {
-    const screw = screwParams[inputs.screwSize];
-    const strength = strengthClasses[inputs.screwClass];
-    
-    // Basic stress calculations
-    const A_s = screw.As;
-    const sigma_z = (inputs.axialForce * 1000) / A_s;
-    const tau_s = (inputs.shearForce * 1000) / A_s;
-    const sigma_v = Math.sqrt(Math.pow(sigma_z, 2) + 3 * Math.pow(tau_s, 2));
-    const S_F = (strength.Rp02 / sigma_v);
-    
-    // Surface pressure
-    const A_K = Math.PI * (Math.pow(screw.dK, 2) - Math.pow(screw.d, 2)) / 4;
-    const p_F = (inputs.axialForce * 1000) / A_K;
-    const p_F_allowed = inputs.materialStrength;
-    
-    // Slip resistance
-    const F_Kl = inputs.axialForce * 1000;
-    const S_G = (inputs.frictionCoeff * F_Kl) / (inputs.shearForce * 1000);
-    
-    // Thread shear stress
-    const tau_a_S = inputs.axialForce * 1000 / (Math.PI * screw.d1 * inputs.threadLength);
-    const tau_a_S_allowed = 0.6 * strength.Rp02;
-    
-    return {
-      sigma_z,
-      tau_s,
-      sigma_v,
-      S_F,
-      p_F,
-      p_F_allowed,
-      S_G,
-      tau_a_S,
-      tau_a_S_allowed,
-      utilization: {
-        stress: sigma_v / strength.Rp02,
-        surface: p_F / p_F_allowed,
-        slip: 1.2 / S_G,
-        thread: tau_a_S / tau_a_S_allowed
-      }
-    };
-  };
+            // Berechnung Innengewinde nach VDI 2230
+            const meff = gewinde.P * 0.5; // Effektive Gewindetiefe
+            const d1 = gewinde.d - 1.0825 * gewinde.P; // Kerndurchmesser Innengewinde
+            const A_innengewinde = Math.PI * meff * d1;
+            const FMzul_innengewinde = 0.4 * Rm_innengewinde * A_innengewinde;
 
-  const results = calculateResults();
+            // Bestimmung der maßgebenden zulässigen Kraft
+            const FMzul = Math.min(FMzul_schraube, FMzul_innengewinde);
+            const auslastung = (FM_erf / FMzul) * 100;
 
-  return (
-    <Card className="w-full max-w-4xl">
-      <CardHeader>
-        <CardTitle>Erweiterte Schraubenberechnung nach VDI 2230</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Tabs defaultValue="input">
-          <TabsList>
-            <TabsTrigger value="input">Eingabe</TabsTrigger>
-            <TabsTrigger value="results">Auslastungen</TabsTrigger>
-            <TabsTrigger value="detailed">Details</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="input">
-            <div className="grid gap-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>Axialkraft [kN]</Label>
-                  <Input 
-                    type="number"
-                    value={inputs.axialForce}
-                    onChange={(e) => handleInputChange('axialForce', Number(e.target.value))}
-                  />
+            // Ergebnisse ausgeben
+            const resultContent = document.getElementById('resultContent');
+            resultContent.innerHTML = `
+                <p>Spannungsquerschnitt AS: ${AS.toFixed(2)} mm²</p>
+                <p>Erforderliche Mindestklemmkraft FM,erf: ${(FM_erf/1000).toFixed(2)} kN</p>
+                <p>Zulässige Vorspannkraft Schraube: ${(FMzul_schraube/1000).toFixed(2)} kN</p>
+                <p>Zulässige Vorspannkraft Innengewinde: ${(FMzul_innengewinde/1000).toFixed(2)} kN</p>
+                <p>Maßgebende zulässige Vorspannkraft FM,zul: ${(FMzul/1000).toFixed(2)} kN</p>
+                <p>Auslastung: ${auslastung.toFixed(1)}%</p>
+                <div class="progress-bar">
+                    <div class="progress ${auslastung > 90 ? 'danger' : auslastung > 75 ? 'warning' : ''}" 
+                         style="width: ${Math.min(auslastung, 100)}%">
+                    </div>
                 </div>
-                <div>
-                  <Label>Querkraft [kN]</Label>
-                  <Input 
-                    type="number"
-                    value={inputs.shearForce}
-                    onChange={(e) => handleInputChange('shearForce', Number(e.target.value))}
-                  />
+            `;
+
+            // Detailierte Berechnungen
+            const detailContent = document.getElementById('detailContent');
+            detailContent.innerHTML = `
+                <div class="formula-box">
+                    <h3>Spannungsquerschnitt</h3>
+                    <p>Formel: \\[A_S = \\frac{\\pi}{4} \\cdot d_3^2\\]</p>
+                    <p>Eingesetzt: \\[A_S = \\frac{\\pi}{4} \\cdot ${gewinde.d3}^2\\]</p>
+                    <p>Ergebnis: \\[A_S = ${AS.toFixed(2)} \\text{ mm}^2\\]</p>
                 </div>
-              </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>Gewinde</Label>
-                  <Select 
-                    value={inputs.screwSize}
-                    onValueChange={(value) => handleInputChange('screwSize', value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.keys(screwParams).map(size => (
-                        <SelectItem key={size} value={size}>{size}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div class="formula-box">
+                    <h3>Erforderliche Mindestklemmkraft</h3>
+                    <p>Formel: \\[F_{M,erf} = F_A \\cdot k_A\\]</p>
+                    <p>Eingesetzt: \\[F_{M,erf} = ${FA} \\cdot ${kA}\\]</p>
+                    <p>Ergebnis: \\[F_{M,erf} = ${FM_erf.toFixed(2)} \\text{ N} = ${(FM_erf/1000).toFixed(2)} \\text{ kN}\\]</p>
                 </div>
-                <div>
-                  <Label>Festigkeitsklasse</Label>
-                  <Select 
-                    value={inputs.screwClass}
-                    onValueChange={(value) => handleInputChange('screwClass', value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.keys(strengthClasses).map(className => (
-                        <SelectItem key={className} value={className}>{className}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+
+                <div class="formula-box">
+                    <h3>Zulässige Spannung Schraube</h3>
+                    <p>Formel: \\[\\sigma_{zul} = 0,9 \\cdot R_{p0,2}\\]</p>
+                    <p>Eingesetzt: \\[\\sigma_{zul} = 0,9 \\cdot ${material.Rp02}\\]</p>
+                    <p>Ergebnis: \\[\\sigma_{zul} = ${sigma_zul.toFixed(2)} \\text{ N/mm}^2\\]</p>
                 </div>
-              </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>Reibwert µ</Label>
-                  <Input 
-                    type="number"
-                    value={inputs.frictionCoeff}
-                    onChange={(e) => handleInputChange('frictionCoeff', Number(e.target.value))}
-                  />
+                <div class="formula-box">
+                    <h3>Zulässige Montagevorspannkraft Schraube</h3>
+                    <p>Formel: \\[F_{M,zul,S} = \\sigma_{zul} \\cdot A_S\\]</p>
+                    <p>Eingesetzt: \\[F_{M,zul,S} = ${sigma_zul.toFixed(2)} \\cdot ${AS.toFixed(2)}\\]</p>
+                    <p>Ergebnis: \\[F_{M,zul,S} = ${FMzul_schraube.toFixed(2)} \\text{ N} = ${(FMzul_schraube/1000).toFixed(2)} \\text{ kN}\\]</p>
                 </div>
-                <div>
-                  <Label>Materialfestigkeit [MPa]</Label>
-                  <Input 
-                    type="number"
-                    value={inputs.materialStrength}
-                    onChange={(e) => handleInputChange('materialStrength', Number(e.target.value))}
-                  />
+
+                <div class="formula-box">
+                    <h3>Tragfähigkeit Innengewinde</h3>
+                    <p>Formeln:</p>
+                    <p>\\[m_{eff} = 0,5 \\cdot P\\]</p>
+                    <p>\\[d_1 = d - 1,0825 \\cdot P\\]</p>
+                    <p>\\[A_{Innengewinde} = \\pi \\cdot m_{eff} \\cdot d_1\\]</p>
+                    <p>\\[F_{M,zul,I} = 0,4 \\cdot R_m \\cdot A_{Innengewinde}\\]</p>
+                    <p>Eingesetzt:</p>
+                    <p>\\[m_{eff} = 0,5 \\cdot ${gewinde.P} = ${(0.5 * gewinde.P).toFixed(3)} \\text{ mm}\\]</p>
+                    <p>\\[d_1 = ${gewinde.d} - 1,0825 \\cdot ${gewinde.P} = ${d1.toFixed(3)} \\text{ mm}\\]</p>
+                    <p>\\[A_{Innengewinde} = \\pi \\cdot ${(0.5 * gewinde.P).toFixed(3)} \\cdot ${d1.toFixed(3)} = ${A_innengewinde.toFixed(2)} \\text{ mm}^2\\]</p>
+                    <p>\\[F_{M,zul,I} = 0,4 \\cdot ${Rm_innengewinde} \\cdot ${A_innengewinde.toFixed(2)} = ${FMzul_innengewinde.toFixed(2)} \\text{ N} = ${(FMzul_innengewinde/1000).toFixed(2)} \\text{ kN}\\]</p>
                 </div>
-              </div>
 
-              <div>
-                <Label>Einschraubtiefe [mm]</Label>
-                <Input 
-                  type="number"
-                  value={inputs.threadLength}
-                  onChange={(e) => handleInputChange('threadLength', Number(e.target.value))}
-                />
-              </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="results">
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Auslastungen:</h3>
-              
-              <div className="grid gap-4">
-                <Alert className={results.utilization.stress < 1 ? "bg-green-50" : "bg-red-50"}>
-                  <AlertTitle>Festigkeitsnachweis</AlertTitle>
-                  <AlertDescription>
-                    Auslastung: {(results.utilization.stress * 100).toFixed(1)}%
-                  </AlertDescription>
-                </Alert>
-
-                <Alert className={results.utilization.surface < 1 ? "bg-green-50" : "bg-red-50"}>
-                  <AlertTitle>Flächenpressung</AlertTitle>
-                  <AlertDescription>
-                    Auslastung: {(results.utilization.surface * 100).toFixed(1)}%
-                  </AlertDescription>
-                </Alert>
-
-                <Alert className={results.utilization.slip < 1 ? "bg-green-50" : "bg-red-50"}>
-                  <AlertTitle>Gleitsicherheit</AlertTitle>
-                  <AlertDescription>
-                    Auslastung: {(results.utilization.slip * 100).toFixed(1)}%
-                  </AlertDescription>
-                </Alert>
-
-                <Alert className={results.utilization.thread < 1 ? "bg-green-50" : "bg-red-50"}>
-                  <AlertTitle>Gewindedurchsteck</AlertTitle>
-                  <AlertDescription>
-                    Auslastung: {(results.utilization.thread * 100).toFixed(1)}%
-                  </AlertDescription>
-                </Alert>
-              </div>
-            </div>
-          </TabsContent>
-
-          // [Previous code remains the same until detailed TabsContent]
-
-          <TabsContent value="detailed">
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Eingangswerte</h3>
-                <LatexFormula formula={`F_{ax} = ${inputs.axialForce} \\; \\text{kN}`} />
-                <LatexFormula formula={`F_q = ${inputs.shearForce} \\; \\text{kN}`} />
-                <LatexFormula formula={`A_S = ${screwParams[inputs.screwSize].As} \\; \\text{mm²}`} />
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Spannungsberechnung</h3>
-                <p className="font-medium mt-4">Zugspannung:</p>
-                <LatexFormula formula={`\\sigma_z = \\frac{F_{ax}}{A_S}`} />
-                <LatexFormula formula={`\\sigma_z = \\frac{${inputs.axialForce * 1000}\\text{ N}}{${screwParams[inputs.screwSize].As}\\text{ mm²}} = ${results.sigma_z.toFixed(1)}\\text{ N/mm²}`} />
-                
-                <p className="font-medium mt-4">Scherspannung:</p>
-                <LatexFormula formula={`\\tau_s = \\frac{F_q}{A_S}`} />
-                <LatexFormula formula={`\\tau_s = \\frac{${inputs.shearForce * 1000}\\text{ N}}{${screwParams[inputs.screwSize].As}\\text{ mm²}} = ${results.tau_s.toFixed(1)}\\text{ N/mm²}`} />
-                
-                <p className="font-medium mt-4">Vergleichsspannung nach GEH:</p>
-                <LatexFormula formula={`\\sigma_v = \\sqrt{\\sigma_z^2 + 3\\tau_s^2}`} />
-                <LatexFormula formula={`\\sigma_v = \\sqrt{(${results.sigma_z.toFixed(1)})^2 + 3\\cdot(${results.tau_s.toFixed(1)})^2} = ${results.sigma_v.toFixed(1)}\\text{ N/mm²}`} />
-                
-                <div className="bg-gray-50 p-4 rounded-lg mt-4">
-                  <p className="font-medium">Nachweis der Festigkeit:</p>
-                  <LatexFormula formula={`\\sigma_v \\leq \\frac{R_{p0,2}}{S_F}`} />
-                  <LatexFormula formula={`${results.sigma_v.toFixed(1)}\\text{ N/mm²} \\leq \\frac{${strengthClasses[inputs.screwClass].Rp02}\\text{ N/mm²}}{1.5} = ${(strengthClasses[inputs.screwClass].Rp02/1.5).toFixed(1)}\\text{ N/mm²}`} />
-                  <p className="mt-2">
-                    <span className="font-medium">Auslastung: </span>
-                    {(results.utilization.stress * 100).toFixed(1)}%
-                  </p>
+                <div class="formula-box">
+                    <h3>Maßgebende zulässige Vorspannkraft</h3>
+                    <p>\\[F_{M,zul} = \\min(F_{M,zul,S}, F_{M,zul,I}) = ${FMzul.toFixed(2)} \\text{ N} = ${(FMzul/1000).toFixed(2)} \\text{ kN}\\]</p>
                 </div>
-              </div>
 
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Flächenpressung</h3>
-                <p className="font-medium mt-4">Kopfauflagefläche:</p>
-                <LatexFormula formula={`A_K = \\frac{\\pi}{4}(d_K^2 - d^2)`} />
-                <LatexFormula formula={`A_K = \\frac{\\pi}{4}(${screwParams[inputs.screwSize].dK}^2 - ${screwParams[inputs.screwSize].d}^2) = ${(Math.PI * (Math.pow(screwParams[inputs.screwSize].dK, 2) - Math.pow(screwParams[inputs.screwSize].d, 2)) / 4).toFixed(1)}\\text{ mm²}`} />
-                
-                <p className="font-medium mt-4">Flächenpressung:</p>
-                <LatexFormula formula={`p_F = \\frac{F_{ax}}{A_K}`} />
-                <LatexFormula formula={`p_F = \\frac{${inputs.axialForce * 1000}\\text{ N}}{${(Math.PI * (Math.pow(screwParams[inputs.screwSize].dK, 2) - Math.pow(screwParams[inputs.screwSize].d, 2)) / 4).toFixed(1)}\\text{ mm²}} = ${results.p_F.toFixed(1)}\\text{ N/mm²}`} />
-                
-                <p className="font-medium mt-4">Zulässige Flächenpressung:</p>
-                <LatexFormula formula={`p_{F,zul} = ${results.p_F_allowed}\\text{ N/mm²}`} />
-                
-                <div className="bg-gray-50 p-4 rounded-lg mt-4">
-                  <p className="mt-2">
-                    <span className="font-medium">Auslastung: </span>
-                    {(results.utilization.surface * 100).toFixed(1)}%
-                  </p>
+                <div class="formula-box">
+                    <h3>Auslastung</h3>
+                    <p>Formel: \\[\\text{Auslastung} = \\frac{F_{M,erf}}{F_{M,zul}} \\cdot 100\\%\\]</p>
+                    <p>Eingesetzt: \\[\\text{Auslastung} = \\frac{${FM_erf.toFixed(2)}}{${FMzul.toFixed(2)}} \\cdot 100\\%\\]</p>
+                    <p>Ergebnis: \\[\\text{Auslastung} = ${auslastung.toFixed(1)}\\%\\]</p>
                 </div>
-              </div>
+            `;
 
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Gleitsicherheit</h3>
-                <p className="font-medium mt-4">Gleitsicherheitsbeiwert:</p>
-                <LatexFormula formula={`S_G = \\frac{\\mu\\cdot F_{Kl}}{F_q}`} />
-                <LatexFormula formula={`S_G = \\frac{${inputs.frictionCoeff}\\cdot ${inputs.axialForce * 1000}\\text{ N}}{${inputs.shearForce * 1000}\\text{ N}} = ${results.S_G.toFixed(2)}`} />
-                
-                <p className="font-medium mt-4">Erforderliche Gleitsicherheit:</p>
-                <LatexFormula formula={`S_{G,erf} = 1,2`} />
-                
-                <div className="bg-gray-50 p-4 rounded-lg mt-4">
-                  <p className="mt-2">
-                    <span className="font-medium">Auslastung: </span>
-                    {(results.utilization.slip * 100).toFixed(1)}%
-                  </p>
-                </div>
-              </div>
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        }
 
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Gewindedurchsteck</h3>
-                <p className="font-medium mt-4">Scherspannung im Gewinde:</p>
-                <LatexFormula formula={`\\tau_{a,S} = \\frac{F_{ax}}{\\pi\\cdot d_1\\cdot m}`} />
-                <LatexFormula formula={`\\tau_{a,S} = \\frac{${inputs.axialForce * 1000}\\text{ N}}{\\pi\\cdot ${screwParams[inputs.screwSize].d1}\\text{ mm}\\cdot ${inputs.threadLength}\\text{ mm}} = ${results.tau_a_S.toFixed(1)}\\text{ N/mm²}`} />
-                
-                <p className="font-medium mt-4">Zulässige Scherspannung:</p>
-                <LatexFormula formula={`\\tau_{a,S,zul} = 0,6\\cdot R_{p0,2}`} />
-                <LatexFormula formula={`\\tau_{a,S,zul} = 0,6\\cdot ${strengthClasses[inputs.screwClass].Rp02}\\text{ N/mm²} = ${results.tau_a_S_allowed.toFixed(1)}\\text{ N/mm²}`} />
-                
-                <div className="bg-gray-50 p-4 rounded-lg mt-4">
-                  <p className="mt-2">
-                    <span className="font-medium">Auslastung: </span>
-                    {(results.utilization.thread * 100).toFixed(1)}%
-                  </p>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-
-// [Rest of the code remains the same]
-        </Tabs>
-      </CardContent>
-    </Card>
-  );
-};
-
-export default ExtendedScrewCalculator;
+        // Initial calculation
+        berechnen();
