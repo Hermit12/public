@@ -269,14 +269,13 @@ MathJax.Hub.Config({
     const sigma_zul = 0.9 * material.Rp02;  // Korrigiert nach VDI 2230
     const FMzul_schraube = sigma_zul * AS;
    
-    // Setzverhalten nach VDI 2230
+    // Setzverhalten nach VDI 2230 - korrigierte Reihenfolge
+    const FM_erf_basis = FA * kA;
     const fZ = 0.01; // Setzbetrag [mm] - typischer Wert
-    const fP = (FM_erf * gewinde.d) / (AS * material.Rp02); // elastische Dehnung
-    const FM_erf = FA * kA * (1 / (1 - fZ/(fZ + fP))); // Korrigierte Mindestklemmkraft
-
+    const fP = (FM_erf_basis * gewinde.d) / (AS * material.Rp02); // elastische Dehnung
+    const FM_erf = FM_erf_basis * (1 / (1 - fZ/(fZ + fP))); // Korrigierte Mindestklemmkraft
 
     // Berechnung Innengewinde
-    
     // Mindesteinschraubtiefe basierend auf Belastungsart und Festigkeitsklasse
     let m_min_factor;
     if (festigkeitsklasse === '8.8') {
@@ -292,8 +291,7 @@ MathJax.Hub.Config({
     const max_tragende_gaenge = 6;
     const max_tragende_laenge = max_tragende_gaenge * gewinde.P;
     
-    // Effektive Einschraubtiefe
-    // Lastverteilung über Gewindegänge nach VDI 2230
+    // Effektive Einschraubtiefe mit Lastverteilung
     const anzahl_gänge = Math.min(Math.floor(m_tat / gewinde.P), max_tragende_gaenge);
     const lastverteilung = [0.33, 0.27, 0.2, 0.1, 0.07, 0.03]; // VDI 2230 Lastverteilung
     let effektive_last = 0;
@@ -302,10 +300,9 @@ MathJax.Hub.Config({
     }
     const m_eff = m_tat * effektive_last;
     
-    // Berechnung mit Lastverteilungsfaktor
-    const lastverteilungsfaktor = 0.8; // 80% der Last auf die ersten Gewindegänge
+    // Berechnung Innengewinde
     const d1 = gewinde.d - 1.0825 * gewinde.P;
-    const A_innengewinde = Math.PI * m_eff * d1 * lastverteilungsfaktor;
+    const A_innengewinde = Math.PI * m_eff * d1;
     
     // Lastverteilungsfaktor abhängig von der Einschraubtiefe
     const m_grenz = 0.8 * gewinde.d; // Grenzeinschraubtiefe
@@ -315,7 +312,7 @@ MathJax.Hub.Config({
     // Berechnung der minimalen Einschraubtiefe nach VDI 2230
     const sicherheitsfaktor = belastungsart === 'dynamisch' ? 1.2 : 1.0;
     const mef_min = (FM_erf * sicherheitsfaktor) / (0.4 * Rm_innengewinde * Math.PI * d1);
-            
+    
     // Warnungen generieren
     const warnings = [];
     if (m_tat < m_min) {
@@ -324,8 +321,6 @@ MathJax.Hub.Config({
     if (m_tat > m_max) {
         warnings.push(`Warnung: Einschraubtiefe (${m_tat.toFixed(2)} mm) überschreitet Maximum von ${m_max.toFixed(2)} mm`);
     }
-    
-  
 
     // Bestimmung der maßgebenden zulässigen Kraft
     const FMzul = Math.min(FMzul_schraube, FMzul_innengewinde);
