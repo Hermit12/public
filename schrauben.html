@@ -166,7 +166,12 @@ MathJax.Hub.Config({
             <label for="kA">Klemmkraftfaktor kA:</label>
             <input type="number" id="kA" step="0.1" value="1.5">
         </div>
-
+        
+        <div class="input-group">
+            <label for="mtat">Tatsächliche Einschraubtiefe [mm]:</label>
+            <input type="number" id="mtat" step="0.1" value="10">
+        </div>
+        
         <button onclick="berechnen()">Berechnen</button>
 
         <div class="results" id="results">
@@ -233,116 +238,132 @@ MathJax.Hub.Config({
         }
 
         function berechnen() {
-            // Eingabewerte auslesen
-            const gewindeTyp = document.getElementById('gewinde').value;
-            const gewinde = gewindeParams[gewindeTyp];
-            const festigkeitsklasse = document.getElementById('festigkeitsklasse').value;
-            const FA = parseFloat(document.getElementById('FA').value) * 1000; // Umrechnung in N
-            const kA = parseFloat(document.getElementById('kA').value);
-            const Rm_innengewinde = parseFloat(document.getElementById('custom_strength').value);
+    // Eingabewerte auslesen
+    const gewindeTyp = document.getElementById('gewinde').value;
+    const gewinde = gewindeParams[gewindeTyp];
+    const festigkeitsklasse = document.getElementById('festigkeitsklasse').value;
+    const FA = parseFloat(document.getElementById('FA').value) * 1000; // Umrechnung in N
+    const kA = parseFloat(document.getElementById('kA').value);
+    const Rm_innengewinde = parseFloat(document.getElementById('custom_strength').value);
+    const m_tat = parseFloat(document.getElementById('mtat').value);
 
-            // Materialkennwerte Schraube
-            const festigkeitswerte = {
-                '8.8': { Rp02: 640, Rm: 800 },
-                '10.9': { Rp02: 900, Rm: 1000 },
-                '12.9': { Rp02: 1080, Rm: 1200 }
-            };
+    // Materialkennwerte Schraube
+    const festigkeitswerte = {
+        '8.8': { Rp02: 640, Rm: 800 },
+        '10.9': { Rp02: 900, Rm: 1000 },
+        '12.9': { Rp02: 1080, Rm: 1200 }
+    };
+    const material = festigkeitswerte[festigkeitsklasse];
 
-            const material = festigkeitswerte[festigkeitsklasse];
+    // Berechnungen Schraube
+    const AS = Math.PI * Math.pow(gewinde.d3, 2) / 4;
+    const FM_erf = FA * kA;
+    const sigma_zul = 0.9 * material.Rp02;  // Korrigiert nach VDI 2230
+    const FMzul_schraube = sigma_zul * AS;
 
-            // Berechnungen Schraube
-            const AS = Math.PI * Math.pow(gewinde.d3, 2) / 4;
-            const FM_erf = FA * kA;
-            const sigma_zul = 0.9 * material.Rp02;
-            const FMzul_schraube = sigma_zul * AS;
+    // Berechnung Innengewinde
+    const d1 = gewinde.d - 1.0825 * gewinde.P; // Kerndurchmesser Innengewinde
+    
+    // Berechnung der minimalen Einschraubtiefe nach VDI 2230
+    const mef_min = FM_erf / (0.4 * Rm_innengewinde * Math.PI * d1);
+    
+    // Tatsächliche Einschraubtiefe berücksichtigen
+    const m_eff = Math.min(m_tat, gewinde.P * 0.5);
+    const A_innengewinde = Math.PI * m_eff * d1;
+    const FMzul_innengewinde = 0.4 * Rm_innengewinde * A_innengewinde;
 
-            // Berechnung Innengewinde nach VDI 2230
-            const meff = gewinde.P * 0.5; // Effektive Gewindetiefe
-            const d1 = gewinde.d - 1.0825 * gewinde.P; // Kerndurchmesser Innengewinde
-            const A_innengewinde = Math.PI * meff * d1;
-            const FMzul_innengewinde = 0.4 * Rm_innengewinde * A_innengewinde;
+    // Bestimmung der maßgebenden zulässigen Kraft
+    const FMzul = Math.min(FMzul_schraube, FMzul_innengewinde);
+    const auslastung = (FM_erf / FMzul) * 100;
 
-            // Bestimmung der maßgebenden zulässigen Kraft
-            const FMzul = Math.min(FMzul_schraube, FMzul_innengewinde);
-            const auslastung = (FM_erf / FMzul) * 100;
+    // Ergebnisse ausgeben
+    const resultContent = document.getElementById('resultContent');
+    resultContent.innerHTML = `
+        <p>Spannungsquerschnitt AS: ${AS.toFixed(2)} mm²</p>
+        <p>Erforderliche Mindestklemmkraft FM,erf: ${(FM_erf/1000).toFixed(2)} kN</p>
+        <p>Minimale Einschraubtiefe mef,min: ${mef_min.toFixed(2)} mm</p>
+        <p>Tatsächliche Einschraubtiefe m_tat: ${m_tat.toFixed(2)} mm</p>
+        <p style="color: ${m_tat < mef_min ? 'red' : 'green'}">
+            ${m_tat < mef_min ? 'WARNUNG: Tatsächliche Einschraubtiefe zu gering!' : 'Einschraubtiefe ausreichend'}
+        </p>
+        <p>Zulässige Vorspannkraft Schraube: ${(FMzul_schraube/1000).toFixed(2)} kN</p>
+        <p>Zulässige Vorspannkraft Innengewinde: ${(FMzul_innengewinde/1000).toFixed(2)} kN</p>
+        <p>Maßgebende zulässige Vorspannkraft FM,zul: ${(FMzul/1000).toFixed(2)} kN</p>
+        <p>Auslastung: ${auslastung.toFixed(1)}%</p>
+        <div class="progress-bar">
+            <div class="progress ${auslastung > 90 ? 'danger' : auslastung > 75 ? 'warning' : ''}" 
+                 style="width: ${Math.min(auslastung, 100)}%">
+            </div>
+        </div>
+    `;
 
-            // Ergebnisse ausgeben
-            const resultContent = document.getElementById('resultContent');
-            resultContent.innerHTML = `
-                <p>Spannungsquerschnitt AS: ${AS.toFixed(2)} mm²</p>
-                <p>Erforderliche Mindestklemmkraft FM,erf: ${(FM_erf/1000).toFixed(2)} kN</p>
-                <p>Zulässige Vorspannkraft Schraube: ${(FMzul_schraube/1000).toFixed(2)} kN</p>
-                <p>Zulässige Vorspannkraft Innengewinde: ${(FMzul_innengewinde/1000).toFixed(2)} kN</p>
-                <p>Maßgebende zulässige Vorspannkraft FM,zul: ${(FMzul/1000).toFixed(2)} kN</p>
-                <p>Auslastung: ${auslastung.toFixed(1)}%</p>
-                <div class="progress-bar">
-                    <div class="progress ${auslastung > 90 ? 'danger' : auslastung > 75 ? 'warning' : ''}" 
-                         style="width: ${Math.min(auslastung, 100)}%">
-                    </div>
-                </div>
-            `;
+    // Detailierte Berechnungen
+    const detailContent = document.getElementById('detailContent');
+    detailContent.innerHTML = `
+        <div class="formula-box">
+            <h3>Spannungsquerschnitt</h3>
+            <p>Formel: \\[A_S = \\frac{\\pi}{4} \\cdot d_3^2\\]</p>
+            <p>Eingesetzt: \\[A_S = \\frac{\\pi}{4} \\cdot ${gewinde.d3}^2\\]</p>
+            <p>Ergebnis: \\[A_S = ${AS.toFixed(2)} \\text{ mm}^2\\]</p>
+        </div>
 
-            // Detailierte Berechnungen
-            const detailContent = document.getElementById('detailContent');
-            detailContent.innerHTML = `
-                <div class="formula-box">
-                    <h3>Spannungsquerschnitt</h3>
-                    <p>Formel: \\[A_S = \\frac{\\pi}{4} \\cdot d_3^2\\]</p>
-                    <p>Eingesetzt: \\[A_S = \\frac{\\pi}{4} \\cdot ${gewinde.d3}^2\\]</p>
-                    <p>Ergebnis: \\[A_S = ${AS.toFixed(2)} \\text{ mm}^2\\]</p>
-                </div>
+        <div class="formula-box">
+            <h3>Erforderliche Mindestklemmkraft</h3>
+            <p>Formel: \\[F_{M,erf} = F_A \\cdot k_A\\]</p>
+            <p>Eingesetzt: \\[F_{M,erf} = ${FA} \\cdot ${kA}\\]</p>
+            <p>Ergebnis: \\[F_{M,erf} = ${FM_erf.toFixed(2)} \\text{ N} = ${(FM_erf/1000).toFixed(2)} \\text{ kN}\\]</p>
+        </div>
 
-                <div class="formula-box">
-                    <h3>Erforderliche Mindestklemmkraft</h3>
-                    <p>Formel: \\[F_{M,erf} = F_A \\cdot k_A\\]</p>
-                    <p>Eingesetzt: \\[F_{M,erf} = ${FA} \\cdot ${kA}\\]</p>
-                    <p>Ergebnis: \\[F_{M,erf} = ${FM_erf.toFixed(2)} \\text{ N} = ${(FM_erf/1000).toFixed(2)} \\text{ kN}\\]</p>
-                </div>
+        <div class="formula-box">
+            <h3>Zulässige Spannung Schraube</h3>
+            <p>Formel: \\[\\sigma_{zul} = 0,9 \\cdot R_{p0,2}\\]</p>
+            <p>Eingesetzt: \\[\\sigma_{zul} = 0,9 \\cdot ${material.Rp02}\\]</p>
+            <p>Ergebnis: \\[\\sigma_{zul} = ${sigma_zul.toFixed(2)} \\text{ N/mm}^2\\]</p>
+        </div>
 
-                <div class="formula-box">
-                    <h3>Zulässige Spannung Schraube</h3>
-                    <p>Formel: \\[\\sigma_{zul} = 0,9 \\cdot R_{p0,2}\\]</p>
-                    <p>Eingesetzt: \\[\\sigma_{zul} = 0,9 \\cdot ${material.Rp02}\\]</p>
-                    <p>Ergebnis: \\[\\sigma_{zul} = ${sigma_zul.toFixed(2)} \\text{ N/mm}^2\\]</p>
-                </div>
+        <div class="formula-box">
+            <h3>Minimale Einschraubtiefe</h3>
+            <p>Formel: \\[m_{ef,min} = \\frac{F_{M,erf}}{0,4 \\cdot R_m \\cdot \\pi \\cdot d_1}\\]</p>
+            <p>Eingesetzt: \\[m_{ef,min} = \\frac{${FM_erf.toFixed(2)}}{0,4 \\cdot ${Rm_innengewinde} \\cdot \\pi \\cdot ${d1.toFixed(3)}}\\]</p>
+            <p>Ergebnis: \\[m_{ef,min} = ${mef_min.toFixed(2)} \\text{ mm}\\]</p>
+        </div>
 
-                <div class="formula-box">
-                    <h3>Zulässige Montagevorspannkraft Schraube</h3>
-                    <p>Formel: \\[F_{M,zul,S} = \\sigma_{zul} \\cdot A_S\\]</p>
-                    <p>Eingesetzt: \\[F_{M,zul,S} = ${sigma_zul.toFixed(2)} \\cdot ${AS.toFixed(2)}\\]</p>
-                    <p>Ergebnis: \\[F_{M,zul,S} = ${FMzul_schraube.toFixed(2)} \\text{ N} = ${(FMzul_schraube/1000).toFixed(2)} \\text{ kN}\\]</p>
-                </div>
+        <div class="formula-box">
+            <h3>Zulässige Montagevorspannkraft Schraube</h3>
+            <p>Formel: \\[F_{M,zul,S} = \\sigma_{zul} \\cdot A_S\\]</p>
+            <p>Eingesetzt: \\[F_{M,zul,S} = ${sigma_zul.toFixed(2)} \\cdot ${AS.toFixed(2)}\\]</p>
+            <p>Ergebnis: \\[F_{M,zul,S} = ${FMzul_schraube.toFixed(2)} \\text{ N} = ${(FMzul_schraube/1000).toFixed(2)} \\text{ kN}\\]</p>
+        </div>
 
-                <div class="formula-box">
-                    <h3>Tragfähigkeit Innengewinde</h3>
-                    <p>Formeln:</p>
-                    <p>\\[m_{eff} = 0,5 \\cdot P\\]</p>
-                    <p>\\[d_1 = d - 1,0825 \\cdot P\\]</p>
-                    <p>\\[A_{Innengewinde} = \\pi \\cdot m_{eff} \\cdot d_1\\]</p>
-                    <p>\\[F_{M,zul,I} = 0,4 \\cdot R_m \\cdot A_{Innengewinde}\\]</p>
-                    <p>Eingesetzt:</p>
-                    <p>\\[m_{eff} = 0,5 \\cdot ${gewinde.P} = ${(0.5 * gewinde.P).toFixed(3)} \\text{ mm}\\]</p>
-                    <p>\\[d_1 = ${gewinde.d} - 1,0825 \\cdot ${gewinde.P} = ${d1.toFixed(3)} \\text{ mm}\\]</p>
-                    <p>\\[A_{Innengewinde} = \\pi \\cdot ${(0.5 * gewinde.P).toFixed(3)} \\cdot ${d1.toFixed(3)} = ${A_innengewinde.toFixed(2)} \\text{ mm}^2\\]</p>
-                    <p>\\[F_{M,zul,I} = 0,4 \\cdot ${Rm_innengewinde} \\cdot ${A_innengewinde.toFixed(2)} = ${FMzul_innengewinde.toFixed(2)} \\text{ N} = ${(FMzul_innengewinde/1000).toFixed(2)} \\text{ kN}\\]</p>
-                </div>
+        <div class="formula-box">
+            <h3>Tragfähigkeit Innengewinde</h3>
+            <p>Formeln:</p>
+            <p>\\[m_{eff} = \\min(m_{tat}, 0,5 \\cdot P)\\]</p>
+            <p>\\[d_1 = d - 1,0825 \\cdot P\\]</p>
+            <p>\\[A_{Innengewinde} = \\pi \\cdot m_{eff} \\cdot d_1\\]</p>
+            <p>\\[F_{M,zul,I} = 0,4 \\cdot R_m \\cdot A_{Innengewinde}\\]</p>
+            <p>Eingesetzt:</p>
+            <p>\\[m_{eff} = ${m_eff.toFixed(3)} \\text{ mm}\\]</p>
+            <p>\\[d_1 = ${gewinde.d} - 1,0825 \\cdot ${gewinde.P} = ${d1.toFixed(3)} \\text{ mm}\\]</p>
+            <p>\\[A_{Innengewinde} = \\pi \\cdot ${m_eff.toFixed(3)} \\cdot ${d1.toFixed(3)} = ${A_innengewinde.toFixed(2)} \\text{ mm}^2\\]</p>
+            <p>\\[F_{M,zul,I} = 0,4 \\cdot ${Rm_innengewinde} \\cdot ${A_innengewinde.toFixed(2)} = ${FMzul_innengewinde.toFixed(2)} \\text{ N} = ${(FMzul_innengewinde/1000).toFixed(2)} \\text{ kN}\\]</p>
+        </div>
 
-                <div class="formula-box">
-                    <h3>Maßgebende zulässige Vorspannkraft</h3>
-                    <p>\\[F_{M,zul} = \\min(F_{M,zul,S}, F_{M,zul,I}) = ${FMzul.toFixed(2)} \\text{ N} = ${(FMzul/1000).toFixed(2)} \\text{ kN}\\]</p>
-                </div>
+        <div class="formula-box">
+            <h3>Maßgebende zulässige Vorspannkraft</h3>
+            <p>\\[F_{M,zul} = \\min(F_{M,zul,S}, F_{M,zul,I}) = ${FMzul.toFixed(2)} \\text{ N} = ${(FMzul/1000).toFixed(2)} \\text{ kN}\\]</p>
+        </div>
 
-                <div class="formula-box">
-                    <h3>Auslastung</h3>
-                    <p>Formel: \\[\\text{Auslastung} = \\frac{F_{M,erf}}{F_{M,zul}} \\cdot 100\\%\\]</p>
-                    <p>Eingesetzt: \\[\\text{Auslastung} = \\frac{${FM_erf.toFixed(2)}}{${FMzul.toFixed(2)}} \\cdot 100\\%\\]</p>
-                    <p>Ergebnis: \\[\\text{Auslastung} = ${auslastung.toFixed(1)}\\%\\]</p>
-                </div>
-            `;
+        <div class="formula-box">
+            <h3>Auslastung</h3>
+            <p>Formel: \\[\\text{Auslastung} = \\frac{F_{M,erf}}{F_{M,zul}} \\cdot 100\\%\\]</p>
+            <p>Eingesetzt: \\[\\text{Auslastung} = \\frac{${FM_erf.toFixed(2)}}{${FMzul.toFixed(2)}} \\cdot 100\\%\\]</p>
+            <p>Ergebnis: \\[\\text{Auslastung} = ${auslastung.toFixed(1)}\\%\\]</p>
+        </div>
+    `;
 
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-        }
-
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+}
         window.addEventListener('load', function() {
             berechnen();
         });
