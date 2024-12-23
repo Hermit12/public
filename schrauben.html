@@ -179,6 +179,16 @@ MathJax.Hub.Config({
             <option value="dynamisch">Dynamisch</option>
             </select>
         </div>
+
+        <div class="input-group">
+            <label for="mu_g">Reibungszahl Gewinde μG:</label>
+            <input type="number" id="mu_g" step="0.01" value="0.12">
+        </div>
+        
+        <div class="input-group">
+            <label for="mu_k">Reibungszahl Kopf μK:</label>
+            <input type="number" id="mu_k" step="0.01" value="0.12">
+        </div>
         
         <button onclick="berechnen()">Berechnen</button>
 
@@ -196,19 +206,19 @@ MathJax.Hub.Config({
     <script>
         // Gewindedaten
         const gewindeParams = {
-            'M3': { d: 3, P: 0.5, d2: 2.675, d3: 2.387 },
-            'M4': { d: 4, P: 0.7, d2: 3.545, d3: 3.141 },
-            'M5': { d: 5, P: 0.8, d2: 4.480, d3: 4.019 },
-            'M6': { d: 6, P: 1.0, d2: 5.350, d3: 4.773 },
-            'M8': { d: 8, P: 1.25, d2: 7.188, d3: 6.466 },
-            'M10': { d: 10, P: 1.5, d2: 9.026, d3: 8.160 },
-            'M12': { d: 12, P: 1.75, d2: 10.863, d3: 9.853 },
-            'M14': { d: 14, P: 2.0, d2: 12.701, d3: 11.546 },
-            'M16': { d: 16, P: 2.0, d2: 14.701, d3: 13.546 },
-            'M20': { d: 20, P: 2.5, d2: 18.376, d3: 16.933 },
-            'M24': { d: 24, P: 3.0, d2: 22.051, d3: 20.319 },
-            'M30': { d: 30, P: 3.5, d2: 27.727, d3: 25.706 },
-            'M36': { d: 36, P: 4.0, d2: 33.402, d3: 31.093 }
+            'M3': { d: 3, P: 0.5, d2: 2.675, d3: 2.387, dw: 6, dh: 5.5 },
+            'M4': { d: 4, P: 0.7, d2: 3.545, d3: 3.141, dw: 8, dh: 7 },
+            'M5': { d: 5, P: 0.8, d2: 4.480, d3: 4.019, dw: 10, dh: 8 },
+            'M6': { d: 6, P: 1.0, d2: 5.350, d3: 4.773, dw: 12, dh: 10 },
+            'M8': { d: 8, P: 1.25, d2: 7.188, d3: 6.466, dw: 16, dh: 13 },
+            'M10': { d: 10, P: 1.5, d2: 9.026, d3: 8.160, dw: 20, dh: 17 },
+            'M12': { d: 12, P: 1.75, d2: 10.863, d3: 9.853, dw: 24, dh: 19 },
+            'M14': { d: 14, P: 2.0, d2: 12.701, d3: 11.546, dw: 28, dh: 22 },
+            'M16': { d: 16, P: 2.0, d2: 14.701, d3: 13.546, dw: 30, dh: 24 },
+            'M20': { d: 20, P: 2.5, d2: 18.376, d3: 16.933, dw: 37, dh: 30 },
+            'M24': { d: 24, P: 3.0, d2: 22.051, d3: 20.319, dw: 44, dh: 36 },
+            'M30': { d: 30, P: 3.5, d2: 27.727, d3: 25.706, dw: 56, dh: 46 },
+            'M36': { d: 36, P: 4.0, d2: 33.402, d3: 31.093, dw: 66, dh: 55 }
         };
 
         // Event Listener für Material-Auswahl
@@ -269,6 +279,23 @@ MathJax.Hub.Config({
     const sigma_zul = 0.9 * material.Rp02;  // Korrigiert nach VDI 2230
     const FMzul_schraube = sigma_zul * AS;
    
+    // Berechnung Anzugsmoment
+    const mu_g = parseFloat(document.getElementById('mu_g').value);
+    const mu_k = parseFloat(document.getElementById('mu_k').value);
+    
+    // Berechnung der Winkel
+    const alpha = Math.PI / 3; // 60° in Radiant
+    const rho = Math.atan(mu_g / Math.cos(alpha/2));
+    const phi = Math.atan(gewinde.P / (Math.PI * gewinde.d2));
+    
+    // Mittlerer Kopfreibungsdurchmesser
+    const d_Km = (gewinde.dw + gewinde.dh) / 2;
+    
+    // Anzugsmoment
+    const MA = FM_erf * (
+        (gewinde.d2/2 * Math.tan(rho + phi)) + 
+        (mu_k * d_Km/2)
+    );
     // Setzverhalten nach VDI 2230
     const FM_erf_basis = FA * kA;
     const fZ = 0.01; // Setzbetrag [mm] - typischer Wert
@@ -368,6 +395,7 @@ MathJax.Hub.Config({
         <p>Zulässige Vorspannkraft Innengewinde: ${(FMzul_innengewinde/1000).toFixed(2)} kN</p>
         <p>Maßgebende zulässige Vorspannkraft FM,zul: ${(FMzul/1000).toFixed(2)} kN</p>
         <p>Auslastung: ${auslastung.toFixed(1)}%</p>
+        <p>Erforderliches Anzugsmoment MA: ${(MA/1000).toFixed(2)} Nm</p>
         <div class="progress-bar">
             <div class="progress ${auslastung > 90 ? 'danger' : auslastung > 75 ? 'warning' : ''}" 
                  style="width: ${Math.min(auslastung, 100)}%">
@@ -421,6 +449,20 @@ MathJax.Hub.Config({
         <div class="formula-box">
             <h3>Auslastung</h3>
             <p>\\[\\text{Auslastung} = \\frac{F_{M,erf}}{F_{M,zul}} \\cdot 100\\% = ${auslastung.toFixed(1)}\\%\\]</p>
+        </div>
+
+        <div class="formula-box">
+            <h3>Zulässige Vorspannkraft Schraube</h3>
+            <p>\\[\\sigma_{zul} = 0,9 \\cdot R_{p0,2} = ${sigma_zul.toFixed(2)} \\text{ N/mm}^2\\]</p>
+            <p>\\[F_{M,zul,S} = \\sigma_{zul} \\cdot A_S = ${FMzul_schraube.toFixed(2)} \\text{ N}\\]</p>
+        </div>
+        
+        <div class="formula-box">
+            <h3>Anzugsmoment</h3>
+            <p>Gewindereibungswinkel: \\[\\rho' = \\arctan(\\frac{\\mu_G}{\\cos(\\alpha/2)}) = ${(rho * 180/Math.PI).toFixed(2)}°\\]</p>
+            <p>Steigungswinkel: \\[\\phi = \\arctan(\\frac{P}{\\pi \\cdot d_2}) = ${(phi * 180/Math.PI).toFixed(2)}°\\]</p>
+            <p>Mittlerer Kopfreibungsdurchmesser: \\[d_{Km} = \\frac{d_w + d_h}{2} = ${d_Km.toFixed(2)} \\text{ mm}\\]</p>
+            <p>Anzugsmoment: \\[M_A = F_M \\cdot (\\frac{d_2}{2} \\cdot \\tan(\\rho' + \\phi) + \\mu_K \\cdot \\frac{d_{Km}}{2}) = ${(MA/1000).toFixed(2)} \\text{ Nm}\\]</p>
         </div>
     `;
 
