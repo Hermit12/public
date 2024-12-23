@@ -320,11 +320,13 @@ MathJax.Hub.Config({
     const innengewinde_material = document.getElementById('innengewinde_material').value;
     const Rm_schraube = material.Rm;
     
+    // Maximale Einschraubtiefe - weniger restriktiv
     if (innengewinde_material === 'steel') {
-        m_max = 3.0 * gewinde.d;
+        m_max = 3.5 * gewinde.d;  // Für Stahl
+    } else if (Rm_innengewinde/Rm_schraube > 0.7) {
+        m_max = 3.0 * gewinde.d;  // Für hochfeste Materialien
     } else {
-        // Für andere Werkstoffe (z.B. Aluminium)
-        m_max = 2.0 * (Rm_innengewinde/Rm_schraube) * gewinde.d;
+        m_max = 2.5 * gewinde.d;  // Für weichere Materialien
     }
     
     // Maximale tragende Gänge und Länge
@@ -363,7 +365,7 @@ MathJax.Hub.Config({
         warnings.push(`Warnung: Einschraubtiefe (${m_tat.toFixed(2)} mm) unterschreitet Minimum von ${m_min.toFixed(2)} mm`);
     }
     if (m_tat > m_max) {
-        warnings.push(`Warnung: Einschraubtiefe (${m_tat.toFixed(2)} mm) überschreitet Maximum von ${m_max.toFixed(2)} mm (Werkstoffabhängiger Grenzwert)`);
+        warnings.push(`Hinweis: Einschraubtiefe (${m_tat.toFixed(2)} mm) überschreitet empfohlenes Maximum von ${m_max.toFixed(2)} mm. Die ersten Gewindegänge tragen die Hauptlast.`);
     }
     if (m_tat < mef_min) {
         warnings.push(`Warnung: Einschraubtiefe (${m_tat.toFixed(2)} mm) ist kleiner als die erforderliche Mindesteinschraubtiefe von ${mef_min.toFixed(2)} mm`);
