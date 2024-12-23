@@ -270,6 +270,8 @@ MathJax.Hub.Config({
             }
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
+            
+            // MathJax neu rendern
             if (tabName === "Details") {
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             }
@@ -330,10 +332,6 @@ MathJax.Hub.Config({
     // Zulässige Wechselfestigkeit (vereinfacht)
     const sigma_W = material.Rm * 0.4;
     
-    // Berechnung Anzugsmoment
-    const mu_g = parseFloat(document.getElementById('mu_g').value);
-    const mu_k = parseFloat(document.getElementById('mu_k').value);
-    
     // Berechnung der Winkel
     const alpha = Math.PI / 3; // 60° in Radiant
     const rho = Math.atan(mu_g / Math.cos(alpha/2));
@@ -346,7 +344,7 @@ MathJax.Hub.Config({
     const MA = FM_erf * (
         (gewinde.d2/2 * Math.tan(rho + phi)) + 
         (mu_k * d_Km/2)
-    );
+    ) / 1000;  // Umrechnung von Nmm in Nm
 
     // Berechnung Mindesteinschraubtiefe basierend auf Belastungsart und Festigkeitsklasse
     let m_min_factor;
@@ -512,7 +510,7 @@ MathJax.Hub.Config({
         
         <div class="formula-box">
             <h3>Anzugsmoment</h3>
-            <p>Gewindereibungswinkel: \\[\\rho' = \\arctan(\\frac{\\mu_G}{\\cos(\\alpha/2)}) = ${(rho * 180/Math.PI).toFixed(2)}°\\]</p>
+            <p>Gewindereibungswinkel: \\[\\rho' = \\arctan(\\frac{\\mu_g}{\\cos(\\alpha/2)}) = ${(rho * 180/Math.PI).toFixed(2)}°\\]</p>
             <p>Steigungswinkel: \\[\\phi = \\arctan(\\frac{P}{\\pi \\cdot d_2}) = ${(phi * 180/Math.PI).toFixed(2)}°\\]</p>
             <p>Mittlerer Kopfreibungsdurchmesser: \\[d_{Km} = \\frac{d_w + d_h}{2} = ${d_Km.toFixed(2)} \\text{ mm}\\]</p>
             <p>Anzugsmoment: \\[M_A = F_M \\cdot (\\frac{d_2}{2} \\cdot \\tan(\\rho' + \\phi) + \\mu_K \\cdot \\frac{d_{Km}}{2}) = ${(MA/1000).toFixed(2)} \\text{ Nm}\\]</p>
