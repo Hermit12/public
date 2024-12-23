@@ -266,9 +266,14 @@ MathJax.Hub.Config({
 
     // Berechnungen Schraube
     const AS = Math.PI * Math.pow(gewinde.d3, 2) / 4;
-    const FM_erf = FA * kA;
     const sigma_zul = 0.9 * material.Rp02;  // Korrigiert nach VDI 2230
     const FMzul_schraube = sigma_zul * AS;
+   
+    // Setzverhalten nach VDI 2230
+    const fZ = 0.01; // Setzbetrag [mm] - typischer Wert
+    const fP = (FM_erf * gewinde.d) / (AS * material.Rp02); // elastische Dehnung
+    const FM_erf = FA * kA * (1 / (1 - fZ/(fZ + fP))); // Korrigierte Mindestklemmkraft
+
 
     // Berechnung Innengewinde
     
@@ -288,16 +293,28 @@ MathJax.Hub.Config({
     const max_tragende_laenge = max_tragende_gaenge * gewinde.P;
     
     // Effektive Einschraubtiefe
-    const m_eff = Math.min(m_tat, max_tragende_laenge);
+    // Lastverteilung über Gewindegänge nach VDI 2230
+    const anzahl_gänge = Math.min(Math.floor(m_tat / gewinde.P), max_tragende_gaenge);
+    const lastverteilung = [0.33, 0.27, 0.2, 0.1, 0.07, 0.03]; // VDI 2230 Lastverteilung
+    let effektive_last = 0;
+    for(let i = 0; i < anzahl_gänge; i++) {
+        effektive_last += lastverteilung[i] || 0;
+    }
+    const m_eff = m_tat * effektive_last;
     
     // Berechnung mit Lastverteilungsfaktor
     const lastverteilungsfaktor = 0.8; // 80% der Last auf die ersten Gewindegänge
     const d1 = gewinde.d - 1.0825 * gewinde.P;
     const A_innengewinde = Math.PI * m_eff * d1 * lastverteilungsfaktor;
-    const FMzul_innengewinde = 0.4 * Rm_innengewinde * A_innengewinde;
+    
+    // Lastverteilungsfaktor abhängig von der Einschraubtiefe
+    const m_grenz = 0.8 * gewinde.d; // Grenzeinschraubtiefe
+    const k_l = m_tat <= m_grenz ? 0.8 : 0.9; // erhöhter Faktor bei längerer Einschraubtiefe
+    const FMzul_innengewinde = 0.4 * Rm_innengewinde * A_innengewinde * k_l;
 
     // Berechnung der minimalen Einschraubtiefe nach VDI 2230
-    const mef_min = FM_erf / (0.4 * Rm_innengewinde * Math.PI * d1);
+    const sicherheitsfaktor = belastungsart === 'dynamisch' ? 1.2 : 1.0;
+    const mef_min = (FM_erf * sicherheitsfaktor) / (0.4 * Rm_innengewinde * Math.PI * d1);
             
     // Warnungen generieren
     const warnings = [];
@@ -367,6 +384,13 @@ MathJax.Hub.Config({
             <p>Formel: \\[F_{M,erf} = F_A \\cdot k_A\\]</p>
             <p>Eingesetzt: \\[F_{M,erf} = ${FA} \\cdot ${kA}\\]</p>
             <p>Ergebnis: \\[F_{M,erf} = ${FM_erf.toFixed(2)} \\text{ N} = ${(FM_erf/1000).toFixed(2)} \\text{ kN}\\]</p>
+        </div>
+
+        <div class="formula-box">
+            <h3>Setzverhalten</h3>
+            <p>\\[f_Z = ${fZ} \\text{ mm}\\]</p>
+            <p>\\[f_P = \\frac{F_{M,erf} \\cdot d}{A_S \\cdot R_{p0,2}} = ${fP.toFixed(4)} \\text{ mm}\\]</p>
+            <p>\\[F_{M,korr} = F_M \\cdot (1 - \\frac{f_Z}{f_Z + f_P}) = ${FM_erf.toFixed(2)} \\text{ N}\\]</p>
         </div>
 
         <div class="formula-box">
