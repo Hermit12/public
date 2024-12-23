@@ -316,10 +316,9 @@ MathJax.Hub.Config({
 
     // Ergebnisse ausgeben
     const resultContent = document.getElementById('resultContent');
-    resultContent.innerHTML = `
-        resultContent.innerHTML = '';
+    resultContent.innerHTML = '';
     if (warnings.length > 0) {
-        resultContent.innerHTML = `
+        resultContent.innerHTML += `
             <div style="color: red; margin-top: 10px;">
                 ${warnings.map(w => `<p>${w}</p>`).join('')}
             </div>
