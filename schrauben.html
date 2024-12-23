@@ -364,7 +364,7 @@ MathJax.Hub.Config({
             <p>Maximale Einschraubtiefe: \\[m_{max} = 2,5 \\cdot d = ${m_max.toFixed(2)} \\text{ mm}\\]</p>
             <p>Maximale tragende Länge: \\[m_{trag} = 6 \\cdot P = ${(max_tragende_laenge).toFixed(2)} \\text{ mm}\\]</p>
             <p>Effektive Einschraubtiefe: \\[m_{eff} = ${m_eff.toFixed(2)} \\text{ mm}\\]</p>
-            <p>Lastverteilungsfaktor: \\[f_{Last} = ${lastverteilungsfaktor}\\]</p>
+            <p>Lastverteilungsfaktor k_l: \\[k_l = ${k_l}\\]</p>
         </div>
         
         <div class="formula-box">
@@ -376,51 +376,21 @@ MathJax.Hub.Config({
 
         <div class="formula-box">
             <h3>Erforderliche Mindestklemmkraft</h3>
-            <p>Formel: \\[F_{M,erf} = F_A \\cdot k_A\\]</p>
-            <p>Eingesetzt: \\[F_{M,erf} = ${FA} \\cdot ${kA}\\]</p>
-            <p>Ergebnis: \\[F_{M,erf} = ${FM_erf.toFixed(2)} \\text{ N} = ${(FM_erf/1000).toFixed(2)} \\text{ kN}\\]</p>
+            <p>Basis-Mindestklemmkraft: \\[F_{M,erf,basis} = F_A \\cdot k_A = ${FM_erf_basis.toFixed(2)} \\text{ N}\\]</p>
+            <p>Mit Setzverhalten: \\[F_{M,erf} = F_{M,erf,basis} \\cdot \\frac{1}{1 - \\frac{f_Z}{f_Z + f_P}} = ${FM_erf.toFixed(2)} \\text{ N}\\]</p>
         </div>
 
         <div class="formula-box">
             <h3>Setzverhalten</h3>
-            <p>\\[f_Z = ${fZ} \\text{ mm}\\]</p>
-            <p>\\[f_P = \\frac{F_{M,erf} \\cdot d}{A_S \\cdot R_{p0,2}} = ${fP.toFixed(4)} \\text{ mm}\\]</p>
-            <p>\\[F_{M,korr} = F_M \\cdot (1 - \\frac{f_Z}{f_Z + f_P}) = ${FM_erf.toFixed(2)} \\text{ N}\\]</p>
-        </div>
-
-        <div class="formula-box">
-            <h3>Zulässige Spannung Schraube</h3>
-            <p>Formel: \\[\\sigma_{zul} = 0,9 \\cdot R_{p0,2}\\]</p>
-            <p>Eingesetzt: \\[\\sigma_{zul} = 0,9 \\cdot ${material.Rp02}\\]</p>
-            <p>Ergebnis: \\[\\sigma_{zul} = ${sigma_zul.toFixed(2)} \\text{ N/mm}^2\\]</p>
-        </div>
-
-        <div class="formula-box">
-            <h3>Minimale Einschraubtiefe</h3>
-            <p>Formel: \\[m_{ef,min} = \\frac{F_{M,erf}}{0,4 \\cdot R_m \\cdot \\pi \\cdot d_1}\\]</p>
-            <p>Eingesetzt: \\[m_{ef,min} = \\frac{${FM_erf.toFixed(2)}}{0,4 \\cdot ${Rm_innengewinde} \\cdot \\pi \\cdot ${d1.toFixed(3)}}\\]</p>
-            <p>Ergebnis: \\[m_{ef,min} = ${mef_min.toFixed(2)} \\text{ mm}\\]</p>
-        </div>
-
-        <div class="formula-box">
-            <h3>Zulässige Montagevorspannkraft Schraube</h3>
-            <p>Formel: \\[F_{M,zul,S} = \\sigma_{zul} \\cdot A_S\\]</p>
-            <p>Eingesetzt: \\[F_{M,zul,S} = ${sigma_zul.toFixed(2)} \\cdot ${AS.toFixed(2)}\\]</p>
-            <p>Ergebnis: \\[F_{M,zul,S} = ${FMzul_schraube.toFixed(2)} \\text{ N} = ${(FMzul_schraube/1000).toFixed(2)} \\text{ kN}\\]</p>
+            <p>Setzbetrag: \\[f_Z = ${fZ} \\text{ mm}\\]</p>
+            <p>Elastische Dehnung: \\[f_P = \\frac{F_{M,erf,basis} \\cdot d}{A_S \\cdot R_{p0,2}} = ${fP.toFixed(4)} \\text{ mm}\\]</p>
         </div>
 
         <div class="formula-box">
             <h3>Tragfähigkeit Innengewinde</h3>
-            <p>Formeln:</p>
-            <p>\\[m_{eff} = \\min(m_{tat}, 0,5 \\cdot P)\\]</p>
-            <p>\\[d_1 = d - 1,0825 \\cdot P\\]</p>
-            <p>\\[A_{Innengewinde} = \\pi \\cdot m_{eff} \\cdot d_1\\]</p>
-            <p>\\[F_{M,zul,I} = 0,4 \\cdot R_m \\cdot A_{Innengewinde}\\]</p>
-            <p>Eingesetzt:</p>
-            <p>\\[m_{eff} = ${m_eff.toFixed(3)} \\text{ mm}\\]</p>
-            <p>\\[d_1 = ${gewinde.d} - 1,0825 \\cdot ${gewinde.P} = ${d1.toFixed(3)} \\text{ mm}\\]</p>
-            <p>\\[A_{Innengewinde} = \\pi \\cdot ${m_eff.toFixed(3)} \\cdot ${d1.toFixed(3)} = ${A_innengewinde.toFixed(2)} \\text{ mm}^2\\]</p>
-            <p>\\[F_{M,zul,I} = 0,4 \\cdot ${Rm_innengewinde} \\cdot ${A_innengewinde.toFixed(2)} = ${FMzul_innengewinde.toFixed(2)} \\text{ N} = ${(FMzul_innengewinde/1000).toFixed(2)} \\text{ kN}\\]</p>
+            <p>Kern-Durchmesser: \\[d_1 = ${gewinde.d} - 1,0825 \\cdot ${gewinde.P} = ${d1.toFixed(3)} \\text{ mm}\\]</p>
+            <p>Effektive tragende Fläche: \\[A_{Innengewinde} = \\pi \\cdot ${m_eff.toFixed(3)} \\cdot ${d1.toFixed(3)} = ${A_innengewinde.toFixed(2)} \\text{ mm}^2\\]</p>
+            <p>Zulässige Kraft: \\[F_{M,zul,I} = 0,4 \\cdot ${Rm_innengewinde} \\cdot ${A_innengewinde.toFixed(2)} \\cdot ${k_l} = ${FMzul_innengewinde.toFixed(2)} \\text{ N}\\]</p>
         </div>
 
         <div class="formula-box">
@@ -430,9 +400,7 @@ MathJax.Hub.Config({
 
         <div class="formula-box">
             <h3>Auslastung</h3>
-            <p>Formel: \\[\\text{Auslastung} = \\frac{F_{M,erf}}{F_{M,zul}} \\cdot 100\\%\\]</p>
-            <p>Eingesetzt: \\[\\text{Auslastung} = \\frac{${FM_erf.toFixed(2)}}{${FMzul.toFixed(2)}} \\cdot 100\\%\\]</p>
-            <p>Ergebnis: \\[\\text{Auslastung} = ${auslastung.toFixed(1)}\\%\\]</p>
+            <p>\\[\\text{Auslastung} = \\frac{F_{M,erf}}{F_{M,zul}} \\cdot 100\\% = ${auslastung.toFixed(1)}\\%\\]</p>
         </div>
     `;
 
