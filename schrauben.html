@@ -272,8 +272,6 @@ MathJax.Hub.Config({
 
     // Berechnung Innengewinde
     
-
-
     // Mindesteinschraubtiefe basierend auf Belastungsart und Festigkeitsklasse
     let m_min_factor;
     if (festigkeitsklasse === '8.8') {
@@ -307,13 +305,7 @@ MathJax.Hub.Config({
         warnings.push(`Warnung: Einschraubtiefe (${m_tat.toFixed(2)} mm) überschreitet Maximum von ${m_max.toFixed(2)} mm`);
     }
     
-    // Berechnung der minimalen Einschraubtiefe nach VDI 2230
-    const mef_min = FM_erf / (0.4 * Rm_innengewinde * Math.PI * d1);
-    
-    // Tatsächliche Einschraubtiefe berücksichtigen
-    const m_eff = Math.min(m_tat, gewinde.P * 0.5);
-    const A_innengewinde = Math.PI * m_eff * d1;
-    const FMzul_innengewinde = 0.4 * Rm_innengewinde * A_innengewinde;
+  
 
     // Bestimmung der maßgebenden zulässigen Kraft
     const FMzul = Math.min(FMzul_schraube, FMzul_innengewinde);
@@ -322,8 +314,7 @@ MathJax.Hub.Config({
     // Ergebnisse ausgeben
     const resultContent = document.getElementById('resultContent');
     resultContent.innerHTML = `
-    
-        // Warnungen ausgeben
+        resultContent.innerHTML = '';
         if (warnings.length > 0) {
             resultContent.innerHTML += `
                 <div style="color: red; margin-top: 10px;">
@@ -331,6 +322,7 @@ MathJax.Hub.Config({
                 </div>
             `;
         }
+        resultContent.innerHTML += `
         <p>Spannungsquerschnitt AS: ${AS.toFixed(2)} mm²</p>
         <p>Erforderliche Mindestklemmkraft FM,erf: ${(FM_erf/1000).toFixed(2)} kN</p>
         <p>Minimale Einschraubtiefe mef,min: ${mef_min.toFixed(2)} mm</p>
