@@ -5,13 +5,18 @@
     <title>VDI 2230 Schraubenberechnung</title>
     <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML"></script>
     <script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [['$','$'], ['\\(','\\)']],
-        displayMath: [['$$','$$'], ['\\[','\\]']],
-        processEscapes: true
-    }
-});
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$'], ['\\[','\\]']],
+            processEscapes: true
+        },
+        "HTML-CSS": { 
+            availableFonts: ["TeX"],
+            scale: 100,
+            linebreaks: { automatic: true }
+        }
+    });
 </script>
     <style>
         body {
@@ -74,7 +79,6 @@ MathJax.Hub.Config({
             color: white;
         }
         .tabcontent {
-            display: none;
             padding: 6px 12px;
             border: 1px solid #ccc;
             border-top: none;
@@ -273,28 +277,42 @@ MathJax.Hub.Config({
                 }
             }
         });
+        
+        // Separater Event Listener für Schmierzustand
+        document.getElementById('schmierzustand').addEventListener('change', function() {
+            const reibwert = reibwertBereiche[this.value];
+            document.getElementById('mu_g').value = reibwert.mu_g;
+            document.getElementById('mu_k').value = reibwert.mu_k;
+            berechnen();
+        });
 
-            function openTab(evt, tabName) {
-                var i, tabcontent, tablinks;
-                tabcontent = document.getElementsByClassName("tabcontent");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
-                tablinks = document.getElementsByClassName("tablinks");
-                for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].className = tablinks[i].className.replace(" active", "");
-                }
-                document.getElementById(tabName).style.display = "block";
-                evt.currentTarget.className += " active";
-                
-                if(tabName === 'Details') {
-                    berechnen();
-                }
-                
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            
+            // Hide all tabcontent
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            
+            // Remove active class from all tabs
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            
+            // Show current tab and set it as active
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+            
+            // If Details tab is opened, recalculate and rerender
+            if(tabName === 'Details') {
+                berechnen();
                 setTimeout(function() {
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, "detailContent"]);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
                 }, 100);
             }
+        }
 
         function berechnen() {
         
@@ -616,6 +634,11 @@ MathJax.Hub.Config({
         berechnen();
         MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
     });
+    document.getElementById('Eingabe').style.display = "block";
+    document.getElementById('Details').style.display = "none";
+    berechnen();
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+
     </script>
 </body>
 </html>
