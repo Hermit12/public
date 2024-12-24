@@ -228,7 +228,7 @@ MathJax.Hub.Config({
         </div>
     </div>
 
-    <div id="Details" class="tabcontent">
+    <div id="Details" class="tabcontent" style="display: none">
         <h2>Berechnungsdetails</h2>
         <div id="detailContent"></div>
     </div>
@@ -287,10 +287,10 @@ MathJax.Hub.Config({
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
             
-            // MathJax neu rendern
-            if (tabName === "Details") {
+            // MathJax neu rendern nach kurzer Verzögerung
+            setTimeout(function() {
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-            }
+            }, 100);
         }
 
         function berechnen() {
@@ -597,11 +597,18 @@ MathJax.Hub.Config({
 
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
-        document.addEventListener('DOMContentLoaded', function() {
-            berechnen();
-            // Initial MathJax render
+    document.addEventListener('DOMContentLoaded', function() {
+        berechnen();
+        
+        // Initialen Tab setzen
+        document.getElementById('Eingabe').style.display = "block";
+        document.getElementById('Details').style.display = "none";
+        
+        // Initial MathJax render mit Verzögerung
+        setTimeout(function() {
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-        });
+        }, 100);
+    });
     </script>
 </body>
 </html>
