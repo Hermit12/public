@@ -5,19 +5,19 @@
     <title>VDI 2230 Schraubenberechnung</title>
     <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML"></script>
     <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [['$','$'], ['\\(','\\)']],
-            displayMath: [['$$','$$'], ['\\[','\\]']],
-            processEscapes: true
-        },
-        "HTML-CSS": { 
-            availableFonts: ["TeX"],
-            scale: 100,
-            linebreaks: { automatic: true }
-        }
-    });
-</script>
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                processEscapes: true
+            },
+            "HTML-CSS": { 
+                availableFonts: ["TeX"],
+                scale: 100,
+                linebreaks: { automatic: true }
+            }
+        });
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -312,7 +312,7 @@
                     // Füge einen console.log hinzu um zu sehen ob der Content gesetzt wird
                     console.log('Details Content:', document.getElementById('detailContent').innerHTML);
                     MathJax.Hub.Queue(["Typeset", MathJax.Hub, "detailContent"]);
-                }, 100);
+                }, 500);
             }
         }
 
