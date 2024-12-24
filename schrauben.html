@@ -305,12 +305,10 @@
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
             
-            // If Details tab is opened, recalculate and rerender
+            // Wenn Details Tab geöffnet wird, neu berechnen und MathJax rendern
             if(tabName === 'Details') {
                 berechnen();
-                setTimeout(function() {
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-                }, 100);
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             }
         }
 
@@ -618,6 +616,7 @@
 
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
+    // Event Listener für DOM Content Loaded
     document.addEventListener('DOMContentLoaded', function() {
         berechnen();
         
@@ -629,15 +628,21 @@
         MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
     });
     
-    // Zusätzlicher Event Listener für vollständiges Laden
+    // Event Listener für vollständiges Laden der Seite
     window.addEventListener('load', function() {
         berechnen();
         MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        
+        // Stelle sicher, dass der richtige Tab angezeigt wird
+        document.getElementById('Eingabe').style.display = "block";
+        document.getElementById('Details').style.display = "none";
+        
+        // Nochmal MathJax rendern für Details
+        setTimeout(function() {
+            berechnen();
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        }, 500);
     });
-    document.getElementById('Eingabe').style.display = "block";
-    document.getElementById('Details').style.display = "none";
-    berechnen();
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 
     </script>
 </body>
