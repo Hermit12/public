@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VDI 2230 Schraubenberechnung</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML"></script>
     <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
     tex2jax: {
@@ -274,24 +274,27 @@ MathJax.Hub.Config({
             }
         });
 
-        function openTab(evt, tabName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
+            function openTab(evt, tabName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(tabName).style.display = "block";
+                evt.currentTarget.className += " active";
+                
+                if(tabName === 'Details') {
+                    berechnen();
+                }
+                
+                setTimeout(function() {
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, "detailContent"]);
+                }, 100);
             }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
-            
-            // MathJax neu rendern nach kurzer Verzögerung
-            setTimeout(function() {
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-            }, 100);
-        }
 
         function berechnen() {
         
@@ -604,10 +607,14 @@ MathJax.Hub.Config({
         document.getElementById('Eingabe').style.display = "block";
         document.getElementById('Details').style.display = "none";
         
-        // Initial MathJax render mit Verzögerung
-        setTimeout(function() {
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-        }, 100);
+        // Initial MathJax render
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    });
+    
+    // Zusätzlicher Event Listener für vollständiges Laden
+    window.addEventListener('load', function() {
+        berechnen();
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
     });
     </script>
 </body>
