@@ -232,7 +232,7 @@
         </div>
     </div>
 
-    <div id="Details" class="tabcontent" style="display: none">
+    <div id="Details" class="tabcontent" style="display: none;">
         <h2>Berechnungsdetails</h2>
         <div id="detailContent"></div>
     </div>
@@ -307,13 +307,18 @@
             
             // Wenn Details Tab geöffnet wird, neu berechnen und MathJax rendern
             if(tabName === 'Details') {
-                berechnen();
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+                setTimeout(() => {
+                    berechnen();
+                    // Füge einen console.log hinzu um zu sehen ob der Content gesetzt wird
+                    console.log('Details Content:', document.getElementById('detailContent').innerHTML);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, "detailContent"]);
+                }, 100);
             }
         }
 
         function berechnen() {
-        
+            console.log('Berechnung startet...');
+            
         // Eingabewerte auslesen
         const gewindeTyp = document.getElementById('gewinde').value;
         const gewinde = gewindeParams[gewindeTyp];
@@ -616,33 +621,38 @@
 
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
-    // Event Listener für DOM Content Loaded
-    document.addEventListener('DOMContentLoaded', function() {
-        berechnen();
-        
-        // Initialen Tab setzen
-        document.getElementById('Eingabe').style.display = "block";
-        document.getElementById('Details').style.display = "none";
-        
-        // Initial MathJax render
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    // Warten auf DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded');
+    
+    // Initialer Aufruf
+    berechnen();
+    
+    // Event Listener für alle Input-Änderungen
+    document.querySelectorAll('input, select').forEach(element => {
+        element.addEventListener('change', berechnen);
     });
     
-    // Event Listener für vollständiges Laden der Seite
-    window.addEventListener('load', function() {
+    // Initialen Tab setzen
+    document.getElementById('Eingabe').style.display = "block";
+    document.getElementById('Details').style.display = "none";
+    
+    // MathJax initial rendern
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+});
+
+// Warten auf komplettes Laden
+window.addEventListener('load', function() {
+    console.log('Window Loaded');
+    setTimeout(() => {
         berechnen();
         MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-        
-        // Stelle sicher, dass der richtige Tab angezeigt wird
-        document.getElementById('Eingabe').style.display = "block";
-        document.getElementById('Details').style.display = "none";
-        
-        // Nochmal MathJax rendern für Details
-        setTimeout(function() {
-            berechnen();
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-        }, 500);
-    });
+    }, 500);
+});
+
+// Initial ausführen
+document.getElementById('Eingabe').style.display = "block";
+document.getElementById('Details').style.display = "none";
 
     </script>
 </body>
