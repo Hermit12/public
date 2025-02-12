@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat mit Bildupload und Farbwahl</title>
+    <title>Chat mit Bildupload, Farbwahl und Zitaten</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -80,7 +80,6 @@
             background-color: #1976D2;
         }
         
-        /* Neue Styles für die Farbauswahl */
         #colorPicker {
             margin: 20px 0;
         }
@@ -97,7 +96,6 @@
             border-color: #000;
         }
 
-        /* Modal Styles bleiben gleich */
         .modal {
             display: none;
             position: fixed;
@@ -127,6 +125,30 @@
         }
         .close:hover {
             color: #bbb;
+        }
+
+        /* Neue Styles für Zitate */
+        .quote-button {
+            cursor: pointer;
+            color: #666;
+            margin-left: 10px;
+            font-size: 0.9em;
+        }
+        .quote-button:hover {
+            color: #333;
+        }
+        
+        .quoted-message {
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 10px;
+            margin: 5px 0;
+            border-left: 3px solid #666;
+            font-size: 0.9em;
+        }
+        
+        .quoted-username {
+            font-weight: bold;
+            color: #666;
         }
     </style>
 </head>
@@ -163,7 +185,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // Firebase Konfiguration bleibt gleich
         const firebaseConfig = {
             apiKey: "AIzaSyAEJCuP5Z1S-g0VoJzzhV50R-oeuKLa58M",
             authDomain: "chat-8509a.firebaseapp.com",
@@ -178,9 +199,9 @@
         const db = firebase.database();
 
         let username = '';
-        let userColor = '#e3f2fd'; // Standardfarbe
+        let userColor = '#e3f2fd';
+        let currentQuote = null;
 
-        // Farbauswahl Funktionalität
         const colorOptions = document.querySelectorAll('.color-option');
         colorOptions.forEach(option => {
             option.addEventListener('click', function() {
@@ -190,8 +211,59 @@
             });
         });
         
-        // Erste Farbe standardmäßig auswählen
         colorOptions[0].classList.add('selected');
+
+        function createMessage(message) {
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${message.username === username ? 'own' : 'other'}`;
+            messageElement.setAttribute('data-message-id', message.timestamp);
+            
+            if (message.username === username || message.username !== 'System') {
+                messageElement.style.backgroundColor = message.color || '#f5f5f5';
+            }
+            
+            const usernameElement = document.createElement('div');
+            usernameElement.className = 'username';
+            usernameElement.textContent = message.username;
+            messageElement.appendChild(usernameElement);
+            
+            if (message.quote) {
+                const quoteElement = document.createElement('div');
+                quoteElement.className = 'quoted-message';
+                quoteElement.innerHTML = `
+                    <div class="quoted-username">${message.quote.username}</div>
+                    <div>${message.quote.text || '<img src="' + message.quote.imageData + '" class="chat-image" style="max-width: 100px; max-height: 100px;">'}</div>
+                `;
+                messageElement.appendChild(quoteElement);
+            }
+            
+            if (message.type === 'image') {
+                const img = document.createElement('img');
+                img.src = message.imageData;
+                img.className = 'chat-image';
+                img.onclick = () => showImage(message.imageData);
+                messageElement.appendChild(img);
+            } else {
+                const textElement = document.createElement('div');
+                textElement.textContent = message.text;
+                messageElement.appendChild(textElement);
+            }
+            
+            const timestampElement = document.createElement('div');
+            timestampElement.className = 'timestamp';
+            timestampElement.textContent = new Date(message.timestamp).toLocaleString();
+            
+            if (message.username !== 'System') {
+                const quoteButton = document.createElement('span');
+                quoteButton.className = 'quote-button';
+                quoteButton.textContent = '↩ Zitieren';
+                quoteButton.onclick = () => quoteMessage(message);
+                timestampElement.appendChild(quoteButton);
+            }
+            
+            messageElement.appendChild(timestampElement);
+            return messageElement;
+        }
 
         function login() {
             username = document.getElementById('username').value.trim();
@@ -205,24 +277,47 @@
                     type: 'text',
                     text: `${username} ist dem Chat beigetreten`,
                     timestamp: Date.now(),
-                    color: '#f5f5f5' // Systemfarbe
+                    color: '#f5f5f5'
                 });
             }
+        }
+
+        function quoteMessage(message) {
+            currentQuote = {
+                username: message.username,
+                text: message.text,
+                imageData: message.type === 'image' ? message.imageData : null
+            };
+            
+            const messageInput = document.getElementById('messageInput');
+            messageInput.focus();
+            messageInput.style.borderColor = '#666';
+            messageInput.placeholder = `Zitiere ${message.username}...`;
         }
 
         function sendMessage() {
             const messageInput = document.getElementById('messageInput');
             const message = messageInput.value.trim();
             
-            if(message) {
-                db.ref('messages').push({
+            if(message || currentQuote) {
+                const messageData = {
                     username: username,
                     type: 'text',
                     text: message,
                     timestamp: Date.now(),
                     color: userColor
-                });
+                };
+                
+                if (currentQuote) {
+                    messageData.quote = currentQuote;
+                }
+                
+                db.ref('messages').push(messageData);
                 messageInput.value = '';
+                
+                currentQuote = null;
+                messageInput.style.borderColor = '';
+                messageInput.placeholder = 'Deine Nachricht...';
             }
         }
 
@@ -231,70 +326,17 @@
             
             db.ref('messages').on('child_added', (snapshot) => {
                 const message = snapshot.val();
-                const messageElement = document.createElement('div');
-                messageElement.className = `message ${message.username === username ? 'own' : 'other'}`;
-                
-                // Farbe der Nachricht setzen
-                if (message.username === username || message.username !== 'System') {
-                    messageElement.style.backgroundColor = message.color || '#f5f5f5';
-                }
-                
-                const usernameElement = document.createElement('div');
-                usernameElement.className = 'username';
-                usernameElement.textContent = message.username;
-                messageElement.appendChild(usernameElement);
-                
-                if (message.type === 'image') {
-                    const img = document.createElement('img');
-                    img.src = message.imageData;
-                    img.className = 'chat-image';
-                    img.onclick = () => showImage(message.imageData);
-                    messageElement.appendChild(img);
-                } else {
-                    const textElement = document.createElement('div');
-                    textElement.textContent = message.text;
-                    messageElement.appendChild(textElement);
-                }
-                
-                const timestampElement = document.createElement('div');
-                timestampElement.className = 'timestamp';
-                timestampElement.textContent = new Date(message.timestamp).toLocaleString();
-                messageElement.appendChild(timestampElement);
-                
+                const messageElement = createMessage(message);
                 messagesDiv.appendChild(messageElement);
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
             });
         }
-
-        // Restliche Funktionen bleiben gleich
-        // Modal Funktionen
-        const modal = document.getElementById('imageModal');
-        const modalImg = document.getElementById('modalImage');
-        const closeButton = document.getElementsByClassName('close')[0];
 
         function showImage(src) {
             modal.style.display = 'block';
             modalImg.src = src;
         }
 
-        closeButton.onclick = function() {
-            modal.style.display = 'none';
-        }
-
-        modal.onclick = function(event) {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        }
-
-        // Escape-Taste schließt das Modal
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && modal.style.display === 'block') {
-                modal.style.display = 'none';
-            }
-        });
-
-        // Bild-Upload Funktionen
         async function handlePasteImage() {
             try {
                 const clipboard = await navigator.clipboard.read();
@@ -315,13 +357,21 @@
                 const compressedBlob = await compressImage(blob);
                 const base64String = await blobToBase64(compressedBlob);
                 
-                db.ref('messages').push({
+                const messageData = {
                     username: username,
                     type: 'image',
                     imageData: base64String,
                     timestamp: Date.now(),
                     color: userColor
-                });
+                };
+
+                if (currentQuote) {
+                    messageData.quote = currentQuote;
+                    currentQuote = null;
+                    document.getElementById('messageInput').placeholder = 'Deine Nachricht...';
+                }
+                
+                db.ref('messages').push(messageData);
             } catch (error) {
                 console.error('Fehler beim Bildupload:', error);
                 alert('Fehler beim Hochladen des Bildes');
@@ -370,7 +420,26 @@
             });
         }
 
-        // Event Listener
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const closeButton = document.getElementsByClassName('close')[0];
+
+        closeButton.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        modal.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+            }
+        });
+
         document.getElementById('username').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 login();
@@ -397,7 +466,6 @@
             }
         });
 
-        // Nachrichten-Bereinigung
         function cleanupOldMessages() {
             const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
             
@@ -425,4 +493,4 @@
         }, msToMidnight);
     </script>
 </body>
-</html>
+</html> 
