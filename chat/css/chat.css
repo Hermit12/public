@@ -307,6 +307,10 @@ body {
     body {
         align-items: flex-start;
         background-color: #fff;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
     }
 
     #chat {
@@ -315,14 +319,41 @@ body {
         margin: 0;
         border-radius: 0;
         box-shadow: none;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background-color: #fff;
+        border-bottom: 1px solid #eee;
+    }
+
+    #messages {
+        margin-top: 60px; /* Höhe des Headers */
+        margin-bottom: 70px; /* Höhe des Eingabebereichs */
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch; /* Für besseres Scrolling auf iOS */
+    }
+
+    #messageArea {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #fff;
+        padding: 10px;
+        border-top: 1px solid #eee;
+        z-index: 100;
     }
 
     .message {
         max-width: 85%;
-    }
-
-    #messageArea {
-        padding: 10px;
     }
 
     .chat-image {
@@ -336,10 +367,28 @@ body {
 
     #messageInput {
         font-size: 16px; /* Verhindert Zoom auf iOS */
+        padding: 8px 12px;
+        margin: 0;
     }
-}
 
-/* Prevent text selection */
-.username, .timestamp, .quote-button {
-    user-select: none;
+    /* Verhindere Pull-to-refresh auf iOS */
+    body {
+        overscroll-behavior-y: contain;
+    }
+
+    /* Zusätzliche Anpassungen für kleine Bildschirme */
+    .chat-header h2 {
+        font-size: 1.1rem;
+    }
+
+    #messageArea button {
+        padding: 8px;
+        min-width: 36px;
+        height: 36px;
+    }
+
+    #messageArea button img {
+        width: 20px;
+        height: 20px;
+    }
 }
