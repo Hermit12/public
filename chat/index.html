@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat mit Bildupload, Farbwahl und Zitaten</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/modal.css">
+</head>
+<body>
+    <div id="login">
+        <h2>Chat Anmeldung</h2>
+        <input type="text" id="username" placeholder="Dein Name">
+        <div id="colorPicker">
+            <!-- Farboptionen werden dynamisch eingefügt -->
+        </div>
+        <button onclick="login()">Einloggen</button>
+    </div>
+
+    <div id="chat">
+        <div class="chat-header">
+            <h2>Chat</h2>
+            <button id="settingsButton" class="icon-button">
+                <img src="assets/gear-icon.svg" alt="Einstellungen">
+            </button>
+        </div>
+        <div id="messages"></div>
+        <div id="messageArea">
+            <input type="text" id="messageInput" placeholder="Deine Nachricht...">
+            <button id="imageButton" onclick="handlePasteImage()">Bild</button>
+            <button onclick="sendMessage()">Senden</button>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content settings-content">
+            <h3>Einstellungen</h3>
+            <div class="settings-group">
+                <label for="settingsUsername">Benutzername:</label>
+                <input type="text" id="settingsUsername">
+            </div>
+            <div class="settings-group">
+                <label>Hintergrundfarbe:</label>
+                <div id="settingsColorPicker"></div>
+            </div>
+            <div class="settings-group">
+                <label>Textfarbe:</label>
+                <div id="textColorPicker"></div>
+            </div>
+            <div class="settings-group">
+                <label for="fontSelect">Schriftart:</label>
+                <select id="fontSelect">
+                    <option value="Arial">Arial</option>
+                    <option value="Helvetica">Helvetica</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Georgia">Georgia</option>
+                </select>
+            </div>
+            <div class="settings-buttons">
+                <button onclick="saveSettings()">Speichern</button>
+                <button onclick="closeSettingsModal()">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <!-- Application Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/cookies.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/messages.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/imageHandling.js"></script>
+</body>
+</html>
