@@ -80,10 +80,12 @@ select:focus {
 }
 
 /* Farbwähler */
-.color-picker {
+#settingsColorPicker,
+#textColorPicker {
     margin: 20px 0;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
 }
 
@@ -103,6 +105,16 @@ select:focus {
 .color-option.selected {
     border-color: #333;
     transform: scale(1.1);
+}
+
+/* Settings Vorschau */
+.preview-box {
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+    min-height: 60px;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
 }
 
 /* Utility Klassen */
