@@ -4,13 +4,18 @@ function sendMessage() {
     const message = messageInput.value.trim();
 
     if (message || currentQuote) {
+        // Hole alle aktuellen Formatierungseinstellungen
         const messageData = {
             username: window.username,
             type: 'text',
             text: message,
             timestamp: Date.now(),
+            // Speichere alle Formatierungseinstellungen
             color: window.userColor,
             fontFamily: window.userFontFamily,
+            fontSize: window.userFontSize,
+            fontWeight: window.userFontWeight,
+            fontStyle: window.userFontStyle,
             textColor: window.userTextColor
         };
 
@@ -20,7 +25,7 @@ function sendMessage() {
 
         db.ref('messages').push(messageData);
         messageInput.value = '';
-        messageInput.style.height = 'auto'; // Reset height after sending
+        messageInput.style.height = 'auto';
 
         clearQuote();
     }
@@ -67,10 +72,14 @@ function createMessage(message) {
     const contentContainer = document.createElement('div');
     contentContainer.className = 'message-content';
 
-    // Styling für eigene Nachrichten
-    if (message.username === window.username) {
-        contentContainer.style.fontFamily = message.fontFamily || window.userFontFamily || 'Arial';
-        contentContainer.style.color = message.textColor || window.userTextColor || '#000000';
+    // Formatierung anwenden, unabhängig ob eigene oder fremde Nachricht
+    if (message.username !== 'System') {
+        contentContainer.style.backgroundColor = message.color || '#f5f5f5';
+        contentContainer.style.fontFamily = message.fontFamily || 'Arial';
+        contentContainer.style.fontSize = message.fontSize || '14px';
+        contentContainer.style.fontWeight = message.fontWeight || 'normal';
+        contentContainer.style.fontStyle = message.fontStyle || 'normal';
+        contentContainer.style.color = message.textColor || '#000000';
     }
 
     // Zitat (falls vorhanden)
