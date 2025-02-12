@@ -1,0 +1,148 @@
+/* chat.css - Chat-spezifische Styles */
+
+/* Chat Container */
+#chat {
+    display: none;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Chat Header */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+
+.chat-header h2 {
+    margin: 0;
+    color: #333;
+}
+
+/* Nachrichten Bereich */
+#messages {
+    height: 400px;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #fff;
+}
+
+/* Einzelne Nachricht */
+.message {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.message.own {
+    margin-left: auto;
+    background-color: var(--user-color, #e3f2fd);
+}
+
+.message.other {
+    margin-right: auto;
+    background-color: #f5f5f5;
+}
+
+/* Nachricht Metadaten */
+.username {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.timestamp {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Zitat Funktion */
+.quote-button {
+    cursor: pointer;
+    color: #666;
+    margin-left: 10px;
+    font-size: 0.9em;
+    padding: 2px 5px;
+    border-radius: 3px;
+    transition: background-color 0.2s ease;
+}
+
+.quote-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.quoted-message {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    margin: 5px 0;
+    border-left: 3px solid #666;
+    font-size: 0.9em;
+    border-radius: 4px;
+}
+
+.quoted-username {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 3px;
+}
+
+/* Nachrichteneingabe Bereich */
+#messageArea {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #eee;
+}
+
+#messageInput {
+    flex-grow: 1;
+}
+
+#imageButton {
+    background-color: #2196F3;
+}
+
+#imageButton:hover {
+    background-color: #1976D2;
+}
+
+/* Bilder in Nachrichten */
+.chat-image {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.chat-image:hover {
+    opacity: 0.9;
+}
+
+/* Scrollbar Styling */
+#messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+#messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+#messages::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+#messages::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
