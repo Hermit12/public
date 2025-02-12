@@ -4,15 +4,14 @@ function sendMessage() {
     const message = messageInput.value.trim();
 
     if (message || currentQuote) {
-        const prefs = UserPreferences.loadUserPreferences();
         const messageData = {
-            username: username,
+            username: window.username,
             type: 'text',
             text: message,
             timestamp: Date.now(),
-            color: userColor,
-            fontFamily: prefs.fontFamily,
-            textColor: prefs.textColor
+            color: window.userColor,
+            fontFamily: window.userFontFamily,
+            textColor: window.userTextColor
         };
 
         if (currentQuote) {
@@ -21,6 +20,7 @@ function sendMessage() {
 
         db.ref('messages').push(messageData);
         messageInput.value = '';
+        messageInput.style.height = 'auto'; // Reset height after sending
 
         clearQuote();
     }
@@ -49,26 +49,29 @@ function quoteMessage(message) {
 // Nachrichten-Element erstellen
 function createMessage(message) {
     const messageElement = document.createElement('div');
-    messageElement.className = `message ${message.username === username ? 'own' : 'other'}`;
+    messageElement.className = `message ${message.username === window.username ? 'own' : message.username === 'System' ? 'system' : 'other'}`;
     messageElement.setAttribute('data-message-id', message.timestamp);
 
-    // Styling nur für eigene Nachrichten
-    if (message.username === username) {
-        messageElement.style.backgroundColor = message.color || '#f5f5f5';
-        messageElement.style.fontFamily = message.fontFamily || 'Arial';
-        messageElement.style.color = message.textColor || '#000000';
-    } else if (message.username === 'System') {
-        messageElement.style.backgroundColor = '#f8f9fa';
-        messageElement.style.fontSize = '0.9em';
-        messageElement.style.color = '#666';
-        messageElement.style.fontStyle = 'italic';
-    }
+    // Header mit Username
+    const messageHeader = document.createElement('div');
+    messageHeader.className = 'message-header';
 
-    // Username
     const usernameElement = document.createElement('div');
     usernameElement.className = 'username';
     usernameElement.textContent = message.username;
-    messageElement.appendChild(usernameElement);
+    messageHeader.appendChild(usernameElement);
+
+    messageElement.appendChild(messageHeader);
+
+    // Nachrichteninhalt Container
+    const contentContainer = document.createElement('div');
+    contentContainer.className = 'message-content';
+
+    // Styling für eigene Nachrichten
+    if (message.username === window.username) {
+        contentContainer.style.fontFamily = message.fontFamily || window.userFontFamily || 'Arial';
+        contentContainer.style.color = message.textColor || window.userTextColor || '#000000';
+    }
 
     // Zitat (falls vorhanden)
     if (message.quote) {
@@ -78,7 +81,7 @@ function createMessage(message) {
             <div class="quoted-username">${message.quote.username}</div>
             <div>${message.quote.text || '<img src="' + message.quote.imageData + '" class="chat-image" style="max-width: 100px; max-height: 100px;">'}</div>
         `;
-        messageElement.appendChild(quoteElement);
+        contentContainer.appendChild(quoteElement);
     }
 
     // Nachrichteninhalt
@@ -87,12 +90,15 @@ function createMessage(message) {
         img.src = message.imageData;
         img.className = 'chat-image';
         img.onclick = () => showImage(message.imageData);
-        messageElement.appendChild(img);
+        contentContainer.appendChild(img);
     } else {
         const textElement = document.createElement('div');
+        textElement.className = 'message-text';
         textElement.textContent = message.text;
-        messageElement.appendChild(textElement);
+        contentContainer.appendChild(textElement);
     }
+
+    messageElement.appendChild(contentContainer);
 
     // Zeitstempel und Zitieren-Button
     const timestampElement = document.createElement('div');
@@ -111,10 +117,59 @@ function createMessage(message) {
     return messageElement;
 }
 
-// Event Listener für Nachrichteneingabe per Enter
-document.getElementById('messageInput').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
+// Nachrichten laden
+function loadMessages() {
+    const messagesDiv = document.getElementById('messages');
+    messagesDiv.innerHTML = ''; // Clear existing messages
+
+    // Stelle sicher, dass der Chat-Container sichtbar ist
+    const chatContainer = document.getElementById('chat');
+    chatContainer.style.display = 'flex';
+
+    // Firebase Listener für neue Nachrichten
+    db.ref('messages').on('child_added', (snapshot) => {
+        const message = snapshot.val();
+        const messageElement = createMessage(message);
+        messagesDiv.appendChild(messageElement);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    });
+}
+
+// Chat Initialisierung
+document.addEventListener('DOMContentLoaded', () => {
+    const chatContainer = document.getElementById('chat');
+    const loginContainer = document.getElementById('login');
+    const messageInput = document.getElementById('messageInput');
+
+    // Korrekte Anzeige der Container
+    if (UserPreferences.getPreference('username')) {
+        loginContainer.style.display = 'none';
+        chatContainer.style.display = 'flex';
+        loadMessages();
+    } else {
+        loginContainer.style.display = 'block';
+        chatContainer.style.display = 'none';
+    }
+
+    // Event Listener für Nachrichteneingabe
+    if (messageInput) {
+        // Enter zum Senden (ohne Shift)
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Textarea Auto-resize
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+    }
+
+    // Chat Container auf display: none setzen wenn nicht eingeloggt
+    if (!UserPreferences.getPreference('username')) {
+        chatContainer.style.display = 'none';
     }
 });
