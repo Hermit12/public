@@ -27,9 +27,13 @@
         </div>
         <div id="messages"></div>
         <div id="messageArea">
-            <input type="text" id="messageInput" placeholder="Deine Nachricht...">
-            <button id="imageButton" onclick="handlePasteImage()">Bild</button>
-            <button onclick="sendMessage()">Senden</button>
+            <textarea id="messageInput" placeholder="Deine Nachricht..." rows="1"></textarea>
+            <button onclick="sendMessage()">
+                <img src="assets/send.svg" alt="Nachricht senden">
+            </button>
+            <button id="imageButton" onclick="handlePasteImage()">
+                <img src="assets/bild.svg" alt="Bild einfügen">
+            </button>
         </div>
     </div>
 
@@ -39,34 +43,75 @@
         <img class="modal-content" id="modalImage">
     </div>
 
+    <!-- Settings Modal -->
     <div id="settingsModal" class="modal">
         <div class="modal-content settings-content">
+            <span class="close">&times;</span>
             <h3>Einstellungen</h3>
+
+            <!-- Benutzername -->
             <div class="settings-group">
                 <label for="settingsUsername">Benutzername:</label>
                 <input type="text" id="settingsUsername">
             </div>
-            <div class="settings-group">
-                <label>Hintergrundfarbe:</label>
-                <div id="settingsColorPicker"></div>
-            </div>
-            <div class="settings-group">
-                <label>Textfarbe:</label>
-                <div id="textColorPicker"></div>
-            </div>
+
+            <!-- Schriftart -->
             <div class="settings-group">
                 <label for="fontSelect">Schriftart:</label>
                 <select id="fontSelect">
-                    <option value="Arial">Arial</option>
-                    <option value="Helvetica">Helvetica</option>
-                    <option value="Verdana">Verdana</option>
-                    <option value="Times New Roman">Times New Roman</option>
-                    <option value="Georgia">Georgia</option>
+                    <!-- Wird dynamisch befüllt -->
                 </select>
             </div>
+
+            <!-- Schriftgröße -->
+            <div class="settings-group">
+                <label for="fontSizeSelect">Schriftgröße:</label>
+                <select id="fontSizeSelect">
+                    <!-- Wird dynamisch befüllt -->
+                </select>
+            </div>
+
+            <!-- Schriftstil -->
+            <div class="settings-group">
+                <label>Schriftstil:</label>
+                <div class="font-style-controls">
+                    <button type="button" id="boldButton" class="style-button">
+                        <strong>B</strong>
+                    </button>
+                    <button type="button" id="italicButton" class="style-button">
+                        <em>K</em>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hintergrundfarbe -->
+            <div class="settings-group">
+                <label>Hintergrundfarbe:</label>
+                <div id="settingsColorPicker" class="color-picker">
+                    <!-- Wird dynamisch befüllt -->
+                </div>
+            </div>
+
+            <!-- Textfarbe -->
+            <div class="settings-group">
+                <label>Textfarbe:</label>
+                <div id="textColorPicker" class="color-picker">
+                    <!-- Wird dynamisch befüllt -->
+                </div>
+            </div>
+
+            <!-- Vorschau -->
+            <div class="settings-group">
+                <label>Vorschau:</label>
+                <div id="previewBox" class="preview-box">
+                    <div id="previewText">Hallo! Dies ist eine Vorschau deiner Nachricht.</div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
             <div class="settings-buttons">
-                <button onclick="saveSettings()">Speichern</button>
-                <button onclick="closeSettingsModal()">Abbrechen</button>
+                <button onclick="saveSettings()" class="primary-button">Speichern</button>
+                <button onclick="closeSettingsModal()" class="secondary-button">Abbrechen</button>
             </div>
         </div>
     </div>
