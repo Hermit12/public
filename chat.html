@@ -101,7 +101,6 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -116,9 +115,17 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-        const storage = firebase.storage();
 
         let username = '';
+
+        function blobToBase64(blob) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+        }
 
         async function handlePasteImage() {
             try {
@@ -138,15 +145,12 @@
         async function uploadAndSendImage(blob) {
             try {
                 const compressedBlob = await compressImage(blob);
-                const filename = `images/${Date.now()}_${Math.random().toString(36).substring(7)}`;
-                const storageRef = storage.ref(filename);
-                await storageRef.put(compressedBlob);
-                const imageUrl = await storageRef.getDownloadURL();
+                const base64String = await blobToBase64(compressedBlob);
                 
                 db.ref('messages').push({
                     username: username,
                     type: 'image',
-                    imageUrl: imageUrl,
+                    imageData: base64String,
                     timestamp: Date.now()
                 });
             } catch (error) {
@@ -195,11 +199,6 @@
                 const updates = {};
                 snapshot.forEach(child => {
                     updates[child.key] = null;
-                    if (child.val().type === 'image') {
-                        const imageUrl = child.val().imageUrl;
-                        const imageRef = storage.refFromURL(imageUrl);
-                        imageRef.delete().catch(console.error);
-                    }
                 });
                 db.ref('messages').update(updates);
             });
@@ -228,6 +227,7 @@
                 
                 db.ref('messages').push({
                     username: 'System',
+                    type: 'text',
                     text: `${username} ist dem Chat beigetreten`,
                     timestamp: Date.now()
                 });
@@ -290,9 +290,9 @@
                 
                 if (message.type === 'image') {
                     const img = document.createElement('img');
-                    img.src = message.imageUrl;
+                    img.src = message.imageData;  // Benutzt direkt den Base64-String
                     img.className = 'chat-image';
-                    img.onclick = () => window.open(message.imageUrl, '_blank');
+                    img.onclick = () => window.open(message.imageData, '_blank');
                     messageElement.appendChild(img);
                 } else {
                     const textElement = document.createElement('div');
