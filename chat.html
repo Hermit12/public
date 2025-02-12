@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Chat</title>
+    <title>Chat mit Bildupload</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -46,10 +46,23 @@
             font-size: 0.8em;
             color: #666;
         }
+        .chat-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .chat-image:hover {
+            opacity: 0.9;
+        }
+        #messageArea {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
         input[type="text"] {
             padding: 10px;
-            width: 70%;
-            margin-right: 10px;
+            flex-grow: 1;
         }
         button {
             padding: 10px 20px;
@@ -61,9 +74,11 @@
         button:hover {
             background-color: #45a049;
         }
-        #messageArea {
-            display: flex;
-            gap: 10px;
+        #imageButton {
+            background-color: #2196F3;
+        }
+        #imageButton:hover {
+            background-color: #1976D2;
         }
     </style>
 </head>
@@ -79,16 +94,16 @@
         <div id="messages"></div>
         <div id="messageArea">
             <input type="text" id="messageInput" placeholder="Deine Nachricht...">
+            <button id="imageButton" onclick="handlePasteImage()">Bild</button>
             <button onclick="sendMessage()">Senden</button>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 
     <script>
-        // Firebase Konfiguration
         const firebaseConfig = {
             apiKey: "AIzaSyAEJCuP5Z1S-g0VoJzzhV50R-oeuKLa58M",
             authDomain: "chat-8509a.firebaseapp.com",
@@ -99,13 +114,111 @@
             appId: "1:183026187271:web:fb14822796e08dbb417ea2"
         };
 
-        // Firebase initialisieren
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const storage = firebase.storage();
 
         let username = '';
 
-        // Login Funktion
+        async function handlePasteImage() {
+            try {
+                const clipboard = await navigator.clipboard.read();
+                for (const item of clipboard) {
+                    if (item.types.includes('image/png') || item.types.includes('image/jpeg')) {
+                        const blob = await item.getType(item.types[0]);
+                        await uploadAndSendImage(blob);
+                    }
+                }
+            } catch (err) {
+                alert('Bitte kopiere zuerst ein Bild in die Zwischenablage');
+                console.error('Fehler beim Bildupload:', err);
+            }
+        }
+
+        async function uploadAndSendImage(blob) {
+            try {
+                const compressedBlob = await compressImage(blob);
+                const filename = `images/${Date.now()}_${Math.random().toString(36).substring(7)}`;
+                const storageRef = storage.ref(filename);
+                await storageRef.put(compressedBlob);
+                const imageUrl = await storageRef.getDownloadURL();
+                
+                db.ref('messages').push({
+                    username: username,
+                    type: 'image',
+                    imageUrl: imageUrl,
+                    timestamp: Date.now()
+                });
+            } catch (error) {
+                console.error('Fehler beim Bildupload:', error);
+                alert('Fehler beim Hochladen des Bildes');
+            }
+        }
+
+        async function compressImage(blob) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.src = URL.createObjectURL(blob);
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800;
+                    const MAX_HEIGHT = 800;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    canvas.toBlob(resolve, 'image/jpeg', 0.7);
+                };
+            });
+        }
+
+        function cleanupOldMessages() {
+            const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
+            
+            db.ref('messages').orderByChild('timestamp').endAt(oneDayAgo).once('value', (snapshot) => {
+                const updates = {};
+                snapshot.forEach(child => {
+                    updates[child.key] = null;
+                    if (child.val().type === 'image') {
+                        const imageUrl = child.val().imageUrl;
+                        const imageRef = storage.refFromURL(imageUrl);
+                        imageRef.delete().catch(console.error);
+                    }
+                });
+                db.ref('messages').update(updates);
+            });
+        }
+
+        const now = new Date();
+        const night = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate() + 1,
+            0, 0, 0
+        );
+        const msToMidnight = night.getTime() - now.getTime();
+        
+        setTimeout(() => {
+            cleanupOldMessages();
+            setInterval(cleanupOldMessages, 24 * 60 * 60 * 1000);
+        }, msToMidnight);
+
         function login() {
             username = document.getElementById('username').value.trim();
             if(username) {
@@ -113,7 +226,6 @@
                 document.getElementById('chat').style.display = 'block';
                 loadMessages();
                 
-                // Begrüßungsnachricht senden
                 db.ref('messages').push({
                     username: 'System',
                     text: `${username} ist dem Chat beigetreten`,
@@ -122,21 +234,32 @@
             }
         }
 
-        // Enter-Taste für Login
         document.getElementById('username').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 login();
             }
         });
 
-        // Enter-Taste für Nachricht senden
         document.getElementById('messageInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 sendMessage();
             }
         });
 
-        // Nachrichten senden
+        document.addEventListener('paste', async (e) => {
+            if (document.getElementById('chat').style.display === 'block') {
+                const items = e.clipboardData.items;
+                for (const item of items) {
+                    if (item.type.indexOf('image') !== -1) {
+                        e.preventDefault();
+                        const blob = item.getAsFile();
+                        await uploadAndSendImage(blob);
+                        break;
+                    }
+                }
+            }
+        });
+
         function sendMessage() {
             const messageInput = document.getElementById('messageInput');
             const message = messageInput.value.trim();
@@ -144,6 +267,7 @@
             if(message) {
                 db.ref('messages').push({
                     username: username,
+                    type: 'text',
                     text: message,
                     timestamp: Date.now()
                 });
@@ -151,7 +275,6 @@
             }
         }
 
-        // Nachrichten laden
         function loadMessages() {
             const messagesDiv = document.getElementById('messages');
             
@@ -163,16 +286,23 @@
                 const usernameElement = document.createElement('div');
                 usernameElement.className = 'username';
                 usernameElement.textContent = message.username;
+                messageElement.appendChild(usernameElement);
                 
-                const textElement = document.createElement('div');
-                textElement.textContent = message.text;
+                if (message.type === 'image') {
+                    const img = document.createElement('img');
+                    img.src = message.imageUrl;
+                    img.className = 'chat-image';
+                    img.onclick = () => window.open(message.imageUrl, '_blank');
+                    messageElement.appendChild(img);
+                } else {
+                    const textElement = document.createElement('div');
+                    textElement.textContent = message.text;
+                    messageElement.appendChild(textElement);
+                }
                 
                 const timestampElement = document.createElement('div');
                 timestampElement.className = 'timestamp';
                 timestampElement.textContent = new Date(message.timestamp).toLocaleString();
-                
-                messageElement.appendChild(usernameElement);
-                messageElement.appendChild(textElement);
                 messageElement.appendChild(timestampElement);
                 
                 messagesDiv.appendChild(messageElement);
