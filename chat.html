@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat mit Bildupload</title>
     <style>
+        /* Bisherige Styles bleiben gleich */
         body {
             font-family: Arial, sans-serif;
             max-width: 800px;
@@ -80,6 +81,41 @@
         #imageButton:hover {
             background-color: #1976D2;
         }
+
+        /* Neue Styles für den Modal Dialog */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 1000;
+            overflow: auto;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90vh;
+            margin-top: 40px;
+        }
+
+        .close {
+            position: absolute;
+            right: 35px;
+            top: 15px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #bbb;
+        }
     </style>
 </head>
 <body>
@@ -97,6 +133,12 @@
             <button id="imageButton" onclick="handlePasteImage()">Bild</button>
             <button onclick="sendMessage()">Senden</button>
         </div>
+    </div>
+
+    <!-- Neuer Modal Dialog für Bildanzeige -->
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -117,6 +159,33 @@
         const db = firebase.database();
 
         let username = '';
+
+        // Modal Funktionen
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const closeButton = document.getElementsByClassName('close')[0];
+
+        function showImage(src) {
+            modal.style.display = 'block';
+            modalImg.src = src;
+        }
+
+        closeButton.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        modal.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Escape-Taste schließt das Modal
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+            }
+        });
 
         function blobToBase64(blob) {
             return new Promise((resolve, reject) => {
@@ -290,9 +359,9 @@
                 
                 if (message.type === 'image') {
                     const img = document.createElement('img');
-                    img.src = message.imageData;  // Benutzt direkt den Base64-String
+                    img.src = message.imageData;
                     img.className = 'chat-image';
-                    img.onclick = () => window.open(message.imageData, '_blank');
+                    img.onclick = () => showImage(message.imageData);
                     messageElement.appendChild(img);
                 } else {
                     const textElement = document.createElement('div');
