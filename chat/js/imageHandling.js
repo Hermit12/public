@@ -29,21 +29,75 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-// Bild aus Zwischenablage verarbeiten
 async function handlePasteImage() {
-    try {
-        const clipboard = await navigator.clipboard.read();
-        for (const item of clipboard) {
-            if (item.types.includes('image/png') || item.types.includes('image/jpeg')) {
-                const blob = await item.getType(item.types[0]);
-                await uploadAndSendImage(blob);
+    // Öffne einen File-Dialog wenn der Button geklickt wird
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.style.display = 'none';
+    document.body.appendChild(input);
+
+    input.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            await uploadAndSendImage(file);
+        }
+        document.body.removeChild(input);
+    };
+
+    input.click();
+}
+
+// Event Listener für Paste-Events (für Copy & Paste)
+document.addEventListener('paste', async (e) => {
+    if (document.getElementById('chat').style.display === 'none') return;
+
+    // Behandle Bilder aus der Zwischenablage
+    if (e.clipboardData && e.clipboardData.items) {
+        const items = e.clipboardData.items;
+
+        for (const item of items) {
+            if (item.type.indexOf('image') !== -1) {
+                e.preventDefault();
+                const file = item.getAsFile();
+                if (file) {
+                    await uploadAndSendImage(file);
+                    break;
+                }
             }
         }
-    } catch (err) {
-        alert('Bitte kopiere zuerst ein Bild in die Zwischenablage');
-        console.error('Fehler beim Bildupload:', err);
     }
-}
+});
+
+// Drag & Drop Support
+document.addEventListener('dragover', (e) => {
+    e.preventDefault();
+});
+
+document.addEventListener('drop', async (e) => {
+    e.preventDefault();
+
+    if (document.getElementById('chat').style.display === 'none') return;
+
+    if (e.dataTransfer.items) {
+        for (const item of e.dataTransfer.items) {
+            if (item.type.indexOf('image') !== -1) {
+                const file = item.getAsFile();
+                if (file) {
+                    await uploadAndSendImage(file);
+                    break;
+                }
+            }
+        }
+    } else if (e.dataTransfer.files) {
+        for (const file of e.dataTransfer.files) {
+            if (file.type.indexOf('image') !== -1) {
+                await uploadAndSendImage(file);
+                break;
+            }
+        }
+    }
+});
 
 // Bild hochladen und senden
 async function uploadAndSendImage(blob) {
@@ -52,11 +106,11 @@ async function uploadAndSendImage(blob) {
         const base64String = await blobToBase64(compressedBlob);
 
         const messageData = {
-            username: username,
+            username: window.username,
             type: 'image',
             imageData: base64String,
             timestamp: Date.now(),
-            color: userColor
+            color: window.userColor
         };
 
         if (currentQuote) {
@@ -64,7 +118,7 @@ async function uploadAndSendImage(blob) {
             clearQuote();
         }
 
-        db.ref('messages').push(messageData);
+        await db.ref('messages').push(messageData);
     } catch (error) {
         console.error('Fehler beim Bildupload:', error);
         alert('Fehler beim Hochladen des Bildes');
@@ -114,18 +168,3 @@ async function compressImage(blob) {
         };
     });
 }
-
-// Event Listener für Bild einfügen
-document.addEventListener('paste', async (e) => {
-    if (document.getElementById('chat').style.display === 'block') {
-        const items = e.clipboardData.items;
-        for (const item of items) {
-            if (item.type.indexOf('image') !== -1) {
-                e.preventDefault();
-                const blob = item.getAsFile();
-                await uploadAndSendImage(blob);
-                break;
-            }
-        }
-    }
-});

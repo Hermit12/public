@@ -126,12 +126,36 @@ function loadMessages() {
     const chatContainer = document.getElementById('chat');
     chatContainer.style.display = 'flex';
 
-    // Firebase Listener für neue Nachrichten
+    // Hole alle Nachrichten auf einmal
+    db.ref('messages').once('value', (snapshot) => {
+        const messages = [];
+        snapshot.forEach((childSnapshot) => {
+            messages.push(childSnapshot.val());
+        });
+
+        // Sortiere Nachrichten nach Zeitstempel
+        messages.sort((a, b) => a.timestamp - b.timestamp);
+
+        // Füge alle Nachrichten hinzu
+        messages.forEach(message => {
+            const messageElement = createMessage(message);
+            messagesDiv.appendChild(messageElement);
+        });
+
+        // Scrolle zum Ende nach dem Laden aller Nachrichten
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    });
+
+    // Listener für neue Nachrichten
     db.ref('messages').on('child_added', (snapshot) => {
         const message = snapshot.val();
-        const messageElement = createMessage(message);
-        messagesDiv.appendChild(messageElement);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        // Prüfe ob die Nachricht bereits angezeigt wird
+        const existingMessage = document.querySelector(`[data-message-id="${message.timestamp}"]`);
+        if (!existingMessage) {
+            const messageElement = createMessage(message);
+            messagesDiv.appendChild(messageElement);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
     });
 }
 
