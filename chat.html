@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        #login {
+            text-align: center;
+            margin-top: 50px;
+        }
+        #chat {
+            display: none;
+        }
+        #messages {
+            height: 400px;
+            border: 1px solid #ccc;
+            margin: 20px 0;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .message.own {
+            background-color: #e3f2fd;
+            margin-left: 20%;
+        }
+        .message.other {
+            background-color: #f5f5f5;
+            margin-right: 20%;
+        }
+        .username {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .timestamp {
+            font-size: 0.8em;
+            color: #666;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 70%;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #messageArea {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="login">
+        <h2>Chat Anmeldung</h2>
+        <input type="text" id="username" placeholder="Dein Name">
+        <button onclick="login()">Einloggen</button>
+    </div>
+
+    <div id="chat">
+        <h2>Chat</h2>
+        <div id="messages"></div>
+        <div id="messageArea">
+            <input type="text" id="messageInput" placeholder="Deine Nachricht...">
+            <button onclick="sendMessage()">Senden</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        // Firebase Konfiguration - HIER MÜSSEN DEINE DATEN REIN
+        const firebaseConfig = {
+            apiKey: "DEIN-API-KEY",
+            authDomain: "DEINE-APP.firebaseapp.com",
+            databaseURL: "https://DEINE-APP.firebaseio.com",
+            projectId: "DEIN-PROJEKT-ID"
+        };
+
+        // Firebase initialisieren
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let username = '';
+
+        // Login Funktion
+        function login() {
+            username = document.getElementById('username').value.trim();
+            if(username) {
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('chat').style.display = 'block';
+                loadMessages();
+                
+                // Begrüßungsnachricht senden
+                db.ref('messages').push({
+                    username: 'System',
+                    text: `${username} ist dem Chat beigetreten`,
+                    timestamp: Date.now()
+                });
+            }
+        }
+
+        // Enter-Taste für Login
+        document.getElementById('username').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+
+        // Enter-Taste für Nachricht senden
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Nachrichten senden
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            
+            if(message) {
+                db.ref('messages').push({
+                    username: username,
+                    text: message,
+                    timestamp: Date.now()
+                });
+                messageInput.value = '';
+            }
+        }
+
+        // Nachrichten laden
+        function loadMessages() {
+            const messagesDiv = document.getElementById('messages');
+            
+            db.ref('messages').on('child_added', (snapshot) => {
+                const message = snapshot.val();
+                const messageElement = document.createElement('div');
+                messageElement.className = `message ${message.username === username ? 'own' : 'other'}`;
+                
+                const usernameElement = document.createElement('div');
+                usernameElement.className = 'username';
+                usernameElement.textContent = message.username;
+                
+                const textElement = document.createElement('div');
+                textElement.textContent = message.text;
+                
+                const timestampElement = document.createElement('div');
+                timestampElement.className = 'timestamp';
+                timestampElement.textContent = new Date(message.timestamp).toLocaleString();
+                
+                messageElement.appendChild(usernameElement);
+                messageElement.appendChild(textElement);
+                messageElement.appendChild(timestampElement);
+                
+                messagesDiv.appendChild(messageElement);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            });
+        }
+    </script>
+</body>
+</html>
