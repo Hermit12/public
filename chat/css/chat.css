@@ -248,6 +248,60 @@ body {
     background-color: #1976D2;
 }
 
+#svgButton {
+    padding: 8px 15px;
+    min-width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    background-color: #2196F3;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#svgButton img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+}
+
+#svgButton:hover {
+    background-color: #1976D2;
+}
+
+#pasteButton {
+    padding: 8px 15px;
+    min-width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    background-color: #2196F3;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#pasteButton img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+}
+
+#pasteButton:hover {
+    background-color: #1976D2;
+}
+
 /* Bilder in Nachrichten */
 .chat-image {
     max-width: 200px;
