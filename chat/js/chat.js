@@ -20,7 +20,17 @@ function sendMessage() {
         };
 
         if (currentQuote) {
-            messageData.quote = currentQuote;
+            // Prüfe, ob es ein zitiertes GIF/Bild ist
+            if (currentQuote.imageData) {
+                messageData.quote = {
+                    username: currentQuote.username,
+                    text: '', // Leerer Text für Bilder/GIFs
+                    imageData: currentQuote.imageData,
+                    type: 'image'
+                };
+            } else {
+                messageData.quote = currentQuote;
+            }
         }
 
         db.ref('messages').push(messageData);
@@ -41,8 +51,9 @@ function clearQuote() {
 function quoteMessage(message) {
     currentQuote = {
         username: message.username,
-        text: message.text,
-        imageData: message.type === 'image' ? message.imageData : null
+        text: message.text || '',
+        imageData: message.type === 'image' ? message.imageData : null,
+        type: message.type
     };
 
     const messageInput = document.getElementById('messageInput');
