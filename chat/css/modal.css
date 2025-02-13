@@ -95,21 +95,88 @@
 }
 
 /* Bild Modal Spezifisch */
+/* Basis Modal - Login etc. */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    overflow: auto;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Standard Modal Content */
+.modal-content {
+    background-color: #fff;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    animation: slideIn 0.3s ease;
+}
+
+/* Spezielles Styling für das Image Modal */
+#imageModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    cursor: pointer;
+}
+
 #imageModal .modal-content {
-    text-align: center;
-    max-width: 90%;
     background: transparent;
     box-shadow: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: default;
 }
 
 #imageModal img {
-    max-width: 90%;
-    max-height: 90vh;
+    max-width: 90vw;
+    max-height: 85vh;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     object-fit: contain;
-    width: auto;
-    height: auto;
+}
+
+/* Close Button Styling */
+.close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+#imageModal .close {
+    position: fixed;
+    right: 25px;
+    top: 25px;
+    color: white;
+    font-size: 35px;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    z-index: 1001;
 }
 
 /* Animationen */
@@ -151,4 +218,92 @@
     .settings-buttons button {
         width: 100%;
     }
+}
+
+<style>
+.giphy-content {
+    max-width: 800px;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.giphy-search {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.giphy-search input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.giphy-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.giphy-item {
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.giphy-item:hover {
+    transform: scale(1.05);
+}
+
+.giphy-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.giphy-attribution {
+    text-align: right;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #666;
+}
+
+/* Anpassung des GIF-Buttons im Chat */
+#giphyButton {
+    padding: 8px 15px;
+    min-width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    background-color: #2196F3;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#giphyButton img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+}
+
+#giphyButton:hover {
+    background-color: #1976D2;
+}
+</style>
+
+#gifProgress {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
