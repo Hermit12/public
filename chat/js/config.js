@@ -19,3 +19,5 @@ window.userColor = '';
 window.userFontFamily = 'Arial';
 window.userTextColor = '#000000';
 let currentQuote = null;
+
+const GIPHY_API_KEY = "DQ5TiEyM9WkTopHpex7NIQrj9eGiFgQM";
