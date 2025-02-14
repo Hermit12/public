@@ -140,7 +140,7 @@ function createMessage(message) {
 // Nachrichten laden
 function loadMessages() {
     const messagesDiv = document.getElementById('messages');
-    messagesDiv.innerHTML = ''; // Clear existing messages
+    messagesDiv.innerHTML = '';
 
     // Stelle sicher, dass der Chat-Container sichtbar ist
     const chatContainer = document.getElementById('chat');
@@ -171,10 +171,23 @@ function loadMessages() {
         const message = snapshot.val();
         // Prüfe ob die Nachricht bereits angezeigt wird
         const existingMessage = document.querySelector(`[data-message-id="${message.timestamp}"]`);
+        
         if (!existingMessage) {
             const messageElement = createMessage(message);
             messagesDiv.appendChild(messageElement);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            // Wenn es eine neue Nachricht von jemand anderem ist
+            if (message.username !== window.username) {
+                // Prüfe ob wir in Electron sind
+                if (window.require) {
+                    const { ipcRenderer } = window.require('electron');
+                    ipcRenderer.send('new-message', {
+                        username: message.username,
+                        message: message.type === 'text' ? message.text : '[Bild/GIF]'
+                    });
+                }
+            }
         }
     });
 }
