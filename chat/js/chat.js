@@ -137,6 +137,71 @@ function createMessage(message) {
     return messageElement;
 }
 
+// Speichert den Zeitpunkt der letzten bekannten Nachricht
+let lastKnownMessageTime = 0;
+
+// Benachrichtigungsfunktion für neue Nachrichten
+function notifyNewMessage(message) {
+    // Aktualisiere den Zeitstempel der letzten bekannten Nachricht
+    if (message.timestamp > lastKnownMessageTime) {
+        lastKnownMessageTime = message.timestamp;
+    }
+    
+    // Nutze die elektronAPI, falls verfügbar (in Electron)
+    if (window.electronAPI && window.electronAPI.notifyNewMessage) {
+        try {
+            console.log('Sende neue Nachricht an Hauptprozess über elektronAPI');
+            window.electronAPI.notifyNewMessage({
+                username: message.username,
+                message: message.type === 'text' ? message.text : '[Bild/GIF]'
+            });
+        } catch (error) {
+            console.error('Fehler beim Senden der Nachricht an Hauptprozess:', error);
+        }
+    } else {
+        console.log('elektronAPI nicht verfügbar - vermutlich nicht in Electron-Umgebung');
+    }
+}
+
+// Prüfe auf neue Nachrichten (wird im Hintergrund aufgerufen)
+async function checkForNewMessages(lastCheckedTime) {
+    console.log(`Prüfe auf neue Nachrichten seit ${new Date(lastCheckedTime).toLocaleString()}`);
+    
+    try {
+        // Hole nur neuere Nachrichten
+        const snapshot = await db.ref('messages')
+            .orderByChild('timestamp')
+            .startAt(lastCheckedTime)
+            .once('value');
+        
+        const newMessages = [];
+        snapshot.forEach(childSnapshot => {
+            const message = childSnapshot.val();
+            // Filtere eigene Nachrichten heraus
+            if (message.username !== window.username) {
+                newMessages.push(message);
+            }
+        });
+        
+        console.log(`${newMessages.length} neue Nachrichten gefunden`);
+        
+        if (newMessages.length > 0) {
+            // Melde neue Nachrichten an den Hauptprozess
+            if (window.electronAPI && window.electronAPI.reportNewMessages) {
+                window.electronAPI.reportNewMessages({
+                    hasNewMessages: true,
+                    count: newMessages.length
+                });
+            }
+        }
+        
+        return newMessages.length > 0;
+    } catch (error) {
+        console.error('Fehler beim Prüfen auf neue Nachrichten:', error);
+        return false;
+    }
+}
+
 // Nachrichten laden
 function loadMessages() {
     const messagesDiv = document.getElementById('messages');
@@ -150,7 +215,13 @@ function loadMessages() {
     db.ref('messages').once('value', (snapshot) => {
         const messages = [];
         snapshot.forEach((childSnapshot) => {
-            messages.push(childSnapshot.val());
+            const message = childSnapshot.val();
+            messages.push(message);
+            
+            // Aktualisiere den Zeitstempel der letzten bekannten Nachricht
+            if (message.timestamp > lastKnownMessageTime) {
+                lastKnownMessageTime = message.timestamp;
+            }
         });
 
         // Sortiere Nachrichten nach Zeitstempel
@@ -164,9 +235,11 @@ function loadMessages() {
 
         // Scrolle zum Ende nach dem Laden aller Nachrichten
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        
+        console.log(`Alle Nachrichten geladen, letzte Nachricht vom ${new Date(lastKnownMessageTime).toLocaleString()}`);
     });
 
-    // Listener für neue Nachrichten
+    // Höre auf neue Nachrichten
     db.ref('messages').on('child_added', (snapshot) => {
         const message = snapshot.val();
         // Prüfe ob die Nachricht bereits angezeigt wird
@@ -176,17 +249,15 @@ function loadMessages() {
             const messageElement = createMessage(message);
             messagesDiv.appendChild(messageElement);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
+    
             // Wenn es eine neue Nachricht von jemand anderem ist
             if (message.username !== window.username) {
-                // Prüfe ob wir in Electron sind
-                if (window.require) {
-                    const { ipcRenderer } = window.require('electron');
-                    ipcRenderer.send('new-message', {
-                        username: message.username,
-                        message: message.type === 'text' ? message.text : '[Bild/GIF]'
-                    });
-                }
+                notifyNewMessage(message);
+            }
+            
+            // Aktualisiere den Zeitstempel der letzten bekannten Nachricht
+            if (message.timestamp > lastKnownMessageTime) {
+                lastKnownMessageTime = message.timestamp;
             }
         }
     });
@@ -228,5 +299,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // Chat Container auf display: none setzen wenn nicht eingeloggt
     if (!UserPreferences.getPreference('username')) {
         chatContainer.style.display = 'none';
+    }
+
+    // Hintergrunddienst für Nachrichtenprüfung
+    document.addEventListener('check-for-new-messages', (event) => {
+        console.log('Prüfe auf neue Nachrichten im Hintergrund', event.detail);
+        checkForNewMessages(event.detail.lastCheckedTime);
+    });
+
+    // Test-Button für IPC-Kommunikation hinzufügen (nur im Debug-Modus)
+    if (window.electronAPI && window.electronAPI.testIPC && typeof isDebug !== 'undefined' && isDebug) {
+        const testButton = document.createElement('button');
+        testButton.textContent = 'Test IPC';
+        testButton.style.position = 'fixed';
+        testButton.style.bottom = '10px';
+        testButton.style.right = '10px';
+        testButton.style.zIndex = '9999';
+        testButton.onclick = () => {
+            console.log('Test IPC-Kommunikation');
+            window.electronAPI.testIPC();
+        };
+        document.body.appendChild(testButton);
     }
 });
