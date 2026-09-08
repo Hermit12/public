@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Philip Swoboda</title>
-<meta name="description" content="Philip Swoboda — mechanical engineer and programmer from Vienna.">
+<meta name="description" content="Philip Swoboda — structural steel analysis and plant engineering in Vienna.">
 <meta name="theme-color" content="#0b0e14" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)">
 <meta property="og:title" content="Philip Swoboda">
-<meta property="og:description" content="Mechanical engineer and programmer from Vienna.">
+<meta property="og:description" content="Structural steel analysis and plant engineering in Vienna.">
 <meta property="og:type" content="profile">
 <meta property="og:url" content="https://philip-swoboda.at/">
 <link rel="canonical" href="https://philip-swoboda.at/">
@@ -16,16 +16,14 @@
 <style>
 :root{
   --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "DejaVu Sans Mono", monospace;
-  --bg:#0b0e14; --panel:#0f131b; --face:#11161f; --line:#1e2530;
-  --fg:#c8ccd4; --dim:#6b7484; --ink:#79c0ff; --node:#79c0ff;
-  --grid:#1b2330; --hatch:#232c3a; --code:#7ee787;
+  --bg:#0b0e14; --panel:#0f131b; --line:#1e2530;
+  --fg:#c8ccd4; --dim:#6b7484; --ink:#79c0ff; --code:#7ee787;
   --key:#d2a8ff; --val:#7ee787; --punct:#5c6672; --link:#79c0ff;
 }
 @media (prefers-color-scheme: light){
   :root{
-    --bg:#fbfbf9; --panel:#ffffff; --face:#fdfdfb; --line:#e2e2dc;
-    --fg:#2b2f36; --dim:#7b8290; --ink:#0550ae; --node:#0550ae;
-    --grid:#eeeeea; --hatch:#dfe3ea; --code:#1a7f37;
+    --bg:#fbfbf9; --panel:#ffffff; --line:#e2e2dc;
+    --fg:#2b2f36; --dim:#7b8290; --ink:#0550ae; --code:#1a7f37;
     --key:#8250df; --val:#1a7f37; --punct:#8b929e; --link:#0550ae;
   }
 }
@@ -44,10 +42,17 @@ a:focus-visible{outline:2px solid var(--link);outline-offset:3px;border-radius:2
 
 .prompt{color:var(--dim);font-size:.875rem;margin:0 0 1.5rem}
 .prompt .u{color:var(--code)} .prompt .h{color:var(--ink)} .prompt .c{color:var(--fg)}
-.cursor{display:inline-block;width:.55em;height:1em;background:var(--fg);
-  vertical-align:-.15em;margin-left:.35em;animation:blink 1.15s steps(1,end) infinite}
+button.cursor{
+  display:inline-block;width:.55em;height:1em;padding:0;border:0;
+  background:var(--fg);font:inherit;cursor:pointer;
+  vertical-align:-.15em;margin-left:.35em;
+  animation:blink 1.15s steps(1,end) infinite}
+button.cursor:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+/* unsichtbar groesseres Tap-Ziel, ohne die Optik zu aendern */
+button.cursor{position:relative}
+button.cursor::after{content:"";position:absolute;inset:-14px -16px}
 @keyframes blink{50%{opacity:0}}
-@media (prefers-reduced-motion:reduce){.cursor{animation:none;opacity:.6}}
+@media (prefers-reduced-motion:reduce){button.cursor{animation:none;opacity:.6}}
 
 h1{font-size:1.75rem;font-weight:600;letter-spacing:-.02em;margin:0;line-height:1.25}
 .tagline{color:var(--dim);margin:.4rem 0 0;font-size:.9375rem}
@@ -75,16 +80,33 @@ figcaption{color:var(--dim);font-size:.8125rem;margin-top:.6rem;max-width:20rem}
 footer{margin:3.5rem 0 0;padding-top:1.25rem;border-top:1px solid var(--line);
   color:var(--punct);font-size:.8125rem}
 footer p{margin:0}
+footer .hint{margin-top:.45rem}
 
+/* terminal mode */
+body.term{padding-bottom:5rem}
+body.term main{caret-color:var(--code);outline:0}
+body.term button.cursor{display:none}
+#hud{
+  position:fixed;left:0;right:0;bottom:0;z-index:9;
+  display:flex;gap:.5ch 2ch;align-items:baseline;flex-wrap:wrap;
+  padding:.6rem clamp(1.25rem,5vw,2rem);
+  background:var(--panel);border-top:1px solid var(--line);
+  color:var(--dim);font-size:.8125rem;line-height:1.6}
+#hud[hidden]{display:none}
+#hud .live{color:var(--code)}
+#hud kbd{font:inherit;color:var(--fg);border:1px solid var(--line);
+  border-radius:3px;padding:0 .5ch}
+#hud button{font:inherit;color:var(--link);background:none;border:0;padding:0;
+  border-bottom:1px solid currentColor;cursor:pointer}
 </style>
 </head>
 <body>
 <main>
 
-  <p class="prompt"><span class="u">philip</span>@<span class="h">philip-swoboda.at</span>:~<span class="c">$</span> whoami<span class="cursor" aria-hidden="true"></span></p>
+  <p class="prompt"><span class="u">philip</span>@<span class="h">philip-swoboda.at</span>:~<span class="c">$</span> whoami<button type="button" class="cursor" title="Click to edit this page like a terminal" aria-label="Enter terminal mode"></button></p>
 
   <h1>Philip Swoboda</h1>
-  <p class="tagline">mechanical engineer &middot; programmer &middot; vienna, at</p>
+  <p class="tagline">steel structure analysis &middot; plant engineering &middot; vienna, at</p>
 
   <figure>
     <div class="frame">
@@ -94,9 +116,9 @@ footer p{margin:0}
   </figure>
 
   <div class="about">
-    <p><span class="c">//</span> mechanical engineer by training, programmer by habit.</p>
-    <p><span class="c">//</span> i build the tools that sit between the two &mdash; structural</p>
-    <p><span class="c">//</span> calculations, CAD automation, and small things that save hours.</p>
+    <p><span class="c">//</span> structural analysis for steel construction, working in plant</p>
+    <p><span class="c">//</span> engineering. programmer by habit: EC3 checks, CAD automation,</p>
+    <p><span class="c">//</span> and small tools that save hours.</p>
   </div>
 
   <section class="links" aria-label="Links">
@@ -110,8 +132,63 @@ footer p{margin:0}
 
   <footer>
     <p>Seiteninhaber: Philip Swoboda, Wien &mdash; Offenlegung gem. &sect;5 ECG</p>
+    <p class="hint">// click the blinking cursor to take over the page</p>
   </footer>
 
 </main>
+
+<div id="hud" hidden>
+  <span class="live">[terminal mode]</span>
+  <span>select &middot; copy &middot; delete &middot; type &mdash; nothing is saved</span>
+  <span><kbd>esc</kbd> or <button type="button" id="reset">reset</button> to restore</span>
+</div>
+
+<script>
+(function () {
+  var main  = document.querySelector('main');
+  var hud   = document.getElementById('hud');
+  var reset = document.getElementById('reset');
+  if (!main || !hud || !reset) return;
+
+  var snapshot = main.innerHTML;
+  var live = false;
+
+  function caretToPrompt() {
+    var p = main.querySelector('.prompt');
+    if (!p) return;
+    var r = document.createRange();
+    r.selectNodeContents(p);
+    r.collapse(false);
+    var s = window.getSelection();
+    s.removeAllRanges();
+    s.addRange(r);
+  }
+
+  function setLive(state) {
+    live = state;
+    document.body.classList.toggle('term', live);
+    main.setAttribute('contenteditable', live ? 'true' : 'false');
+    main.spellcheck = false;
+    hud.hidden = !live;
+    if (live) { main.focus(); caretToPrompt(); }
+  }
+
+  function restore() {
+    main.innerHTML = snapshot;
+    setLive(false);
+  }
+
+  main.addEventListener('click', function (e) {
+    if (live || !e.target.closest) return;
+    if (e.target.closest('.cursor')) { e.preventDefault(); setLive(true); }
+  });
+
+  reset.addEventListener('click', restore);
+
+  document.addEventListener('keydown', function (e) {
+    if (live && e.key === 'Escape') { e.preventDefault(); restore(); }
+  });
+})();
+</script>
 </body>
 </html>
