@@ -1,757 +1,118 @@
 <!DOCTYPE html>
-<html
-  dir="ltr"
-  lang="de"
-  data-theme=""
-  
-    class="html theme--light"
-  
-><head>
-  <title>
-    Philip Swoboda
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Philip Swoboda</title>
+<meta name="description" content="Philip Swoboda — mechanical engineer and programmer from Vienna.">
+<meta name="theme-color" content="#0b0e14" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)">
+<meta property="og:title" content="Philip Swoboda">
+<meta property="og:description" content="Mechanical engineer and programmer from Vienna.">
+<meta property="og:type" content="profile">
+<meta property="og:url" content="https://philip-swoboda.at/">
+<link rel="canonical" href="https://philip-swoboda.at/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+:root{
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  --bg:#0b0e14; --panel:#0f131b; --face:#11161f; --line:#1e2530;
+  --fg:#c8ccd4; --dim:#6b7484; --ink:#79c0ff; --node:#79c0ff;
+  --grid:#1b2330; --hatch:#232c3a; --code:#7ee787;
+  --key:#d2a8ff; --val:#7ee787; --punct:#5c6672; --link:#79c0ff;
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#fbfbf9; --panel:#ffffff; --face:#fdfdfb; --line:#e2e2dc;
+    --fg:#2b2f36; --dim:#7b8290; --ink:#0550ae; --node:#0550ae;
+    --grid:#eeeeea; --hatch:#dfe3ea; --code:#1a7f37;
+    --key:#8250df; --val:#1a7f37; --punct:#8b929e; --link:#0550ae;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:var(--mono); font-size:15px; line-height:1.7;
+  font-variant-ligatures:none;
+  padding:clamp(1.75rem,6vw,5rem) clamp(1.25rem,5vw,2rem);
+}
+main{max-width:41rem;margin:0 auto}
+a{color:var(--link);text-decoration:none;border-bottom:1px solid transparent}
+a:hover{border-bottom-color:currentColor}
+a:focus-visible{outline:2px solid var(--link);outline-offset:3px;border-radius:2px}
 
-    
+.prompt{color:var(--dim);font-size:.875rem;margin:0 0 1.5rem}
+.prompt .u{color:var(--code)} .prompt .h{color:var(--ink)} .prompt .c{color:var(--fg)}
+.cursor{display:inline-block;width:.55em;height:1em;background:var(--fg);
+  vertical-align:-.15em;margin-left:.35em;animation:blink 1.15s steps(1,end) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.cursor{animation:none;opacity:.6}}
 
-  </title>
+h1{font-size:1.75rem;font-weight:600;letter-spacing:-.02em;margin:0;line-height:1.25}
+.tagline{color:var(--dim);margin:.4rem 0 0;font-size:.9375rem}
 
-  
-  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.111.3"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="author" content="Philip Swoboda" />
-  <meta
-    name="description"
-    content="a person interested in programming
-and other stuff"
-  />
-  
-  
-    
-    
-    <link
-      rel="stylesheet"
-      href="/scss/main.min.eadc7810d36bc408953f7e4a346cd0d8301bc421605a0f9ced190f7cf7bee332.css"
-      integrity="sha256-6tx4ENNrxAiVP35KNGzQ2DAbxCFgWg&#43;c7RkPfPe&#43;4zI="
-      crossorigin="anonymous"
-      type="text/css"
-    />
-  
+figure{margin:2.5rem 0 0}
+.frame{border:1px solid var(--line);background:var(--panel);border-radius:3px;
+  padding:.5rem;max-width:17rem}
+.frame img{display:block;width:100%;height:auto;border-radius:2px}
+figcaption{color:var(--dim);font-size:.8125rem;margin-top:.6rem;max-width:20rem}
 
-  
-  <link
-    rel="stylesheet"
-    href="/css/markupHighlight.min.058b31f17db60602cc415fd63b0427e7932fbf35c70d8e341a4c39385f5f6f3e.css"
-    integrity="sha256-BYsx8X22BgLMQV/WOwQn55MvvzXHDY40Gkw5OF9fbz4="
-    crossorigin="anonymous"
-    type="text/css"
-  />
-  
-  
-  <link
-    rel="stylesheet"
-    href="/fontawesome/css/fontawesome.min.7d272de35b410fb165377550cdf9c4d3a80fbbcc961e111914e4d5c0eaf5729f.css"
-    integrity="sha256-fSct41tBD7FlN3VQzfnE06gPu8yWHhEZFOTVwOr1cp8="
-    crossorigin="anonymous"
-    type="text/css"
-  />
-  
-  <link
-    rel="stylesheet"
-    href="/fontawesome/css/solid.min.55d8333481b07a08e07cf6f37319753a2b47e99f4c395394c5747b48b495aa9b.css"
-    integrity="sha256-VdgzNIGwegjgfPbzcxl1OitH6Z9MOVOUxXR7SLSVqps="
-    crossorigin="anonymous"
-    type="text/css"
-  />
-  
-  <link
-    rel="stylesheet"
-    href="/fontawesome/css/regular.min.a7448d02590b43449364b6b5922ed9af5410abb4de4238412a830316dedb850b.css"
-    integrity="sha256-p0SNAlkLQ0STZLa1ki7Zr1QQq7TeQjhBKoMDFt7bhQs="
-    crossorigin="anonymous"
-    type="text/css"
-  />
-  
-  <link
-    rel="stylesheet"
-    href="/fontawesome/css/brands.min.9ed75a5d670c953fe4df935937674b4646f92674367e9e66eb995bb04e821647.css"
-    integrity="sha256-ntdaXWcMlT/k35NZN2dLRkb5JnQ2fp5m65lbsE6CFkc="
-    crossorigin="anonymous"
-    type="text/css"
-  />
-  
-  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+.about{margin:2.5rem 0 0;color:var(--dim);font-size:.9375rem}
+.about p{margin:0;padding-left:3ch;text-indent:-3ch}
+.about .c{color:var(--punct)}
 
-  <link rel="canonical" href="https://philip-swoboda.at/" />
+.links{margin:2.5rem 0 0;font-size:.9375rem}
+.brace{color:var(--punct)}
+.rows{list-style:none;margin:.15rem 0;padding:0 0 0 2ch}
+.rows li{display:flex;gap:1ch;flex-wrap:wrap;padding:.15rem 0}
+.k{color:var(--key);flex:0 0 auto;min-width:9ch}
+.k::after{content:":";color:var(--punct);margin-left:.25ch}
+.rows a{color:var(--val)}
+.rows a::after{content:" \2197";color:var(--punct);font-size:.85em}
+.rows li.primary a{color:var(--link);font-weight:600}
 
-  
-  <link rel="alternate" type="application/rss+xml" href="/index.xml" title="Philip's Website" />
-  
-  
-  
-  <script
-    type="text/javascript"
-    src="/js/anatole-header.min.f9132794301a01ff16550ed66763482bd848f62243d278f5e550229a158bfd32.js"
-    integrity="sha256-&#43;RMnlDAaAf8WVQ7WZ2NIK9hI9iJD0nj15VAimhWL/TI="
-    crossorigin="anonymous"
-  ></script>
+footer{margin:3.5rem 0 0;padding-top:1.25rem;border-top:1px solid var(--line);
+  color:var(--punct);font-size:.8125rem}
+footer p{margin:0}
 
-  
-    
-    
-    <script
-      type="text/javascript"
-      src="/js/anatole-theme-switcher.min.d6d329d93844b162e8bed1e915619625ca91687952177552b9b3e211014a2957.js"
-      integrity="sha256-1tMp2ThEsWLovtHpFWGWJcqRaHlSF3VSubPiEQFKKVc="
-      crossorigin="anonymous"
-    ></script>
-  
-
-  
-
-
-  
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content=""/>
-<meta name="twitter:description" content="a person interested in programming
-and other stuff"/>
-
-
-
-  
-  <meta property="og:title" content="" />
-<meta property="og:description" content="a person interested in programming
-and other stuff" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://philip-swoboda.at/" /><meta property="og:site_name" content="Hi, I&#39;m Philip" />
-
-
-
-  
-  <script type="application/ld+json">
-    {
-      "@context": "http://schema.org",
-      "@type": "WebSite",
-      "name": "Philip's Website",
-      "url": "https:\/\/philip-swoboda.at",
-      "description": "a person interested in programming\nand other stuff",
-      "thumbnailUrl": "https:\/\/philip-swoboda.at",
-      "license": "2020-{{ YEAR }}"
-    }
-  </script>
-
-
+</style>
 </head>
-<body class="body">
-    <div class="wrapper">
-      <aside
-        
-          class="wrapper__sidebar"
-        
-      ><div
-  class="sidebar
-    .
-  "
->
-  <div class="sidebar__content">
-    <div class="sidebar__introduction">
-      <img
-        class="sidebar__introduction-profileimage"
-        src="/images/profile.jpg"
-        alt="profile picture"
-      />
-      
-        <h1 class="sidebar__introduction-title">
-          <a href="/">Hi, I&#39;m Philip</a>
-        </h1>
-      
-      <div class="sidebar__introduction-description">
-        <p>a person interested in programming<br />and other stuff</p>
-      </div>
+<body>
+<main>
+
+  <p class="prompt"><span class="u">philip</span>@<span class="h">philip-swoboda.at</span>:~<span class="c">$</span> whoami<span class="cursor" aria-hidden="true"></span></p>
+
+  <h1>Philip Swoboda</h1>
+  <p class="tagline">mechanical engineer &middot; programmer &middot; vienna, at</p>
+
+  <figure>
+    <div class="frame">
+      <img src="/images/profile.jpg" width="512" height="512" alt="Painted portrait of Philip, seen from behind, in bright brushstrokes." decoding="async">
     </div>
-    <ul class="sidebar__list">
-      
-        <li class="sidebar__list-item">
-          <a
-            href="https://www.linkedin.com/in/philip-swoboda-bb6b241b9"
-            target="_blank"
-            rel="noopener me"
-            aria-label="Linkedin"
-            title="Linkedin"
-          >
-            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
-          </a>
-        </li>
-      
-        <li class="sidebar__list-item">
-          <a
-            href="https://github.com/Hermit12"
-            target="_blank"
-            rel="noopener me"
-            aria-label="GitHub"
-            title="GitHub"
-          >
-            <i class="fab fa-github fa-2x" aria-hidden="true"></i>
-          </a>
-        </li>
-      
-        <li class="sidebar__list-item">
-          <a
-            href="/dateien/CV_Philip_Swoboda.pdf"
-            target="_blank"
-            rel="noopener me"
-            aria-label="curicculum vitae"
-            title="curicculum vitae"
-          >
-            <i class="far fa-address-card fa-2x" aria-hidden="true"></i>
-          </a>
-        </li>
-      
-        <li class="sidebar__list-item">
-          <a
-            href="mailto:philip.swoboda@gmail.com"
-            target="_blank"
-            rel="noopener me"
-            aria-label="e-mail"
-            title="e-mail"
-          >
-            <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
-          </a>
-        </li>
-      
-    </ul>
-  </div><footer class="footer footer__sidebar">
-  <ul class="footer__list">
-    <li class="footer__item">
-      &copy;
-      
-        2020-2023
-      
-    </li>
-    
-      <li class="footer__item">
-        <a
-          class="link"
-          href="/impressum/"
-          
-          title=""
-        >
-          Impressum
-        </a>
-      </li>
-    
-  </ul>
-</footer>
-  
-  <script
-    type="text/javascript"
-    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
-    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
-    crossorigin="anonymous"
-  ></script></div>
-</aside>
-      <main
-        
-          class="wrapper__main"
-        
-      >
-        <header class="header"><div
-  class="
-    .
-  "
->
-  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
-    <span aria-hidden="true" class="navbar-burger__line"></span>
-    <span aria-hidden="true" class="navbar-burger__line"></span>
-    <span aria-hidden="true" class="navbar-burger__line"></span>
-  </a>
-  <nav class="nav">
-    <ul class="nav__list" id="navMenu">
-      
-      
-        
-        
-          <li class="nav__list-item">
-            <a
-              
-                class="nav__link--active"
-              
-              href="/"
-              
-              title=""
-              >Home</a
-            >
-          </li>
-        
+    <figcaption>profile.jpg</figcaption>
+  </figure>
 
-      
-        
-        
-          <li class="nav__list-item">
-            <a
-              
-              href="/latex/"
-              
-              title=""
-              >LATEX</a
-            >
-          </li>
-        
-
-      
-        
-        
-          <li class="nav__list-item">
-            <a
-              
-              href="/python/"
-              
-              title=""
-              >Python</a
-            >
-          </li>
-        
-
-      
-        
-        
-          <li class="nav__list-item">
-            <a
-              
-              href="/markdown/"
-              
-              title=""
-              >Markdown</a
-            >
-          </li>
-        
-
-      
-        
-        
-          <li class="nav__list-item">
-            <a
-              
-              href="/autocad/"
-              
-              title=""
-              >AutoCAD</a
-            >
-          </li>
-        
-
-      
-        
-        
-          <li class="nav__list-item">
-            <a
-              
-              href="/misc/"
-              
-              title=""
-              >misc</a
-            >
-          </li>
-        
-
-      
-        
-        
-          <li class="nav__list-item">
-            <a
-              
-              href="/%C3%BCber-mich/"
-              
-              title=""
-              >Über mich</a
-            >
-          </li>
-        
-
-      
-    </ul>
-    <ul class="nav__list nav__list--end">
-      
-      
-        <li class="nav__list-item">
-          <div class="themeswitch">
-            <a title="Switch Theme">
-              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
-            </a>
-          </div>
-        </li>
-      
-    </ul>
-  </nav>
-</div>
-</header>
-  <div
-    class="post 
-      .
-    "
-  >
-    <div class="post__content">
-      <!--
-This file is left intentionally empty by default to be backwards compatible with the initial theme setup.
-
-Although the theme has advanced a little bit and it now allows to specify the content on the main page (even if the list of posts/articles is not intended).
-This can be:
-- with the list of posts/articles (default: `mainSections = ["post"]) or
-- without the list of posts/articles (by setting `mainSections = [""]`)
-
-Markdown supported, ie:
--->
-<h1 id="willkommen">Willkommen</h1>
-<p>Diese Seite ist eine Zusammenstellung von Inhalten, auf die ich jederzeit zugreifen möchte.</p>
-<ul>
-<li><a href="/autocad/">AutoCAD</a> 🚀</li>
-<li><a href="/python/">Python</a> 🚀 🚀</li>
-<li><a href="/latex/">Latex</a> 🚀 🚀 🚀</li>
-</ul>
-<p><a href="/tags">#Tags</a></p>
-<p>Viel Spaß!</p>
-<hr>
-
-    </div>
-
-    
+  <div class="about">
+    <p><span class="c">//</span> mechanical engineer by training, programmer by habit.</p>
+    <p><span class="c">//</span> i build the tools that sit between the two &mdash; structural</p>
+    <p><span class="c">//</span> calculations, CAD automation, and small things that save hours.</p>
   </div>
 
-  
+  <section class="links" aria-label="Links">
+    <span class="brace">const links = {</span>
+    <ul class="rows">
+      <li class="primary"><span class="k">linkedin</span><a href="https://www.linkedin.com/in/philip-swoboda-bb6b241b9" rel="me noopener">philip-swoboda</a></li>
+      <li><span class="k">github</span><a href="https://github.com/Hermit12" rel="me noopener">Hermit12</a></li>
+      <li><span class="k">email</span><a href="mailto:philip.swoboda@gmail.com" rel="me">philip.swoboda@gmail.com</a></li>
+    </ul>
+    <span class="brace">}</span>
+  </section>
 
-  
-  
-    <div
-      class="post 
-        .
-      "
-    >
-      
-      <div class="post__content">
-        <h3><a href="/python/python-classes/">PYTHON CLASSES</a></h3>
-        
-          <p>Python is an object-oriented programming language, which means it has built-in support for creating classes and objects. Classes are used to define objects, which contain attributes (variables) and methods (functions).</p>
-        
-        </div>
+  <footer>
+    <p>Seiteninhaber: Philip Swoboda, Wien &mdash; Offenlegung gem. &sect;5 ECG</p>
+  </footer>
 
-      
-      <div class="post__footer">
-        <em class="fas fa-calendar-day"></em>
-        <span class="post__footer-date"
-          >
-            
-              14.04.2023
-            
-
-          </span
-        >
-        
-          <span><a class="category" href="/categories/software/">software</a></span>
-
-
-        
-
-        
-          <span><a class="tag" href="/tags/python/">python</a><a class="tag" href="/tags/syntax/">syntax</a></span>
-
-
-        
-      </div>
-    </div>
-  
-    <div
-      class="post 
-        .
-      "
-    >
-      
-      <div class="post__content">
-        <h3><a href="/python/python-einstieg/">PYTHON BEGINNERS GUIDE</a></h3>
-        
-          <p>Python Beginners Guide Python is a popular high-level programming language that is used for a variety of purposes, including web development, data analysis, artificial intelligence, and more.</p>
-        
-        </div>
-
-      
-      <div class="post__footer">
-        <em class="fas fa-calendar-day"></em>
-        <span class="post__footer-date"
-          >
-            
-              13.04.2023
-            
-
-          </span
-        >
-        
-          <span><a class="category" href="/categories/software/">software</a></span>
-
-
-        
-
-        
-          <span><a class="tag" href="/tags/python/">python</a><a class="tag" href="/tags/syntax/">syntax</a></span>
-
-
-        
-      </div>
-    </div>
-  
-    <div
-      class="post 
-        .
-      "
-    >
-      
-      <div class="post__content">
-        <h3><a href="/python/python-loops/">PYTHON LOOPS</a></h3>
-        
-          <p>The while loop: The while loop repeats a block of code as long as a condition is true. The syntax is as follows:</p>
-        
-        </div>
-
-      
-      <div class="post__footer">
-        <em class="fas fa-calendar-day"></em>
-        <span class="post__footer-date"
-          >
-            
-              09.04.2023
-            
-
-          </span
-        >
-        
-          <span><a class="category" href="/categories/software/">software</a></span>
-
-
-        
-
-        
-          <span><a class="tag" href="/tags/python/">python</a><a class="tag" href="/tags/syntax/">syntax</a></span>
-
-
-        
-      </div>
-    </div>
-  
-    <div
-      class="post 
-        .
-      "
-    >
-      
-      <div class="post__content">
-        <h3><a href="/autocad/effizient-in-3d/">EFFIZIENTES ARBEITEN IN 3D</a></h3>
-        
-          <p>Headline Navigation: Im 3D-Raum navigiert man in AutoCAD mittels gleichzeitig gedrückter Umschalttaste + Mausradtaste. Alternativ kann man auch den Orbit verwenden, dies ist aber sehr umständlich.</p>
-        
-        </div>
-
-      
-      <div class="post__footer">
-        <em class="fas fa-calendar-day"></em>
-        <span class="post__footer-date"
-          >
-            
-              15.10.2021
-            
-
-          </span
-        >
-        
-
-        
-          <span><a class="tag" href="/tags/autocad/">autocad</a></span>
-
-
-        
-      </div>
-    </div>
-  
-    <div
-      class="post 
-        .
-      "
-    >
-      
-      <div class="post__content">
-        <h3><a href="/latex/latex-horizontal/">HORIZONTALER ABSTAND IN LATEX</a></h3>
-        
-          <p>Anbei ist ein Codeblock in Latex-Code abgebildet für sämtliche horizontale Abstandsmöglichkeiten. Diesen kann man in ein entsprechendes Latexprogramm eingeben und rendern.</p>
-        
-        </div>
-
-      
-      <div class="post__footer">
-        <em class="fas fa-calendar-day"></em>
-        <span class="post__footer-date"
-          >
-            
-              15.10.2021
-            
-
-          </span
-        >
-        
-
-        
-          <span><a class="tag" href="/tags/latex/">latex</a><a class="tag" href="/tags/syntax/">syntax</a></span>
-
-
-        
-      </div>
-    </div>
-  
-    <div
-      class="post 
-        .
-      "
-    >
-      
-      <div class="post__content">
-        <h3><a href="/autocad/autocad-grundbefehle/">AUTOCAD GRUNDBEFEHLE</a></h3>
-        
-          <p>Grundlegende Bedienung Beim effizienten arbeiten mit Autocad verwendet man am besten nur eine kleine Anzahl von Befehlen, die man sich wohl oder übel merken muss.</p>
-        
-        </div>
-
-      
-      <div class="post__footer">
-        <em class="fas fa-calendar-day"></em>
-        <span class="post__footer-date"
-          >
-            
-              14.10.2021
-            
-
-          </span
-        >
-        
-          <span><a class="category" href="/categories/software/">software</a></span>
-
-
-        
-
-        
-          <span><a class="tag" href="/tags/autocad/">autocad</a><a class="tag" href="/tags/syntax/">syntax</a></span>
-
-
-        
-      </div>
-    </div>
-  
-    <div
-      class="post 
-        .
-      "
-    >
-      
-      <div class="post__content">
-        <h3><a href="/python/python-grundbefehle/">PYTHON GRUNDLEGENDE SYNTAX</a></h3>
-        
-          <p>Standardbefehle Folgende Befehle müssen im Schlaf gehen:
-Für MacOS: Befehl Erklärung pwd print working directory hostname Computer Hostname mkdir make directory cd change directory ls list directory rmdir remove directory pushd push directory popd pop directory cp copy a file or directory mv move a file or directory less page through a file cat print the whole file xargs execute arguments find find files grep find things inside files man read a manual page apropos find which man page is appropriate env look at your environment echo print some arguments export export/set a new variable exit exit the shell sudo become super user root Für Windows: Befehl Erklärung pwd print working directory hostname Computer Hostname mkdir make directory cd change directory ls list directory rmdir remove directory pushd push directory popd pop directory cp copy a file or directory robocopy robust copy mv move a file or directory more page through a file type print the whole file forfiles run a command on lots of files dir -r find files select-string find things inside files help read a manual page helpctr find which man page is appropriate echo print some arguments set export/set a new variable exit exit the shell runas become super user root Befehlsausgabe Das Klassische “Hello World!</p>
-        
-        </div>
-
-      
-      <div class="post__footer">
-        <em class="fas fa-calendar-day"></em>
-        <span class="post__footer-date"
-          >
-            
-              13.10.2021
-            
-
-          </span
-        >
-        
-          <span><a class="category" href="/categories/software/">software</a></span>
-
-
-        
-
-        
-          <span><a class="tag" href="/tags/python/">python</a><a class="tag" href="/tags/syntax/">syntax</a></span>
-
-
-        
-      </div>
-    </div>
-  
-    <div
-      class="post 
-        .
-      "
-    >
-      
-      <div class="post__content">
-        <h3><a href="/latex/latex-grundbefehle/">LATEX GRUNDLEGENDE SYNTAX</a></h3>
-        
-          <p>Preamble Hier ist eine kleine Auflistung von Befehlen, die ich häufiger brauche und als nützlich erachte.
-Dokumentenklassen: \documentclass[10pt]{article} %Artikel \documentclass[10pt]{report} %für längere Berichte, welche mehrere Kapitel umfassen, kurze Bücher, Diplomarbeiten, .</p>
-        
-        </div>
-
-      
-      <div class="post__footer">
-        <em class="fas fa-calendar-day"></em>
-        <span class="post__footer-date"
-          >
-            
-              13.10.2021
-            
-
-          </span
-        >
-        
-          <span><a class="category" href="/categories/software/">software</a></span>
-
-
-        
-
-        
-          <span><a class="tag" href="/tags/latex/">latex</a><a class="tag" href="/tags/syntax/">syntax</a></span>
-
-
-        
-      </div>
-    </div>
-  
-  <div class="pagination">
-    
-
-  </div>
-
-      </main>
-    </div><footer class="footer footer__base">
-  <ul class="footer__list">
-    <li class="footer__item">
-      &copy;
-      
-        2020-2023
-      
-    </li>
-    
-      <li class="footer__item">
-        <a
-          class="link"
-          href="/impressum/"
-          
-          title=""
-        >
-          Impressum
-        </a>
-      </li>
-    
-  </ul>
-</footer>
-  
-  <script
-    type="text/javascript"
-    src="/js/medium-zoom.min.1248fa75275e5ef0cbef27e8c1e27dc507c445ae3a2c7d2ed0be0809555dac64.js"
-    integrity="sha256-Ekj6dSdeXvDL7yfoweJ9xQfERa46LH0u0L4ICVVdrGQ="
-    crossorigin="anonymous"
-  ></script></body>
+</main>
+</body>
 </html>

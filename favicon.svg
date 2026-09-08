@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    .bg{fill:#0b0e14}.fg{fill:none;stroke:#7ee787;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+    @media (prefers-color-scheme: light){.bg{fill:#0b0e14}.fg{stroke:#7ee787}}
+  </style>
+  <rect class="bg" width="64" height="64" rx="13"/>
+  <path class="fg" d="M17 21 L28 32 L17 43"/>
+  <path class="fg" d="M34 45 H48"/>
+</svg>

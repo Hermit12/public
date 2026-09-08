@@ -1,0 +1,4 @@
+# Lokales Backup der alten Seite - bleibt auf dem Rechner, nicht auf GitHub
+backup/
+
+.DS_Store
