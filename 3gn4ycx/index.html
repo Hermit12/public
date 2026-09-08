@@ -92,12 +92,16 @@ footer p{margin:0;color:var(--punct)}
   var A = new Date(2024, 4, 13, 0, 6, 12);   // 13.05.2024 00:06:12
   var B = new Date(2026, 6, 29, 0, 0,  0);   // 29.07.2026 00:00:00
 
-  var UNITS = [
-    ['d',  'Tag',     'Tage'],
-    ['h',  'Stunde',  'Stunden'],
-    ['mi', 'Minute',  'Minuten'],
-    ['s',  'Sekunde', 'Sekunden']
-  ];
+  var LABELS = {
+    y:  ['Jahr',    'Jahre'],
+    mo: ['Monat',   'Monate'],
+    d:  ['Tag',     'Tage'],
+    h:  ['Stunde',  'Stunden'],
+    mi: ['Minute',  'Minuten'],
+    s:  ['Sekunde', 'Sekunden']
+  };
+  var FULL = ['y', 'mo', 'd', 'h', 'mi', 's'];   // oberer Zaehler
+  var ONLY_DAYS = ['d', 'h', 'mi', 's'];         // unterer Zaehler
 
   // Ganze Kalendertage von Mitternacht zu Mitternacht - round() faengt Sommerzeit ab.
   function days(from, to) {
@@ -106,8 +110,8 @@ footer p{margin:0;color:var(--punct)}
     return Math.round((b - a) / 86400000);
   }
 
-  // Uhrzeit-Anteil per Komponenten-Differenz; ist sie negativ, wird ein Tag geborgt.
-  function elapsed(from, to) {
+  // Uhrzeit-Anteil per Komponenten-Differenz; negative Stellen werden geborgt.
+  function clock(from, to) {
     var h  = to.getHours()   - from.getHours();
     var mi = to.getMinutes() - from.getMinutes();
     var s  = to.getSeconds() - from.getSeconds();
@@ -115,15 +119,32 @@ footer p{margin:0;color:var(--punct)}
     if (mi < 0) { mi += 60; h  -= 1; }
     var borrow = 0;
     if (h  < 0) { h  += 24; borrow = 1; }
-    return { d: Math.max(0, days(from, to) - borrow), h: h, mi: mi, s: s };
+    return { h: h, mi: mi, s: s, borrow: borrow };
   }
 
-  function render(id, start, now) {
-    var b = elapsed(start, now), out = '';
-    for (var i = 0; i < UNITS.length; i++) {
-      var v = b[UNITS[i][0]];
+  // Jahre/Monate/Tage kalendergenau - Monate haben unterschiedlich viele Tage.
+  function breakdown(from, to) {
+    var c  = clock(from, to);
+    var y  = to.getFullYear() - from.getFullYear();
+    var mo = to.getMonth()    - from.getMonth();
+    var d  = to.getDate()     - from.getDate() - c.borrow;
+    if (d  < 0) { d += new Date(to.getFullYear(), to.getMonth(), 0).getDate(); mo -= 1; }
+    if (mo < 0) { mo += 12; y -= 1; }
+    return { y: y, mo: mo, d: d, h: c.h, mi: c.mi, s: c.s };
+  }
+
+  // Nur Tage: die gesamte Laufzeit als Tageszahl, ohne Jahre und Monate.
+  function elapsed(from, to) {
+    var c = clock(from, to);
+    return { d: Math.max(0, days(from, to) - c.borrow), h: c.h, mi: c.mi, s: c.s };
+  }
+
+  function render(id, vals, keys) {
+    var out = '';
+    for (var i = 0; i < keys.length; i++) {
+      var v = vals[keys[i]], l = LABELS[keys[i]];
       out += '<span class="pair"><span class="n">' + v + '</span>' +
-             '<span class="u">' + (v === 1 ? UNITS[i][1] : UNITS[i][2]) + '</span></span>';
+             '<span class="u">' + (v === 1 ? l[0] : l[1]) + '</span></span>';
     }
     document.getElementById(id).innerHTML = out;
   }
@@ -132,8 +153,8 @@ footer p{margin:0;color:var(--punct)}
 
   function tick() {
     var now = new Date();
-    render('a', A, now);
-    render('b', B, now);
+    render('a', breakdown(A, now), FULL);
+    render('b', elapsed(B, now),   ONLY_DAYS);
     var n = Math.max(0, days(B, now));
     sswValue.textContent = Math.floor(n / 7) + ' + ' + (n % 7);
   }
