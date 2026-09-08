@@ -98,6 +98,17 @@ body.term button.cursor{display:none}
   border-radius:3px;padding:0 .5ch}
 #hud button{font:inherit;color:var(--link);background:none;border:0;padding:0;
   border-bottom:1px solid currentColor;cursor:pointer}
+
+/* space invaders */
+#game{position:fixed;inset:0;z-index:20;padding:1rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.85rem;
+  background:var(--bg);
+  background:color-mix(in srgb, var(--bg) 94%, transparent)}
+#game[hidden]{display:none}
+#gc{width:min(92vw,620px);height:auto;image-rendering:pixelated;
+  background:var(--bg);border:1px solid var(--line);border-radius:3px}
+.ghud{margin:0;color:var(--dim);font-size:.8125rem;text-align:center}
+body.playing{overflow:hidden}
 </style>
 </head>
 <body>
@@ -143,6 +154,11 @@ body.term button.cursor{display:none}
   <span><kbd>esc</kbd> or <button type="button" id="reset">reset</button> to restore</span>
 </div>
 
+<div id="game" hidden>
+  <canvas id="gc" width="320" height="240" role="img" aria-label="Space Invaders"></canvas>
+  <p class="ghud">&larr; &rarr; move &middot; space fire &middot; esc close</p>
+</div>
+
 <script>
 (function () {
   var main  = document.querySelector('main');
@@ -178,9 +194,180 @@ body.term button.cursor{display:none}
     setLive(false);
   }
 
-  // Versteckter Zugang: "ls -a" tippen, oder dreimal aufs Bild tippen.
+  /* ---------- Space Invaders ---------- */
+  var game = (function () {
+    var wrap = document.getElementById('game');
+    var cv   = document.getElementById('gc');
+    if (!wrap || !cv) return { on: function () { return false; } };
+    var ctx = cv.getContext('2d');
+    var W = cv.width, H = cv.height, P = 2;
+
+    var ALIEN = ['  X     X  ', '   X   X   ', '  XXXXXXX  ', ' XX XXX XX ',
+                 'XXXXXXXXXXX', 'X XXXXXXX X', 'X X     X X', '   XX XX   '];
+    var SHIP  = ['     X     ', '    XXX    ', '    XXX    ', ' XXXXXXXXX ',
+                 'XXXXXXXXXXX', 'XXXXXXXXXXX', 'XXXXXXXXXXX'];
+    var AW = 22, AH = 16, SW = 22, SH = 14;
+
+    var keys = {}, raf = null, on = false;
+    var ship, shots, bombs, mob, dir, beat, score, lives, over, won;
+
+    function colour(name) {
+      return getComputedStyle(document.body).getPropertyValue(name).trim() || '#888';
+    }
+
+    function reset() {
+      ship = { x: W / 2 - SW / 2, y: H - 28 };
+      shots = []; bombs = []; mob = [];
+      for (var r = 0; r < 4; r++)
+        for (var c = 0; c < 8; c++)
+          mob.push({ x: 42 + c * 30, y: 26 + r * 22, alive: true });
+      dir = 1; beat = 0; score = 0; lives = 3; over = false; won = false;
+    }
+
+    function blit(rows, x, y, col) {
+      ctx.fillStyle = col;
+      for (var r = 0; r < rows.length; r++)
+        for (var c = 0; c < rows[r].length; c++)
+          if (rows[r].charAt(c) === 'X') ctx.fillRect(x + c * P, y + r * P, P, P);
+    }
+
+    function alive() {
+      return mob.filter(function (m) { return m.alive; });
+    }
+
+    function step() {
+      if (keys.ArrowLeft  || keys.a) ship.x -= 3;
+      if (keys.ArrowRight || keys.d) ship.x += 3;
+      ship.x = Math.max(4, Math.min(W - SW - 4, ship.x));
+
+      var i, j;
+      for (i = shots.length - 1; i >= 0; i--) {
+        shots[i].y -= 5;
+        if (shots[i].y < -6) shots.splice(i, 1);
+      }
+      for (i = bombs.length - 1; i >= 0; i--) {
+        bombs[i].y += 2.2;
+        if (bombs[i].y > H) bombs.splice(i, 1);
+      }
+
+      var pack = alive();
+      if (!pack.length) { won = true; over = true; return; }
+
+      // Je weniger uebrig sind, desto schneller ruecken sie vor.
+      beat++;
+      if (beat >= Math.max(5, 3 + pack.length * 2)) {
+        beat = 0;
+        var minX = Infinity, maxX = -Infinity;
+        for (i = 0; i < pack.length; i++) {
+          if (pack[i].x < minX) minX = pack[i].x;
+          if (pack[i].x > maxX) maxX = pack[i].x;
+        }
+        if ((dir > 0 && maxX + AW + 6 > W - 4) || (dir < 0 && minX - 6 < 4)) {
+          dir = -dir;
+          for (i = 0; i < mob.length; i++) mob[i].y += 8;
+        } else {
+          for (i = 0; i < mob.length; i++) mob[i].x += dir * 6;
+        }
+        if (Math.random() < 0.35) {
+          var b = pack[Math.floor(Math.random() * pack.length)];
+          bombs.push({ x: b.x + AW / 2, y: b.y + AH });
+        }
+      }
+
+      for (i = shots.length - 1; i >= 0; i--) {
+        for (j = 0; j < mob.length; j++) {
+          var m = mob[j];
+          if (m.alive && shots[i].x >= m.x && shots[i].x <= m.x + AW &&
+              shots[i].y >= m.y && shots[i].y <= m.y + AH) {
+            m.alive = false; shots.splice(i, 1); score += 10; break;
+          }
+        }
+      }
+      for (i = bombs.length - 1; i >= 0; i--) {
+        if (bombs[i].x >= ship.x && bombs[i].x <= ship.x + SW &&
+            bombs[i].y >= ship.y && bombs[i].y <= ship.y + SH) {
+          bombs.splice(i, 1);
+          if (--lives <= 0) over = true;
+        }
+      }
+      for (j = 0; j < mob.length; j++)
+        if (mob[j].alive && mob[j].y + AH >= ship.y) over = true;
+    }
+
+    function centred(text, y, col, size) {
+      ctx.fillStyle = col;
+      ctx.font = size + 'px ui-monospace, Menlo, monospace';
+      ctx.fillText(text, (W - ctx.measureText(text).width) / 2, y);
+    }
+
+    function draw() {
+      ctx.fillStyle = colour('--bg');
+      ctx.fillRect(0, 0, W, H);
+
+      var i;
+      for (i = 0; i < mob.length; i++)
+        if (mob[i].alive) blit(ALIEN, mob[i].x, mob[i].y, colour('--code'));
+      if (lives > 0) blit(SHIP, ship.x, ship.y, colour('--ink'));
+
+      ctx.fillStyle = colour('--fg');
+      for (i = 0; i < shots.length; i++) ctx.fillRect(shots[i].x, shots[i].y, 2, 6);
+      ctx.fillStyle = colour('--dim');
+      for (i = 0; i < bombs.length; i++) ctx.fillRect(bombs[i].x, bombs[i].y, 2, 6);
+
+      ctx.fillStyle = colour('--dim');
+      ctx.font = '10px ui-monospace, Menlo, monospace';
+      ctx.fillText('SCORE ' + score, 6, 13);
+      ctx.fillText('LIVES ' + Math.max(0, lives), W - 62, 13);
+
+      if (over) {
+        centred(won ? 'CLEARED' : 'GAME OVER', H / 2,
+                won ? colour('--code') : colour('--fg'), 16);
+        centred('enter restart  \u00b7  esc close', H / 2 + 18, colour('--dim'), 10);
+      }
+    }
+
+    function loop() {
+      if (!on) return;
+      if (!over) step();
+      draw();
+      raf = requestAnimationFrame(loop);
+    }
+
+    return {
+      on: function () { return on; },
+      open: function () {
+        if (on) return;
+        reset(); on = true; keys = {};
+        wrap.hidden = false;
+        document.body.classList.add('playing');
+        loop();
+      },
+      close: function () {
+        on = false; keys = {};
+        if (raf) cancelAnimationFrame(raf);
+        wrap.hidden = true;
+        document.body.classList.remove('playing');
+      },
+      down: function (e) {
+        if (e.key === 'Escape') { this.close(); return; }
+        if (e.key === 'Enter' && over) { reset(); return; }
+        if (e.key === ' ') {
+          e.preventDefault();
+          if (!over && shots.length < 3) shots.push({ x: ship.x + SW / 2, y: ship.y - 6 });
+          return;
+        }
+        if (e.key.indexOf('Arrow') === 0) e.preventDefault();
+        keys[e.key] = true;
+      },
+      up: function (e) { keys[e.key] = false; }
+    };
+  })();
+
+  /* ---------- Eingaben ---------- */
+  // Versteckter Zugang: "ssw" tippen, oder dreimal aufs Bild tippen.
+  // Leertaste startet das Spiel.
   var HIDDEN = '/3gn4ycx/';
-  var SECRET = 'ls -a';
+  var SECRET = 'ssw';
   var buf = '', taps = 0, lastTap = 0;
 
   main.addEventListener('click', function (e) {
@@ -195,18 +382,22 @@ body.term button.cursor{display:none}
   });
 
   document.addEventListener('keydown', function (e) {
-    if (live || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (game.on()) { game.down(e); return; }
+    if (live) { if (e.key === 'Escape') { e.preventDefault(); restore(); } return; }
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+    // Leertaste nur abfangen, wenn sie nicht einem Bedienelement gilt.
+    if (e.key === ' ' && !/^(BUTTON|A|INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) {
+      e.preventDefault(); game.open(); return;
+    }
     if (e.key === 'Backspace') { buf = buf.slice(0, -1); return; }
     if (e.key.length !== 1) return;
-    buf = (buf + e.key).slice(-SECRET.length);
+    buf = (buf + e.key.toLowerCase()).slice(-SECRET.length);
     if (buf === SECRET) location.href = HIDDEN;
   });
 
-  reset.addEventListener('click', restore);
+  document.addEventListener('keyup', function (e) { if (game.on()) game.up(e); });
 
-  document.addEventListener('keydown', function (e) {
-    if (live && e.key === 'Escape') { e.preventDefault(); restore(); }
-  });
 })();
 </script>
 </body>
