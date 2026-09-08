@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>counters</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#0b0e14" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+:root{
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  --bg:#0b0e14; --line:#1e2530;
+  --fg:#c8ccd4; --dim:#6b7484; --ink:#79c0ff; --code:#7ee787;
+  --punct:#5c6672; --link:#79c0ff;
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#fbfbf9; --line:#e2e2dc;
+    --fg:#2b2f36; --dim:#7b8290; --ink:#0550ae; --code:#1a7f37;
+    --punct:#8b929e; --link:#0550ae;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:var(--mono); font-size:15px; line-height:1.7;
+  font-variant-ligatures:none;
+  padding:clamp(1.75rem,6vw,5rem) clamp(1.25rem,5vw,2rem);
+}
+main{max-width:41rem;margin:0 auto}
+a{color:var(--link);text-decoration:none;border-bottom:1px solid transparent}
+a:hover{border-bottom-color:currentColor}
+a:focus-visible{outline:2px solid var(--link);outline-offset:3px;border-radius:2px}
+
+.prompt{color:var(--dim);font-size:.875rem;margin:0 0 2.75rem}
+.prompt .u{color:var(--code)} .prompt .h{color:var(--ink)} .prompt .c{color:var(--fg)}
+
+.block{margin:0 0 3rem}
+.block h2{margin:0 0 .65rem;font-size:.875rem;font-weight:400;
+  color:var(--ink);letter-spacing:.03em}
+
+.row{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem 1.6ch}
+.pair{display:inline-flex;align-items:baseline;gap:.6ch}
+.pair .n{font-size:clamp(1.5rem,5.5vw,2.25rem);font-weight:600;line-height:1.15;
+  color:var(--fg);font-variant-numeric:tabular-nums}
+.pair .u{font-size:.8125rem;color:var(--dim)}
+
+.ssw{margin:1.75rem 0 0;display:flex;align-items:baseline;gap:1ch}
+.ssw .n{font-size:clamp(1.25rem,4.5vw,1.875rem);font-weight:600;line-height:1.15;
+  color:var(--code);font-variant-numeric:tabular-nums}
+.ssw .u{font-size:.8125rem;color:var(--dim)}
+
+.note{margin:.5rem 0 0;color:var(--dim);font-size:.8125rem}
+
+footer{margin:3.5rem 0 0;padding-top:1.25rem;border-top:1px solid var(--line);
+  font-size:.8125rem}
+footer p{margin:0;color:var(--punct)}
+</style>
+</head>
+<body>
+<main>
+
+  <p class="prompt"><span class="u">philip</span>@<span class="h">philip-swoboda.at</span>:~<span class="c">$</span> uptime</p>
+
+  <section class="block">
+    <h2>seit 2024-05-13 00:06:12</h2>
+    <p class="row" id="a"><span class="pair"><span class="n">&mdash;</span></span></p>
+  </section>
+
+  <section class="block">
+    <h2>seit 2026-07-29 00:00:00</h2>
+    <p class="row" id="b"><span class="pair"><span class="n">&mdash;</span></span></p>
+    <p class="ssw" id="w"><span class="n">&mdash;</span><span class="u">SSW</span></p>
+  </section>
+
+  <noscript>
+    <p class="note">F&uuml;r die Z&auml;hler wird JavaScript gebraucht.</p>
+  </noscript>
+
+  <footer>
+    <p><a href="/">&larr; zur&uuml;ck</a></p>
+  </footer>
+
+</main>
+
+<script>
+(function () {
+  // Startpunkte: Komponenten-Konstruktor, damit lokale Zeit gilt (nicht UTC).
+  var A = new Date(2024, 4, 13, 0, 6, 12);   // 13.05.2024 00:06:12
+  var B = new Date(2026, 6, 29, 0, 0,  0);   // 29.07.2026 00:00:00
+
+  var UNITS = [
+    ['d',  'Tag',     'Tage'],
+    ['h',  'Stunde',  'Stunden'],
+    ['mi', 'Minute',  'Minuten'],
+    ['s',  'Sekunde', 'Sekunden']
+  ];
+
+  // Ganze Kalendertage von Mitternacht zu Mitternacht - round() faengt Sommerzeit ab.
+  function days(from, to) {
+    var a = new Date(from.getFullYear(), from.getMonth(), from.getDate());
+    var b = new Date(to.getFullYear(),   to.getMonth(),   to.getDate());
+    return Math.round((b - a) / 86400000);
+  }
+
+  // Uhrzeit-Anteil per Komponenten-Differenz; ist sie negativ, wird ein Tag geborgt.
+  function elapsed(from, to) {
+    var h  = to.getHours()   - from.getHours();
+    var mi = to.getMinutes() - from.getMinutes();
+    var s  = to.getSeconds() - from.getSeconds();
+    if (s  < 0) { s  += 60; mi -= 1; }
+    if (mi < 0) { mi += 60; h  -= 1; }
+    var borrow = 0;
+    if (h  < 0) { h  += 24; borrow = 1; }
+    return { d: Math.max(0, days(from, to) - borrow), h: h, mi: mi, s: s };
+  }
+
+  function render(id, start, now) {
+    var b = elapsed(start, now), out = '';
+    for (var i = 0; i < UNITS.length; i++) {
+      var v = b[UNITS[i][0]];
+      out += '<span class="pair"><span class="n">' + v + '</span>' +
+             '<span class="u">' + (v === 1 ? UNITS[i][1] : UNITS[i][2]) + '</span></span>';
+    }
+    document.getElementById(id).innerHTML = out;
+  }
+
+  var sswValue = document.querySelector('#w .n');
+
+  function tick() {
+    var now = new Date();
+    render('a', A, now);
+    render('b', B, now);
+    var n = Math.max(0, days(B, now));
+    sswValue.textContent = Math.floor(n / 7) + ' + ' + (n % 7);
+  }
+
+  tick();
+  // Haeufiger als sekuendlich, damit die Sekundenanzeige nicht springt.
+  setInterval(tick, 250);
+})();
+</script>
+</body>
+</html>
