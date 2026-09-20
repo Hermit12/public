@@ -109,6 +109,30 @@ body.term button.cursor{display:none}
   background:var(--bg);border:1px solid var(--line);border-radius:3px}
 .ghud{margin:0;color:var(--dim);font-size:.8125rem;text-align:center}
 body.playing{overflow:hidden}
+
+/* tetris */
+#tetris{position:fixed;inset:0;z-index:21;padding:.9rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;
+  background:var(--bg);
+  background:color-mix(in srgb, var(--bg) 96%, transparent);
+  touch-action:none}
+#tetris[hidden]{display:none}
+.thud{margin:0;display:flex;align-items:center;justify-content:center;
+  gap:.4rem 1.5ch;flex-wrap:wrap;color:var(--dim);font-size:.8125rem}
+.thud b{color:var(--fg);font-weight:600}
+.thud canvas{vertical-align:-.35em;image-rendering:pixelated}
+.thud button{font:inherit;font-size:.8125rem;color:var(--link);background:none;
+  border:0;padding:0;border-bottom:1px solid currentColor;cursor:pointer}
+/* Hoehe fuehrt, Breite folgt dem 1:2-Verhaeltnis; 170vw faengt Querformat ab. */
+#tc{height:min(62vh,520px,170vw);width:auto;image-rendering:pixelated;
+  background:var(--bg);border:1px solid var(--line);border-radius:3px;
+  touch-action:none}
+.tpad{display:flex;gap:.45rem;touch-action:none}
+.tpad button{font:inherit;font-size:1.05rem;line-height:1;color:var(--fg);
+  background:var(--panel);border:1px solid var(--line);border-radius:4px;
+  min-width:3.1rem;min-height:2.8rem;cursor:pointer;touch-action:none;
+  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.tpad button.hit{color:var(--bg);background:var(--ink);border-color:var(--ink)}
 </style>
 </head>
 <body>
@@ -159,6 +183,26 @@ body.playing{overflow:hidden}
   <p class="ghud">&larr; &rarr; move &middot; space fire &middot; esc close</p>
 </div>
 
+<div id="tetris" hidden>
+  <p class="thud">
+    <span>score <b id="tsc">0</b></span>
+    <span>lines <b id="tln">0</b></span>
+    <span>lvl <b id="tlv">1</b></span>
+    <span>next <canvas id="tn" width="48" height="24" aria-hidden="true"></canvas></span>
+    <button type="button" id="trs">restart</button>
+    <button type="button" id="tcl">close</button>
+  </p>
+  <canvas id="tc" width="200" height="400" role="img" aria-label="Tetris"></canvas>
+  <div class="tpad" id="tpad">
+    <button type="button" data-k="left"  aria-label="links">&larr;</button>
+    <button type="button" data-k="rot"   aria-label="drehen">&#8635;</button>
+    <button type="button" data-k="right" aria-label="rechts">&rarr;</button>
+    <button type="button" data-k="soft"  aria-label="runter">&darr;</button>
+    <button type="button" data-k="hard"  aria-label="fallen lassen">&#8615;</button>
+  </div>
+  <p class="ghud">&larr; &rarr; move &middot; &uarr; rotate &middot; &darr; soft &middot; space drop &middot; esc close</p>
+</div>
+
 <script>
 (function () {
   var main  = document.querySelector('main');
@@ -168,6 +212,11 @@ body.playing{overflow:hidden}
 
   var snapshot = main.innerHTML;
   var live = false;
+
+  // Spielfarben kommen aus dem Theme, damit hell und dunkel beide stimmen.
+  function colour(name) {
+    return getComputedStyle(document.body).getPropertyValue(name).trim() || '#888';
+  }
 
   function caretToPrompt() {
     var p = main.querySelector('.prompt');
@@ -210,10 +259,6 @@ body.playing{overflow:hidden}
 
     var keys = {}, raf = null, on = false;
     var ship, shots, bombs, mob, dir, beat, score, lives, over, won;
-
-    function colour(name) {
-      return getComputedStyle(document.body).getPropertyValue(name).trim() || '#888';
-    }
 
     function reset() {
       ship = { x: W / 2 - SW / 2, y: H - 28 };
@@ -363,12 +408,351 @@ body.playing{overflow:hidden}
     };
   })();
 
+  /* ---------- Tetris ---------- */
+  var tetris = (function () {
+    var wrap = document.getElementById('tetris');
+    var cv   = document.getElementById('tc');
+    var nv   = document.getElementById('tn');
+    var pad  = document.getElementById('tpad');
+    var bRs  = document.getElementById('trs');
+    var bCl  = document.getElementById('tcl');
+    var elSc = document.getElementById('tsc');
+    var elLn = document.getElementById('tln');
+    var elLv = document.getElementById('tlv');
+    if (!wrap || !cv || !nv || !pad || !bRs || !bCl) return { on: function () { return false; } };
+
+    var ctx  = cv.getContext('2d');
+    var nctx = nv.getContext('2d');
+    var COLS = 10, ROWS = 20, CELL = 20, NCELL = 12;   // cv ist 200x400
+
+    // Jede Form als quadratische Matrix - Drehen ist dann reine Transposition.
+    var PIECES = {
+      I: { m: [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]], c: '#2aa8b8' },
+      J: { m: [[1,0,0],[1,1,1],[0,0,0]],                 c: '#4b8bd6' },
+      L: { m: [[0,0,1],[1,1,1],[0,0,0]],                 c: '#d98d3f' },
+      O: { m: [[1,1],[1,1]],                             c: '#cfa72b' },
+      S: { m: [[0,1,1],[1,1,0],[0,0,0]],                 c: '#52a447' },
+      T: { m: [[0,1,0],[1,1,1],[0,0,0]],                 c: '#a663d6' },
+      Z: { m: [[1,1,0],[0,1,1],[0,0,0]],                 c: '#d2564f' }
+    };
+    var KICKS = [0, -1, 1, -2, 2];        // Ausweichversuche beim Drehen an der Wand
+    var SCORE = [0, 100, 300, 500, 800];  // Punkte nach Anzahl geraeumter Zeilen
+
+    var grid, bag, cur, nextT, px, py, score, lines, level;
+    var over, soft, acc, last, raf, on = false, wasLive = false;
+
+    // 7-Bag: jede Form kommt einmal pro Runde, keine Duerrestrecken.
+    function shuffledBag() {
+      var b = ['I','J','L','O','S','T','Z'], i, j, t;
+      for (i = b.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        t = b[i]; b[i] = b[j]; b[j] = t;
+      }
+      return b;
+    }
+
+    function pull() {
+      if (!bag.length) bag = shuffledBag();
+      return bag.pop();
+    }
+
+    function rotated(m) {
+      var n = m.length, out = [], r, c;
+      for (r = 0; r < n; r++) {
+        out.push([]);
+        for (c = 0; c < n; c++) out[r].push(m[n - 1 - c][r]);
+      }
+      return out;
+    }
+
+    function hits(m, x0, y0) {
+      for (var r = 0; r < m.length; r++)
+        for (var c = 0; c < m.length; c++) {
+          if (!m[r][c]) continue;
+          var x = x0 + c, y = y0 + r;
+          if (x < 0 || x >= COLS || y >= ROWS) return true;
+          if (y >= 0 && grid[y][x]) return true;
+        }
+      return false;
+    }
+
+    // Leere Zeilen oben in der Matrix wegrechnen, damit jede Form am Rand startet.
+    function topRow(m) {
+      for (var r = 0; r < m.length; r++)
+        for (var c = 0; c < m.length; c++) if (m[r][c]) return r;
+      return 0;
+    }
+
+    function spawn() {
+      cur = { t: nextT, m: PIECES[nextT].m };
+      nextT = pull();
+      px = Math.floor((COLS - cur.m.length) / 2);
+      py = -topRow(cur.m);
+      if (hits(cur.m, px, py)) over = true;
+      drawNext();
+    }
+
+    function reset() {
+      grid = [];
+      for (var r = 0; r < ROWS; r++) {
+        grid.push([]);
+        for (var c = 0; c < COLS; c++) grid[r].push(null);
+      }
+      bag = shuffledBag();
+      nextT = pull();
+      score = 0; lines = 0; level = 1;
+      over = false; soft = false; acc = 0; last = 0;
+      spawn();
+      stats();
+    }
+
+    function stats() {
+      elSc.textContent = score;
+      elLn.textContent = lines;
+      elLv.textContent = level;
+    }
+
+    function dropMs() {
+      return Math.max(70, 800 - (level - 1) * 65);
+    }
+
+    function lock() {
+      var r, c;
+      for (r = 0; r < cur.m.length; r++)
+        for (c = 0; c < cur.m.length; c++)
+          if (cur.m[r][c] && py + r >= 0) grid[py + r][px + c] = PIECES[cur.t].c;
+
+      var full = 0;
+      for (r = ROWS - 1; r >= 0; r--) {
+        var whole = true;
+        for (c = 0; c < COLS; c++) if (!grid[r][c]) { whole = false; break; }
+        if (!whole) continue;
+        grid.splice(r, 1);
+        var row = [];
+        for (c = 0; c < COLS; c++) row.push(null);
+        grid.unshift(row);
+        full++; r++;                       // nachgerutschte Zeile nochmal pruefen
+      }
+      if (full) {
+        lines += full;
+        score += SCORE[full] * level;
+        level = Math.floor(lines / 10) + 1;
+      }
+      stats();
+      spawn();
+    }
+
+    function fall() {
+      if (!hits(cur.m, px, py + 1)) { py++; if (soft) { score += 1; stats(); } }
+      else lock();
+    }
+
+    function turn() {
+      var m = rotated(cur.m);
+      for (var i = 0; i < KICKS.length; i++)
+        if (!hits(m, px + KICKS[i], py)) { cur.m = m; px += KICKS[i]; return; }
+    }
+
+    function slam() {
+      var n = 0;
+      while (!hits(cur.m, px, py + 1)) { py++; n++; }
+      score += n * 2;
+      acc = 0;
+      lock();
+    }
+
+    // Landepunkt der laufenden Form - am Handy kaum zu treffen ohne diese Hilfe.
+    function ghostY() {
+      var y = py;
+      while (!hits(cur.m, px, y + 1)) y++;
+      return y;
+    }
+
+    function act(k) {
+      if (!on || over) return;
+      if      (k === 'left')  { if (!hits(cur.m, px - 1, py)) px -= 1; }
+      else if (k === 'right') { if (!hits(cur.m, px + 1, py)) px += 1; }
+      else if (k === 'rot')   turn();
+      else if (k === 'soft')  { if (!hits(cur.m, px, py + 1)) { py++; score += 1; stats(); } else lock(); }
+      else if (k === 'hard')  slam();
+    }
+
+    function block(x, y, col) {
+      if (y < 0) return;
+      ctx.fillStyle = col;
+      ctx.fillRect(x * CELL + 1, y * CELL + 1, CELL - 2, CELL - 2);
+    }
+
+    function centred(text, y, col, size) {
+      ctx.fillStyle = col;
+      ctx.font = size + 'px ui-monospace, Menlo, monospace';
+      ctx.fillText(text, (cv.width - ctx.measureText(text).width) / 2, y);
+    }
+
+    function draw() {
+      var r, c;
+      ctx.fillStyle = colour('--bg');
+      ctx.fillRect(0, 0, cv.width, cv.height);
+
+      ctx.fillStyle = colour('--line');
+      for (c = 1; c < COLS; c++) ctx.fillRect(c * CELL, 0, 1, cv.height);
+      for (r = 1; r < ROWS; r++) ctx.fillRect(0, r * CELL, cv.width, 1);
+
+      for (r = 0; r < ROWS; r++)
+        for (c = 0; c < COLS; c++)
+          if (grid[r][c]) block(c, r, grid[r][c]);
+
+      if (!over) {
+        var gy = ghostY();
+        ctx.strokeStyle = colour('--dim');
+        ctx.lineWidth = 1;
+        for (r = 0; r < cur.m.length; r++)
+          for (c = 0; c < cur.m.length; c++)
+            if (cur.m[r][c] && gy + r >= 0)
+              ctx.strokeRect((px + c) * CELL + 1.5, (gy + r) * CELL + 1.5, CELL - 3, CELL - 3);
+
+        for (r = 0; r < cur.m.length; r++)
+          for (c = 0; c < cur.m.length; c++)
+            if (cur.m[r][c]) block(px + c, py + r, PIECES[cur.t].c);
+      } else {
+        ctx.globalAlpha = 0.88;
+        ctx.fillStyle = colour('--panel');
+        ctx.fillRect(0, cv.height / 2 - 30, cv.width, 60);
+        ctx.globalAlpha = 1;
+        centred('GAME OVER', cv.height / 2 - 2, colour('--fg'), 16);
+        centred('tippen oder enter', cv.height / 2 + 16, colour('--dim'), 10);
+      }
+    }
+
+    function drawNext() {
+      var m = PIECES[nextT].m, r, c;
+      nctx.fillStyle = colour('--bg');
+      nctx.fillRect(0, 0, nv.width, nv.height);
+
+      var minC = 9, maxC = -1, minR = 9, maxR = -1;
+      for (r = 0; r < m.length; r++)
+        for (c = 0; c < m.length; c++)
+          if (m[r][c]) {
+            if (c < minC) minC = c;
+            if (c > maxC) maxC = c;
+            if (r < minR) minR = r;
+            if (r > maxR) maxR = r;
+          }
+      var ox = (nv.width  - (maxC - minC + 1) * NCELL) / 2 - minC * NCELL;
+      var oy = (nv.height - (maxR - minR + 1) * NCELL) / 2 - minR * NCELL;
+
+      nctx.fillStyle = PIECES[nextT].c;
+      for (r = 0; r < m.length; r++)
+        for (c = 0; c < m.length; c++)
+          if (m[r][c]) nctx.fillRect(ox + c * NCELL + 1, oy + r * NCELL + 1, NCELL - 2, NCELL - 2);
+    }
+
+    function loop(ts) {
+      if (!on) return;
+      if (!last) last = ts;
+      var dt = Math.min(200, ts - last);   // nach einem Tab-Wechsel nicht nachholen
+      last = ts;
+      if (!over) {
+        acc += dt;
+        var step = soft ? Math.min(50, dropMs()) : dropMs();
+        while (acc >= step && !over) { acc -= step; fall(); }
+      }
+      draw();
+      raf = requestAnimationFrame(loop);
+    }
+
+    /* Touch: kurzer Druck = ein Schritt, Halten wiederholt. */
+    var holdT = null, holdI = null;
+
+    function stopHold() {
+      if (holdT) { clearTimeout(holdT);  holdT = null; }
+      if (holdI) { clearInterval(holdI); holdI = null; }
+      var hit = pad.querySelectorAll('button.hit');
+      for (var i = 0; i < hit.length; i++) hit[i].classList.remove('hit');
+    }
+
+    pad.addEventListener('pointerdown', function (e) {
+      var b = e.target.closest ? e.target.closest('button[data-k]') : null;
+      if (!b) return;
+      e.preventDefault();
+      var k = b.getAttribute('data-k');
+      stopHold();
+      b.classList.add('hit');
+      act(k);
+      if (k === 'left' || k === 'right' || k === 'soft') {
+        holdT = setTimeout(function () {
+          holdI = setInterval(function () { act(k); }, 60);
+        }, 170);
+      }
+    });
+    document.addEventListener('pointerup', stopHold);
+    document.addEventListener('pointercancel', stopHold);
+
+    // Ohne Tastatur braucht es einen Weg zurueck ins Spiel und wieder heraus.
+    cv.addEventListener('pointerdown', function (e) { if (on && over) { e.preventDefault(); reset(); } });
+    bRs.addEventListener('click', function () { if (on) reset(); });
+    bCl.addEventListener('click', function () { api.close(); });
+
+    var api = {
+      on: function () { return on; },
+      open: function () {
+        if (on) return;
+        wasLive = live;                 // Terminal-Modus ruht, solange gespielt wird
+        if (wasLive) { main.setAttribute('contenteditable', 'false'); main.blur(); }
+        reset();
+        on = true;
+        wrap.hidden = false;
+        document.body.classList.add('playing');
+        raf = requestAnimationFrame(loop);
+      },
+      close: function () {
+        if (!on) return;
+        on = false; soft = false;
+        stopHold();
+        if (raf) cancelAnimationFrame(raf);
+        wrap.hidden = true;
+        document.body.classList.remove('playing');
+        if (wasLive) { main.setAttribute('contenteditable', 'true'); wasLive = false; }
+      },
+      down: function (e) {
+        var k = e.key;
+        if (k === 'Escape') { this.close(); return; }
+        if (k === 'Enter')  { if (over) reset(); return; }
+        if (k === ' ')                            { e.preventDefault(); act('hard');  return; }
+        if (k === 'ArrowLeft'  || k === 'a')      { e.preventDefault(); act('left');  return; }
+        if (k === 'ArrowRight' || k === 'd')      { e.preventDefault(); act('right'); return; }
+        if (k === 'ArrowUp'    || k === 'w')      { e.preventDefault(); act('rot');   return; }
+        if (k === 'ArrowDown'  || k === 's')      { e.preventDefault(); soft = true;  return; }
+      },
+      up: function (e) {
+        if (e.key === 'ArrowDown' || e.key === 's') soft = false;
+      }
+    };
+    return api;
+  })();
+
   /* ---------- Eingaben ---------- */
-  // Versteckter Zugang: "ssw" tippen, oder dreimal aufs Bild tippen.
-  // Leertaste startet das Spiel.
+  // Getippte Woerter: "ssw" oeffnet die Zaehlerseite, "tetris" das Spiel.
+  // Dreimal aufs Bild tippen fuehrt ebenfalls zur Zaehlerseite.
+  // Leertaste startet Space Invaders.
   var HIDDEN = '/3gn4ycx/';
-  var SECRET = 'ssw';
-  var buf = '', taps = 0, lastTap = 0;
+  var WORDS = [
+    { word: 'ssw',    run: function () { location.href = HIDDEN; } },
+    { word: 'tetris', run: function () { tetris.open(); } }
+  ];
+  var MAX = 0, buf = '', taps = 0, lastTap = 0;
+  for (var wi = 0; wi < WORDS.length; wi++) MAX = Math.max(MAX, WORDS[wi].word.length);
+
+  // Nur Buchstaben sammeln: Handy-Tastaturen liefern Woerter gern mit Leerzeichen.
+  function push(text) {
+    var add = String(text).toLowerCase().replace(/[^a-z]/g, '');
+    if (!add) return;
+    buf = (buf + add).slice(-MAX);
+    for (var i = 0; i < WORDS.length; i++) {
+      var w = WORDS[i].word;
+      if (buf.slice(-w.length) === w) { buf = ''; WORDS[i].run(); return; }
+    }
+  }
 
   main.addEventListener('click', function (e) {
     if (live || !e.target.closest) return;
@@ -382,7 +766,9 @@ body.playing{overflow:hidden}
   });
 
   document.addEventListener('keydown', function (e) {
-    if (game.on()) { game.down(e); return; }
+    if (game.on())   { game.down(e);   return; }
+    if (tetris.on()) { tetris.down(e); return; }
+    // Im Terminal-Modus wird Text bearbeitet - das Mitlesen laeuft dort ueber 'input'.
     if (live) { if (e.key === 'Escape') { e.preventDefault(); restore(); } return; }
     if (e.metaKey || e.ctrlKey || e.altKey) return;
 
@@ -392,11 +778,19 @@ body.playing{overflow:hidden}
     }
     if (e.key === 'Backspace') { buf = buf.slice(0, -1); return; }
     if (e.key.length !== 1) return;
-    buf = (buf + e.key.toLowerCase()).slice(-SECRET.length);
-    if (buf === SECRET) location.href = HIDDEN;
+    push(e.key);
   });
 
-  document.addEventListener('keyup', function (e) { if (game.on()) game.up(e); });
+  document.addEventListener('keyup', function (e) {
+    if (game.on())   game.up(e);
+    if (tetris.on()) tetris.up(e);
+  });
+
+  // Am Handy gibt es nur im Terminal-Modus eine Tastatur, und mobile Tastaturen
+  // liefern kein verlaessliches keydown - 'input' schon.
+  main.addEventListener('input', function (e) {
+    if (live && typeof e.data === 'string') push(e.data);
+  });
 
 })();
 </script>
